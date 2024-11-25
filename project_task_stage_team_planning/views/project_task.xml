@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Action `My Task`: load classic Kanban view (grouped by Stages) rather than grouped by Personal Stages -->
+    <record id="project.open_view_all_task_list_kanban" model="ir.actions.act_window.view">
+        <field name="view_id" ref="project.view_task_kanban"/>
+    </record>
+</odoo>

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Form -->
+    <record model="ir.ui.view" id="account_move_budget_form_view">
+        <field name="name">account.move.budget.form.project</field>
+        <field name="model">account.move.budget</field>
+        <field name="inherit_id" ref="account_move_budget.account_move_budget_form_view" />
+
+        <field name="arch" type="xml">
+            <!-- Add project on top -->
+            <field name="date_range_id" position="before">
+                <field name="project_id" />
+            </field>
+            <!-- Add `template` and `template_default_project` on bottom -->
+            <group name="dates" position="after">
+                <group name="tempalte">
+                    <field name="template" widget="boolean_toggle" />
+                    <field name="template_default_project"
+                        widget="boolean_toggle"
+                        attrs="{'invisible': [('template', '=', False)]}"
+                    />
+                </group>
+            </group>
+        </field>
+    </record>
+
+    <!-- Tree -->
+    <record model="ir.ui.view" id="account_move_budget_tree_view">
+        <field name="name">account.move.budget.tree</field>
+        <field name="model">account.move.budget</field>
+        <field name="inherit_id" ref="account_move_budget.account_move_budget_tree_view" />
+
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="project_id" invisible="context.get('default_project_id')" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Search -->
+    <record model="ir.ui.view" id="account_move_budget_search_view">
+        <field name="name">account.move.budget.search</field>
+        <field name="model">account.move.budget</field>
+        <field name="inherit_id" ref="account_move_budget.account_move_budget_search_view" />
+        
+        <field name="arch" type="xml">
+            <search position="inside">
+                <field name="project_id" />
+                
+                <filter string="★ Projects" name="my_favorite_projects" domain="[('project_id.favorite_user_ids', '=', uid)]"/>
+
+                <searchpanel>
+                    <field name="project_id" invisible="context.get('default_project_id')" />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+</odoo>

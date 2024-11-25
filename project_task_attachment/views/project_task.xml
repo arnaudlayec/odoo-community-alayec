@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project.task.form.attachment</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2" />
+
+        <field name="arch" type="xml">
+            <field name="description" position="before">
+                <group>
+                    <field name="attachment_ids" widget="many2many_binary" />
+                </group>
+            </field>
+        </field>
+    </record>
+</odoo>

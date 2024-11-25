@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Adds "primary" to all `project.assignment` views -->
+    <!-- Form -->
+    <record id="project_assignment_form" model="ir.ui.view">
+        <field name="name">project.assignment.form.carpentry</field>
+        <field name="model">project.assignment</field>
+        <field name="inherit_id" ref="project_role.project_assignment_form" />
+
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="domain_user_ids" invisible="1" />
+
+                <field name="primary" widget="boolean_toggle" />
+            </field>
+
+            <!-- Don't suggest users already assigned to this role -->
+            <field name="user_id" position="attributes">
+                <attribute name="domain">[('id', 'in', domain_user_ids)]</attribute>
+            </field>
+        </field>
+    </record>
+    <!-- Tree -->
+    <record id="project_assignment_tree" model="ir.ui.view">
+        <field name="name">project.assignment.tree.carpentry</field>
+        <field name="model">project.assignment</field>
+        <field name="inherit_id" ref="project_role.project_assignment_tree" />
+
+        <field name="arch" type="xml">
+            <field name="user_id" position="before">
+                <field name="domain_user_ids" invisible="1" />
+
+                <field name="primary" widget="boolean_toggle" />
+            </field>
+
+            <!-- Don't suggest users already assigned to this role -->
+            <field name="user_id" position="attributes">
+                <attribute name="domain">[('id', 'in', domain_user_ids)]</attribute>
+            </field>
+        </field>
+    </record>
+    <!-- Pivot -->
+    <record id="project_assignment_pivot" model="ir.ui.view">
+        <field name="name">project.assignment.pivot.carpentry</field>
+        <field name="model">project.assignment</field>
+        <field name="inherit_id" ref="project_role.project_assignment_pivot" />
+
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="primary" type="col" />
+            </field>
+        </field>
+    </record>
+    <!-- Kanban (called as O2m field in project form) -->
+    <record id="project_assignment_kanban" model="ir.ui.view">
+        <field name="name">project.assignment.kanban.carpentry</field>
+        <field name="model">project.assignment</field>
+        <field name="inherit_id" ref="project_role.project_assignment_kanban" />
+
+        <field name="arch" type="xml">
+            <!-- Loads `primary` field -->
+            <templates position="before">
+                <field name="primary" />
+            </templates>
+
+            <!-- Highlight if `primary` role -->
+            <div t-attf-class="oe_kanban_global_click" position="attributes">
+                <attribute name="t-att-class">{'bg-primary-light': record.primary.raw_value}</attribute>
+            </div>
+            <t t-esc="record.role_id.value" position="after">
+                <field name="primary" widget="boolean_toggle" class="oe_inline ms-2" nolabel="1" />
+            </t>
+
+            <!-- Add `Remove` button -->
+            <div class="col-10" position="attributes">
+                <attribute name="class">col-8</attribute>
+            </div>
+            <div class="col-8" position="after">
+                <div class="col-2">
+                    <a role="button" type="object" name="unlink" class="text-danger"
+                        title="Remove" confirm="Are you sure?"
+                    >
+                        <i class="fa fa-trash" />
+                    </a>
+                </div>
+            </div>
+
+            <!-- Hides `project_id` (unwanted in project's form) -->
+            <t t-esc="record.project_id.value" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </t>
+        </field>
+    </record>
+    <!-- Search -->
+    <record id="project_assignment_search" model="ir.ui.view">
+        <field name="name">project.assignment.search.carpentry</field>
+        <field name="model">project.assignment</field>
+        <field name="inherit_id" ref="project_role.project_assignment_search" />
+
+        <field name="arch" type="xml">
+            <filter name="my_assignments" position="after">
+                <filter string="Primary roles"
+                    name="primary"
+                    domain="[('primary', '=', True)]"
+                />
+            </filter>
+        </field>
+    </record>
+
+    <!-- Create §'Project roles' in Project/Config, and move `Assignments` and `Project Roles` to it -->
+    <menuitem id="project_menu_config_roles_section" name="Project roles" parent="project.menu_project_config" />
+    <record id="project_role.project_menu_config_roles" model="ir.ui.menu">
+        <field name="parent_id" ref="project_menu_config_roles_section" />
+        <field name="sequence">10</field>
+    </record>
+    <record id="project_role.menu_project_assignments" model="ir.ui.menu">
+        <field name="parent_id" ref="project_menu_config_roles_section" />
+        <field name="sequence">20</field>
+    </record>
+</odoo>

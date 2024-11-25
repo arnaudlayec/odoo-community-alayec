@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<data>
+    <record id="seq_child_project_sequence" model="ir.sequence">
+        <field name="name">Child Project sequence</field>
+        <field name="code">project.sequence.child_tmpl</field>
+        <field name="prefix">-</field>
+        <field name="padding">2</field>
+        <field name="active" eval="False" />
+    </record>
+</data>

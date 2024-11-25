@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project.task.form.attachment</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2" />
+
+        <field name="arch" type="xml">
+            <!-- Copy from -->
+            <notebook position="before">
+                <group string="Copy from..." attrs="{'invisible': [('id', '!=', False)]}">
+                    <field name="copy_project_id" />
+                    <field name="copy_task_id" />
+                </group>
+            </notebook>
+        </field>
+    </record>
+</odoo>

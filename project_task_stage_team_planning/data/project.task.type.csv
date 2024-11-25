@@ -1,0 +1,9 @@
+id,name,sequence,fold
+task_stage_inbox,Inbox,10,False
+task_stage_today,Today,20,False
+task_stage_thisweek,This Week,30,False
+task_stage_nextweek,Next Week,40,False
+task_stage_thismonth,This month,50,False
+task_stage_later,Later,60,False
+task_stage_done,Done,70,True
+task_stage_cancel,Canceled,80,True

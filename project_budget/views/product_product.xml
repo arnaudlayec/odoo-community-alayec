@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Product variant 'easy' form -->
+    <record id="product_variant_easy_edit_view" model="ir.ui.view">
+        <field name="name">product.product.view.form.easy.budget</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
+
+        <field name="arch" type="xml">
+            <!-- Date from/to next to cost -->
+            <group name="pricing" position="inside">
+                <field name="standard_price_date_ranged" invisible="1" />
+
+                <label for="date_from" string="Planned Date" attrs="{'invisible': [('standard_price_date_ranged', '=', False)]}" />
+                <div name="dates" class="o_row" attrs="{'invisible': [('standard_price_date_ranged', '=', False)]}">
+                    <field name="date_from" string="Date Range" />
+                    <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow" />
+                    <field name="date_to" />
+                </div>
+            </group>
+        </field>
+    </record>
+    <!-- Product variant 'full' form -->
+    <record id="product_normal_form_view" model="ir.ui.view">
+        <field name="name">product.product.form.budget</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_normal_form_view" />
+
+        <field name="arch" type="xml">
+            <!-- Date from/to next to cost -->
+            <field name="categ_id" position="before">
+                <field name="standard_price_date_ranged" invisible="1" />
+
+                <label for="date_from" string="Planned Date" attrs="{'invisible': [('standard_price_date_ranged', '=', False)]}" />
+                <div name="dates" class="o_row" attrs="{'invisible': [('standard_price_date_ranged', '=', False)]}">
+                    <field name="date_from" string="Date Range" attrs="{'required': [('standard_price_date_ranged', '=', True)]}" />
+                    <i class="fa fa-long-arrow-right mx-2 oe_edit_only" aria-label="Arrow icon" title="Arrow" />
+                    <field name="date_to" />
+                </div>
+            </field>
+        </field>
+    </record>
+    <!-- Product search : add `Can be used in Budget` -->
+    <record id="product_template_search_view" model="ir.ui.view">
+        <field name="name">product.template.search</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_search_view" />
+
+        <field name="arch" type="xml">
+            <filter name="filter_to_purchase" position="after">
+                <filter string="Can be used in Budget" name="filter_to_budget" domain="[('budget_ok','=',True)]"/>
+            </filter>
+        </field>
+    </record>
+
+    <!-- Standalone Product-Product Tree -->
+    <record id="product_product_tree_view_budget" model="ir.ui.view">
+        <field name="name">product.product.tree.budget</field>
+        <field name="model">product.product</field>
+        <field name="priority" eval="10000" />
+
+        <field name="arch" type="xml">
+            <tree string="Product Variants (Budget)"
+                multi_edit="1"
+                editable="top"
+                create="False"
+                duplicate="false"
+                sample="1"
+            >
+                <field name="standard_price_date_ranged" invisible="1" />
+                
+                <field name="product_tmpl_id" readonly="1" string="Product" />
+                <field name="product_template_variant_value_ids" widget="many2many_tags" groups="product.group_product_variant" readonly="1"/>
+                <field name="default_code" optional="show" readonly="1"/>
+                
+                <field name="standard_price" />
+                <field name="date_from" attrs="{'required': [('standard_price_date_ranged', '=', True)]}" />
+                <field name="date_to" />
+                <field name="uom_id" options="{'no_open': True, 'no_create': True}" groups="uom.group_uom" optional="show" readonly="1"/>
+                
+                <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1"/>
+
+                <button name="button_open_attributes"
+                    type="object"
+                    string="Attributes"
+                    icon="fa-bars"
+                />
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- Action -->
+    <record model="ir.actions.act_window" id="action_open_account_move_budget_product">
+        <field name="name">Date-ranged values</field>
+        <field name="res_model">product.product</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="product_product_tree_view_budget" />
+        <field name="context">{
+            'default_budget_ok': True,
+            'search_default_filter_to_budget': True
+        }</field>
+    </record>
+    <!-- New menu section -->
+    <menuitem id="account_move_budget_section"
+    parent="account.menu_finance_entries"
+        name="Account Move Budgets"
+    >
+        <menuitem id="account_move_budget.account_move_budget_menu"
+            action="account_move_budget.account_move_budget_act_window"
+            name="Budgets" />
+        <menuitem id="account_move_budget_product"
+            action="action_open_account_move_budget_product"
+            name="Products (budget)" />
+    </menuitem>
+</odoo>

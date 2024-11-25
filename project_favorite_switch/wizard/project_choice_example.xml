@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Example 1 : simple
+         Only using automations of `context` and `domain` from `action_choose_project_and_redirect()`
+    -->
+    <record id="action_srv_open_purchase_order" model="ir.actions.server">
+        <field name="name">Requests for Quotation</field>
+        <field name="model_id" ref="project_favorite_switch.model_planning_project_wizard" />
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_choose_project_and_redirect('purchase.purchase_rfq')
+        </field>
+    </record>
+
+
+    <!-- Example 2 : more complex
+         Custom action
+    -->
+    <record id="action_srv_open_custom_view" model="ir.actions.server">
+        <field name="name">Custom View</field>
+        <field name="model_id" ref="project_favorite_switch.model_planning_project_wizard" />
+        <field name="state">code</field>
+        <field name="code">
+            action = model.action_choose_project_and_redirect(lambda self: {
+                'type': 'ir.actions.act_window',
+                'res_model': 'custom.model',
+                'view_mode': 'kanban,list,form',
+                'name': f'Custom items of project {self.display_name}',
+                'context': {'any_key': True}
+                # `context` and `domain` are automatically added or completed
+            })
+        </field>
+    </record>
+
+
+    <!-- Standard for extending existing views -->
+    <!-- Form -->
+    <field name="name" position="after">
+        <field name="project_id" attrs="{'readonly': [('id', '!=', False)]}" />
+    </field>
+    <!-- Standard for extending existing views -->
+    <!-- Tree -->
+    <field name="name" position="after">
+        <field name="project_id" invisible="context.get('default_project_id')" />
+    </field>
+    <!-- Search -->
+    <search position="inside">
+        <field name="project_id" />
+        <filter string="★ Projects" name="my_favorite_projects" domain="[('project_id.favorite_user_ids', '=', uid)]"/>
+        <searchpanel>
+            <field name="project_id" invisible="context.get('default_project_id')" />
+        </searchpanel>
+    </search>
+</odoo>

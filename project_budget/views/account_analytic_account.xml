@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_account_analytic_account_list" model="ir.ui.view">
+        <field name="name">analytic.analytic.account.list.project_budget</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_list" />
+
+        <field name="arch" type="xml">
+            <!-- Add sequence on list -->
+            <field name="company_id" position="before">
+                <field name="sequence" widget="handle" />
+            </field>
+        </field>
+    </record>
+
+    <record id="view_account_analytic_account_form" model="ir.ui.view">
+        <field name="name">analytic.analytic.account.form.project_budget</field>
+        <field name="model">account.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form" />
+
+        <field name="arch" type="xml">
+            <!-- Add product on form -->
+            <field name="partner_id" position="after">
+                <field name="product_tmpl_id" />
+            </field>
+        </field>
+    </record>
+</odoo>

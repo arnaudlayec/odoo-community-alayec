@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Sale Order: add Project field in view -->
+    <!-- Form (sale order) -->
+    <record id="view_order_form" model="ir.ui.view">
+        <field name="name">sale.order.form.project_link</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_form" />
+
+        <field name="arch" type="xml">
+            <field name="partner_id" position="before">
+                <field name="project_id" attrs="{'readonly': [('id','!=',False)]}" />
+            </field>
+        </field>
+    </record>
+    <!-- Tree (Quotation) -->
+    <record id="view_quotation_tree" model="ir.ui.view">
+        <field name="name">sale.order.tree.project_link</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_quotation_tree" />
+
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="project_id" optional="show" invisible="context.get('default_project_id')" />
+            </field>
+        </field>
+    </record>
+    <!-- Tree (Sale Order) -->
+    <record id="view_order_tree" model="ir.ui.view">
+        <field name="name">sale.order.tree.project_link</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_order_tree" />
+
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="project_id" optional="show" invisible="context.get('default_project_id')" />
+            </field>
+        </field>
+    </record>
+    <!-- Search -->
+    <record id="view_sales_order_filter" model="ir.ui.view">
+        <field name="name">sale.order.search.project_link</field>
+        <field name="model">sale.order</field>
+        <field name="inherit_id" ref="sale.view_sales_order_filter" />
+        <field name="arch" type="xml">
+            <!-- Favorite projects filter -->
+            <field name="name" position="after">
+                <filter string="★ Projects" name="filter_favorite_project" domain="[('project_id.favorite_user_ids','=',uid)]" />
+            </field>
+            
+            <!-- Group by project -->
+            <group expand="0" position="inside">
+                <filter string="Project" name="groupby_project" context="{'group_by': 'project_id'}" />
+            </group>
+            
+            <!-- Left Searchpannel on project -->
+            <search position="inside">
+                <searchpanel>
+                    <field name="project_id" invisible="context.get('default_project_id')" />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+
+    <!-- Actions: replace `My Quotations` by `Favorite project` default filter -->
+    <record id="sale.action_orders" model="ir.actions.act_window">
+        <field name="context">{'search_default_filter_favorite_project': 1}</field>
+    </record>
+    <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
+        <field name="context">{'search_default_filter_favorite_project': 1}</field>
+    </record>
+    <record id="sale.action_quotations" model="ir.actions.act_window">
+        <field name="context">{'search_default_filter_favorite_project': 1}</field>
+    </record>
+</odoo>

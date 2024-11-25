@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project.project.form.contact</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+
+        <field name="arch" type="xml">
+            <page name="description" position="inside">
+                <group string="Stakeholders">
+                    <field name="contact_ids" mode="kanban" nolabel="1" colspan="2" />
+                </group>
+            </page>
+        </field>
+    </record>
+</odoo>

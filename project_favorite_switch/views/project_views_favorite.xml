@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Project's views: hide `is_favorite` to avoid
+     misalignment issue with new top-right dropdown menu -->
+    <!-- Form -->
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project.project.form.favorite_switch</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+
+        <field name="arch" type="xml">
+            <field name="is_favorite" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+    <!-- Tree -->
+    <record id="view_project" model="ir.ui.view">
+        <field name="name">project.project.tree.favorite_switch</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project" />
+
+        <field name="arch" type="xml">
+            <field name="is_favorite" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+    <!-- Kanban -->
+    <record id="view_project_kanban" model="ir.ui.view">
+        <field name="name">project.project.kanban.favorite_switch</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_kanban" />
+
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='is_favorite']/parent::span" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+    <!-- Calendar -->
+    <record id="view_project_calendar" model="ir.ui.view">
+        <field name="name">project.project.calendar.favorite_switch</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.view_project_calendar" />
+
+        <field name="arch" type="xml">
+            <field name="is_favorite" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+
+
+    <!-- Tasks: add filter `my_favorite_projects` -->
+    <record id="view_task_search_form" model="ir.ui.view">
+        <field name="name">project.task.search.favorite_switch</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_search_form" />
+
+        <field name="arch" type="xml">
+            <!-- Add Filter "Favorite projects" -->
+            <filter name="my_tasks" position="before">
+                <filter string="★ Projects" name="my_favorite_projects" domain="[('project_id.favorite_user_ids', '=', uid)]"/>
+                <separator/>
+            </filter>
+        </field>
+    </record>
+    
+</odoo>
