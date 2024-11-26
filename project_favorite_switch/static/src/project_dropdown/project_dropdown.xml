@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="project.SystrayFavProjects" owl="1">
+        <Dropdown>
+            <t t-set-slot="toggler">
+                <i class="fa fa-star fa-1.5x p-2" />
+                Projects
+            </t>
+            
+            <t t-foreach="projects" t-as="project" t-key="project.id">
+                <SystrayFavProjectsItem project="project" />
+            </t>
+        </Dropdown>
+    </t>
+
+    <t t-name="project.SystrayFavProjectsItem" owl="1">
+        <DropdownItem class="'p-0 bg-white'">
+            <div class="d-flex">
+                <div
+                    role="menuitemcheckbox"
+                    t-att-aria-checked="project.is_favorite ? 'true' : 'false'"
+                    tabindex="0"
+                    class="border-end"
+                    t-attf-class="{{project.is_favorite ? 'border-primary' : ''}}"
+                    t-on-click.stop="toggleProject">
+
+                    <span class="btn btn-light border-0 p-2">
+                        <i class="fa fa-fw py-2" t-att-class="project.is_favorite ? 'fa-star text-primary' : 'fa-star-o'"/>
+                    </span>
+                </div>
+
+                <div
+                    role="button"
+                    t-att-aria-pressed="project.is_favorite ? 'true' : 'false'"
+                    tabindex="0"
+                    class="d-flex flex-grow-1 align-items-center py-0 log_into ps-2"
+                    t-att-class="project.is_favorite ? 'alert-primary ms-1 me-2' : 'btn btn-light fw-normal border-0'"
+                    t-on-click.stop="toggleProject">
+
+                    <span
+                        class='pe-3'
+                        t-att-class="project.is_favorite ? 'text-900 fw-bold' : 'ms-1'">
+                        <t t-esc="project.display_name"/>
+                    </span>
+                </div>
+            </div>
+        </DropdownItem>
+    </t>
+
+</templates>

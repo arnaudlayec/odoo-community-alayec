@@ -21,11 +21,11 @@
         <field name="model_id" ref="project_favorite_switch.model_planning_project_wizard" />
         <field name="state">code</field>
         <field name="code">
-            action = model.action_choose_project_and_redirect(lambda self: {
+            action = model.action_choose_project_and_redirect({
                 'type': 'ir.actions.act_window',
                 'res_model': 'custom.model',
                 'view_mode': 'kanban,list,form',
-                'name': f'Custom items of project {self.display_name}',
+                'name': f'Items',
                 'context': {'any_key': True}
                 # `context` and `domain` are automatically added or completed
             })

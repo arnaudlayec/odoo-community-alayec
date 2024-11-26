@@ -43,6 +43,9 @@ class SaleOrder(models.Model):
         if 'company_id' in vals:
             project_id = project_id.with_company(vals['company_id'])
         if vals.get('name', _("New")) == _("New"):
+            # create the per-project sequence for Sale Order, if not existing already
+            if not project_id.sale_order_sequence_id.id:
+                project_id._create_sale_order_sequence_one()
             name_key = {'name': project_id.sale_order_sequence_id.next_by_id()}
         
         return name_key

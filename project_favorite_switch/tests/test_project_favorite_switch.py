@@ -58,13 +58,13 @@ class TestProjectFavoriteSwitch(common.SingleTransactionCase):
         Wizard = self.env['project.choice.wizard']
 
         # 1.1 Wizard with no guessable project: explicit opening
-        res = Wizard.action_choose_project_and_redirect(action_arg={})
+        res = Wizard.action_choose_project_and_redirect(action={})
         self.assertEqual(res.get('res_model'), 'project.choice.wizard')
 
         # 1.2 Project choice in wizard
         context_keys = ['test_project_id']
-        action_arg = lambda project_id: {'domain': "[('test','=',True)]"}
-        Wizard = Wizard.with_context({'action_arg': action_arg, 'context_keys': context_keys})
+        action = lambda project_id: {'domain': "[('test','=',True)]"}
+        Wizard = Wizard.with_context({'action': action, 'context_keys': context_keys})
         final_action = {
             # ensure of `context` and `domain` keys/parts 
             'context': {'test_project_id': project.id},
@@ -83,7 +83,7 @@ class TestProjectFavoriteSwitch(common.SingleTransactionCase):
         self.assertEqual(Wizard._get_project_id(), project.id)
 
         # 2.2 Skip wizard opening if guessable
-        res = Wizard.action_choose_project_and_redirect(action_arg, context_keys)
+        res = Wizard.action_choose_project_and_redirect(action, context_keys)
         self.assertEqual(res, final_action)
 
     def test_task_default_project(self):

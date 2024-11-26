@@ -30,13 +30,6 @@ class ProjectProject(models.Model):
     
 
     #===== CRUD: sequence of Sale Orders =====#
-    @api.model_create_multi
-    def create(self, vals_list):
-        projects = super().create(vals_list)
-        for project in projects:
-            project._create_sale_order_sequence_one()
-        return projects
-    
     def _create_sale_order_sequence_one(self):
         """ Creates 1 sequence per project, for sale orders """
         self.ensure_one()
@@ -53,7 +46,8 @@ class ProjectProject(models.Model):
         self.sale_order_sequence_id = seq_new
 
     def unlink(self):
-        self.sale_order_sequence_id.unlink()
+        if self.sale_order_sequence_id.id:
+            self.sale_order_sequence_id.unlink()
         return super().unlink()
 
 

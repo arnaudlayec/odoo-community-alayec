@@ -1,8 +1,10 @@
 # -*- coding: utf-8 -*-
 
 from odoo import Command, exceptions, fields
-
 from odoo.tests.common import Form, TransactionCase
+
+from datetime import timedelta
+
 from odoo.addons.account_move_budget.tests.test_account_move_budget import TestAccountMoveBudget
 
 class TestAccountMoveBudgetProject(TestAccountMoveBudget):
@@ -17,8 +19,8 @@ class TestAccountMoveBudgetProject(TestAccountMoveBudget):
             'date': '2023-12-31'
         })
         
-        Budget = cls.env['account.move.budget']
-        cls.budget = Budget.search([('project_id', '=', cls.project.id)])
+        cls.Budget = cls.env['account.move.budget']
+        cls.budget = cls.Budget.search([('project_id', '=', cls.project.id)])
 
         # Attribute, ProductTemplate, ProductVariant
         ProductAttribute = cls.env['product.attribute']
@@ -151,3 +153,37 @@ class TestAccountMoveBudgetProject(TestAccountMoveBudget):
         project = f.save()
         self.assertTrue(project.budget_ids)
         self.assertTrue(project.budget_line_ids)
+
+    # def test_08_security_access_rules(self):
+    #     # Prepare user data set
+    #     group_project_user = self.env.ref('project.group_project_user')
+    #     group_account_user = self.env.ref('account.group_account_user')
+
+    #     user_project = self.env['res.users'].create({'name': 'User Project 01', 'login': 'user_project_01'})
+    #     group_project_user.users = [Command.link(user_project.id)]
+
+    #     user_account = self.env['res.users'].create({'name': 'User Account 01', 'login': 'user_account_01'})
+    #     group_account_user.users = [Command.link(user_account.id)]
+
+    #     # Prepare 
+    #     budget_global = self.budget.copy({
+    #         'project_id': False,
+    #         'line_ids': [Command.clear()],
+    #         'date_from': fields.Date.today(),
+    #         'date_to': fields.Date.today() + timedelta(days=1),
+    #     })
+
+    #     # Tests rights of user_project: should only see project-related budget
+    #     try:
+    #         self.budget.with_user(user_project).check_access("read")
+    #     except:
+    #         self.fail('Access of project user to project budget should be ok')
+    #     with self.assertRaises(exceptions.AccessError):
+    #         budget_global.with_user(user_project).check_access("read")
+        
+    #     # Tests rights of user_account: should see all budgets
+    #     try:
+    #         self.budget.with_user(user_account).check_access("read")
+    #         budget_global.with_user(user_account).check_access("read")
+    #     except:
+    #         self.fail('Access of account user to any budget should be ok')

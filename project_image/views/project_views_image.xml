@@ -6,21 +6,30 @@
         <field name="inherit_id" ref="project.edit_project" />
 
         <field name="arch" type="xml">
-            <page name="description" position="inside">
-                <group col="12">
-                    <group colspan="10" name="description_left" />
-                    <group colspan="2" name="description_right">
-                        <field name="image_1920" widget="image" nolabel="1" options="{'size': [192, 192]}" />
-                    </group>
-                </group>
-            </page>
-
-            <group name="description_left" position="inside">
-                <field name="description" position="move" />
+            <!-- Make room for a 3rd group to the right, on form's top part -->
+            <group position="attributes">
+                <attribute name="name">group_top_container</attribute>
+                <attribute name="col">12</attribute>
             </group>
-            <field name="description" position="attributes">
-                <attribute name="colspan">2</attribute>
-            </field>
+            <xpath expr="(//group/group)[1]" position="attributes">
+                <attribute name="name">group_top_left</attribute>
+                <attribute name="colspan">5</attribute>
+            </xpath>
+            <xpath expr="(//group/group)[2]" position="attributes">
+                <attribute name="name">group_top_center</attribute>
+                <attribute name="colspan">5</attribute>
+            </xpath>
+            <!-- Add image to the 3rd right column -->
+            <group name="group_top_container" position="inside">
+                <group colspan="2">
+                    <field name="image_1920"
+                        widget="image"
+                        nolabel="1"
+                        colspan="2"
+                        options="{'size': [192, 192]}"
+                    />
+                </group>
+            </group>
         </field>
     </record>
 </odoo>

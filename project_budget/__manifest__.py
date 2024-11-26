@@ -19,6 +19,7 @@
     'data': [
         # security
         'security/ir.model.access.csv',
+        'security/project_budget_security.xml',
         # views
         'views/project_project.xml',
         'views/product_attribute.xml',

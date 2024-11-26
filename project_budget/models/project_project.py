@@ -3,6 +3,8 @@
 from odoo import models, fields, api, _, Command
 from collections import defaultdict
 
+from datetime import timedelta
+
 class Project(models.Model):
     _inherit = ["project.project"]
     
@@ -139,7 +141,7 @@ class Project(models.Model):
             'project_id': self.id,
             'name': self.display_name,
             'date_from': self.date_start or fields.Date.today(),
-            'date_to': self.date or fields.Date.today(),
+            'date_to': self.date or fields.Date.today() + timedelta(days=1),
             'company_id': self.company_id.id,
             'line_ids': [Command.clear()], # don't copy `line_ids` because of `date` constrain
             'template': False,

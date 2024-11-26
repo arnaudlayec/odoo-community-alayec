@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Project Image',
-    'summary': 'Adds an image field next to description, on project form',
+    'summary': 'Adds an image field to project form',
     'category': 'Project',
     'version': '16.0.1.0.1',
     'license': 'LGPL-3',

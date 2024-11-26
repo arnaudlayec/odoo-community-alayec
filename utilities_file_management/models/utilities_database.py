@@ -50,7 +50,7 @@ class UtilitiesDatabaseMixin(models.AbstractModel):
         return db_resource
 
     #===== Read models in a database =====#
-    def _read(self, db_resource, request, cols_mapping={}, format_m2m=False):
+    def _read_db(self, db_resource, request, cols_mapping={}, format_m2m=False):
         """ 
             :arg db_resource: record of `base.external.dbsource` *OR* tuple of SQLite (connection, cursor)
             :arg request: SQL request (str) to execute
@@ -66,7 +66,7 @@ class UtilitiesDatabaseMixin(models.AbstractModel):
                     o request outputs only 2 columns
                     o in this case, `cols_mapping`
         """
-        cols, rows = self._execute(db_resource, request)
+        cols, rows = self._execute_db(db_resource, request)
 
         # shorten format {val0_col1: val0_col2, ...}
         if format_m2m and len(cols) == 2:
@@ -77,7 +77,7 @@ class UtilitiesDatabaseMixin(models.AbstractModel):
                 for x, col in enumerate(cols)
             } for row in rows]
 
-    def _execute(self, db_resource, request):
+    def _execute_db(self, db_resource, request):
         try:
             # Sqlite (connection, cursor)
             if len(db_resource) == 2:
@@ -98,7 +98,7 @@ class UtilitiesDatabaseMixin(models.AbstractModel):
         
         return cols, rows
     
-    def _close(self, db_resource):
+    def _close_db(self, db_resource):
         # Sqlite (connection, cursor)
         if len(db_resource) == 2:
             connection, _ = db_resource
