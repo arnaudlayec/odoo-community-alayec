@@ -61,15 +61,4 @@
             </search>
         </field>
     </record>
-
-    <!-- Actions: replace `My Quotations` by `Favorite project` default filter -->
-    <record id="sale.action_orders" model="ir.actions.act_window">
-        <field name="context">{'search_default_filter_favorite_project': 1}</field>
-    </record>
-    <record id="sale.action_quotations_with_onboarding" model="ir.actions.act_window">
-        <field name="context">{'search_default_filter_favorite_project': 1}</field>
-    </record>
-    <record id="sale.action_quotations" model="ir.actions.act_window">
-        <field name="context">{'search_default_filter_favorite_project': 1}</field>
-    </record>
 </odoo>
