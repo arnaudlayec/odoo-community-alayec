@@ -4,9 +4,10 @@ from odoo import models, fields, api, exceptions, _, Command
 from odoo.osv import expression
 
 class Project(models.Model):
-    _inherit = "project.project"
+    _inherit = ["project.project"]
 
     #====== Fields ======#
+    # 2024-11-27: don't keep the functionaly that children projects's names follow parent's one
     # name = fields.Char(
     #     compute='_compute_name',
     #     store=True,
