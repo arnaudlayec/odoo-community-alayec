@@ -15,7 +15,7 @@
         # views
         "views/project_assignment.xml",
         "views/project_project.xml",
-        "views/project_role_views.xml",
+        "views/project_role.xml",
         #security
         "security/project_security.xml",
         "security/ir.model.access.csv",

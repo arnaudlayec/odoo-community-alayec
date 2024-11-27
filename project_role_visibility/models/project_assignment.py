@@ -127,7 +127,7 @@ class ProjectAssignment(models.Model):
             if self._should_synch(vals): # moved to `primary`
                 self.project_id._message_subscribe(partner_ids_)
             else: # `primary` unset
-                self.project_id.message_unsubscribe(partner_ids_)
+                self.project_id.with_context(unsubscribe_no_raise=True).message_unsubscribe(partner_ids_)
     
     def _remove_project_followers(self):
         """ Removes the follower object before role assignments """

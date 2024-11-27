@@ -24,9 +24,12 @@
             </div>
 
             <!-- Add Budget template, next to `Allocated hours` -->
-            <xpath expr="(//group/group)[2]" position="inside">
+            <field name="allocated_hours" position="attributes">
+                <attribute name="readonly">True</attribute>
+            </field>
+            <field name="allocated_hours" position="after">
                 <field name="budget_template_ids" widget="many2many_tags" attrs="{'invisible': [('id', '!=', False)]}" />
-            </xpath>
+            </field>
         </field>
     </record>
 </odoo>

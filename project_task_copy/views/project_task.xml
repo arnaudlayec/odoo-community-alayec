@@ -7,11 +7,13 @@
 
         <field name="arch" type="xml">
             <!-- Copy from -->
-            <notebook position="before">
-                <group string="Copy from..." attrs="{'invisible': [('id', '!=', False)]}">
-                    <field name="copy_project_id" />
-                    <field name="copy_task_id" />
-                </group>
+            <notebook position="inside">
+                <page name="Copy from...">
+                    <group>
+                        <field name="copy_project_id" />
+                        <field name="copy_task_id" />
+                    </group>
+                </page>
             </notebook>
         </field>
     </record>

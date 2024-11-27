@@ -19,11 +19,11 @@ class ProjectDefaultMixin(models.AbstractModel):
             vals.get('project_id') # custom call
             or 'project_id' in self and self.project_id.id # when validating this wizard
             or self._context.get('default_project_id') # 1/ passed from a form to an embedded tree view or 2/ custom (server action)
-            or self.env.user.favorite_project_id.id # works if single project
             or ( # on smart button click from a Project form
                 self._context.get('active_model') == 'project.project'
                 and self._context.get('active_id')
             )
+            or self.env.user.favorite_project_id.id # works if single project
         )
     
     project_id = fields.Many2one(

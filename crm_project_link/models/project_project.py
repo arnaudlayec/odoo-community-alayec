@@ -19,7 +19,7 @@ class ProjectProject(models.Model):
     )]
 
     def write(self, vals):
-        if 'opportunity_id' in vals or (self.opportunity_id.id and not vals.get('opportunity_id')):
+        if 'opportunity_id' in vals or (self.opportunity_id.ids and not vals.get('opportunity_id')):
             self._write_mirror_lead(vals.get('opportunity_id'))
         return super().write(vals)
 

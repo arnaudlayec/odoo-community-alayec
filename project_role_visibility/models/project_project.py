@@ -51,3 +51,10 @@ class ProjectProject(models.Model):
                 "To (un)subscribe internal users to the projet,"
                 " please (un)assign them to project Roles."
             ))
+    
+    #===== Business methods =====#
+    def _get_user_role_ids(self, user_id=None):
+        """ Returns user's roles on a given project """
+        user_id = user_id or self.env.user
+        domain = [('project_id', '=', self.id), ('user_id', '=', user_id.id)]
+        return self.env['project.assignment'].search(domain).role_id

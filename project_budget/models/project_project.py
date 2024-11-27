@@ -15,9 +15,10 @@ class Project(models.Model):
         return [Command.set(default_budget_ids.ids)]
     
     #===== Fields =====#
-    allocated_hours = fields.Integer(
-        # overrite origin field
-        compute='_compute_allocated_hours'
+    allocated_hours = fields.Float(
+        # overwrite origin field
+        compute='_compute_allocated_hours',
+        readonly=True
     )
     budget_ids = fields.One2many(
         comodel_name='account.move.budget',
@@ -75,6 +76,13 @@ class Project(models.Model):
             project.budget_line_sum = mapped_data.get(project.id)
     
     
+    @api.depends(
+        'budget_ids.line_ids',
+        'budget_ids.line_ids.qty_balance',
+        'budget_ids.line_ids.product_tmpl_id',
+        'budget_ids.line_ids.product_tmpl_id.uom_id',
+        'budget_ids.line_ids.product_tmpl_id.uom_id.category_id',
+    )
     def _compute_allocated_hours(self):
         """ Find and groupsum hours in budget """
         # Get sum of `qty_balance` for budgets of working-time category

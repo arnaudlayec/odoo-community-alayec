@@ -16,9 +16,9 @@ class ProjectWizard(models.TransientModel):
             self._context.get('context_keys')
         )
 
-    def action_choose_project_and_redirect(self, action, context_keys=['default_project_id']):
+    def action_choose_project_and_redirect(self, action_arg, context_keys=['default_project_id']):
         """ To call from a server action attached to a menuitem
-            :arg action: is either:
+            :arg action_arg: is either:
                 - a string (XMLID) of the original action to open
                 - or a dict of a custom action
             :option context_keys: list of context keys to receive `project_id_` as value
@@ -36,8 +36,8 @@ class ProjectWizard(models.TransientModel):
         # If project is guessable or was choosen from wizard: open the target action
         if project_id.id:
             action = self._automate_context_and_domain(project_id, context_keys, (
-                action if isinstance(action, dict)
-                else self.env['ir.actions.act_window']._for_xml_id(action)
+                action_arg if isinstance(action_arg, dict)
+                else self.env['ir.actions.act_window']._for_xml_id(action_arg)
             ))
         
         # If project can't be guessed, open the project-choice wizard
@@ -47,31 +47,38 @@ class ProjectWizard(models.TransientModel):
                 'res_model': 'project.choice.wizard',
                 'view_mode': 'form',
                 'name': 'Choose a project',
-                'context': self._context | {'action': action, 'context_keys': context_keys},
+                'context': self._context | {'action': action_arg, 'context_keys': context_keys},
                 'target': 'new'
             }
         return action
     
     
-    def _automate_context_and_domain(self, project_id, context_keys, action):
+    def _automate_context_and_domain(self, project_id, context_keys, action_dict):
         """ When project is known, add relevant keys
             in `context` and part in `domain`
+
+            note: both action_dict['context'] and action_dict['domain'] can be str or python object
+            depending `action_arg` was a dict or a XML_ID
         """
         # Prefix action's name with project's
-        action['name'] = '{} / {}' . format(project_id.display_name, action['name'])
+        action_dict['name'] = '{} / {}' . format(project_id.display_name, action_dict['name'])
 
         # Update context to add project's default keys
-        action['context'] = (
-            action.get('context', {})
+        context = action_dict.get('context')
+        context = safe_eval(context) if isinstance(context, str) else context or {}
+        action_dict['context'] = (
+            self._context
+            | context
+            | {'action_origin': action_dict.copy()}
             | {key: project_id.id for key in context_keys}
         )
         
         # Domain: get existing
-        domain = action.get('domain')
-        domain = safe_eval(action['domain']) if isinstance(domain, str) else domain or []
+        domain = action_dict.get('domain')
+        domain = safe_eval(domain) if isinstance(domain, str) else domain or []
         # Update domain to filter on selected project
-        action['domain'] = expression.AND([
+        action_dict['domain'] = expression.AND([
             domain,
             [('project_id', '=', project_id.id)]
         ])
-        return action
+        return action_dict
