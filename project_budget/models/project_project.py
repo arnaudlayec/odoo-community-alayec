@@ -49,7 +49,7 @@ class Project(models.Model):
         store=True
     )
     date_start = fields.Date(
-        string='Required for budget (start and end).'
+        help='Required for budget (start and end).'
     )
 
 
