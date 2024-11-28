@@ -13,6 +13,6 @@
     'depends': ['project_parent', 'project_sequence'],
     'data': [
         'data/ir_sequence.xml',
-        'views/project_views.xml'
+        'views/project_project.xml'
     ],
 }

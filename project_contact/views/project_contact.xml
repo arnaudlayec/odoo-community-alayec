@@ -13,6 +13,7 @@
             </tree>
         </field>
     </record>
+
     <!-- Kanban -->
     <record id="project_contact_kanban" model="ir.ui.view">
         <field name="name">project.contact.kanban</field>
@@ -23,7 +24,7 @@
                 <field name="partner_id" />
                 <templates>
                     <t t-name="kanban-box">
-                        <div class="oe_kanban_card">
+                        <div class="oe_kanban_card oe_kanban_global_click">
                             <div class="row">
                                 <div class="col-2">
                                     <img
@@ -54,6 +55,7 @@
             </kanban>
         </field>
     </record>
+
     <!-- Form -->
     <record id="project_contact_form" model="ir.ui.view">
         <field name="name">project.contact.form</field>
@@ -62,14 +64,15 @@
         <field name="arch" type="xml">
             <form>
                 <group>
-                    <field name="project_id" />
-                    <field name="category_id" />
+                    <field name="project_id" invisible="context.get('default_project_id')" />
                     <field name="partner_id" />
+                    <field name="category_id" />
                 </group>
             </form>
         </field>
     </record>
-    <!-- Form -->
+
+    <!-- Search -->
     <record id="project_contact_search" model="ir.ui.view">
         <field name="name">project.contact.search</field>
         <field name="model">project.contact</field>

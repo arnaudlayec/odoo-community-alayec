@@ -3,7 +3,7 @@
 from odoo import exceptions
 from odoo.tests import common
 
-class TestProjectParentSequence(common.SingleTransactionCase):
+class TestProjectChildrenSequence(common.SingleTransactionCase):
 
     @classmethod
     def setUpClass(cls):
