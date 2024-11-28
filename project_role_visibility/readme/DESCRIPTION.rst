@@ -4,7 +4,7 @@ It fully relies on:
 * existing and Odoo's native security access rules of project `Visibility`
 * the `project_role` OCA module for project roles management and users assignments
 
-This module also introduces a new security group `User (Global Reader)`, heriting
+This module also introduces a new security group `User (all projects)`, heriting
 from project's User plus it reads all project & tasks indepently of its assignment
 (like project's `Administrator`). 
 
