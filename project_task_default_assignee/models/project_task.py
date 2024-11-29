@@ -20,12 +20,9 @@ class ProjectTask(models.Model):
              - users may be assigned to this role *on this project*
             => find those users and add them to the task
         """
-        # can be called for 1 task outside of `onchange`
-        project_ids_ = self.project_id.ids or [x.get('project_id') for x in vals_list]
-
         # Get user assignments on projects roles
         rg_result = self.env['project.assignment'].read_group(
-            domain=[('project_id', 'in', project_ids_)],
+            domain=[('project_id', 'in', self.project_id.ids)],
             groupby=['project_id', 'role_id'],
             fields=['user_ids:array_agg(user_id)'],
             lazy=False
