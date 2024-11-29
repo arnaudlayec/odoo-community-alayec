@@ -138,6 +138,7 @@ class Project(models.Model):
                 ]
                 empty_project_ids -= project
         
+        # Create an e
         vals_list_budget = [project._get_default_vals_budget() for project in empty_project_ids]
         self.env['account.move.budget'].sudo().create(vals_list_budget)
 

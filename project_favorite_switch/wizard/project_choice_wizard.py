@@ -29,9 +29,7 @@ class ProjectWizard(models.TransientModel):
                 In both case, the action's `context` and `domain` is extended with project-related data.
         """
         # Let's try to fetch project all possible way
-        project_id = self.project_id
-        if not project_id.id:
-            project_id = self.env['project.project'].browse(self._get_project_id())
+        project_id = self.project_id or self.env['project.project'].browse(self._get_project_id())
 
         # If project is guessable or was choosen from wizard: open the target action
         if project_id.id:
