@@ -73,6 +73,56 @@
         </field>
     </record>
     
+    <!-- Tree view: simplified (coming from project smart button) -->
+    <record id="view_account_move_budget_line_tree_simplified" model="ir.ui.view">
+        <field name="name">account.move.budget.line.tree.project.simplified</field>
+        <field name="model">account.move.budget.line</field>
+        <field name="inherit_id" ref="view_account_move_budget_line_tree" />
+        <field name="mode">primary</field>
+
+        <field name="arch" type="xml">
+            <!-- Hide feilds that should be pro-populated from Analytic Account and Product Template configuration -->
+            <field name="account_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="product_tmpl_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="uom_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="partner_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <!-- Hide fields with context key `default_...` -->
+            <field name="date" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+
+            <!-- Show only `debit` and `qty_debit` -->
+            <field name="credit" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="qty_credit" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="qty_balance" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="balance" position="attributes">
+                <!-- Don't need to repeat `debit` twice, since balance will be equal -->
+                <attribute name="attrs">{'invisible': [('type', '=', 'standard')]}</attribute>
+            </field>
+
+            <!-- Directly give access to `unitary_fix` settings on the line -->
+            <field name="debit" position="before">
+                <field name="type" />
+                <field name="standard_price" attrs="{'invisible': [('type', '!=', 'fix')]}" />
+            </field>
+        </field>
+    </record>
+    
     <!-- Form view: new, opened on 'Details' button -->
     <record id="view_account_move_budget_line_form" model="ir.ui.view">
         <field name="name">account.move.budget.line.form.project</field>

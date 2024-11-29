@@ -34,7 +34,7 @@
                             <field name="sale_order_count" /> 
                             (<field name="sale_order_sum" widget="monetary" />)
                         </span>
-                        <span class="o_stat_text">Sales Total</span>
+                        <span class="o_stat_text">Sales</span>
                     </div>
                 </button>
             </div>

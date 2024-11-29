@@ -133,12 +133,12 @@ class Project(models.Model):
                 budget_id = budget.copy(project._get_default_vals_budget())
                 # *manually* copy the lines because of date constrain
                 budget_id.line_ids = [
-                    Command.link(line.copy(self._get_default_vals_budget_line(budget)).id)
+                    Command.link(line.copy(project._get_default_vals_budget_line(budget)).id)
                     for line in budget.line_ids
                 ]
                 empty_project_ids -= project
         
-        # Create an e
+        # Create an empty budget
         vals_list_budget = [project._get_default_vals_budget() for project in empty_project_ids]
         self.env['account.move.budget'].sudo().create(vals_list_budget)
 
@@ -156,21 +156,28 @@ class Project(models.Model):
             'template': False,
             'template_default_project': False
         } | vals
-    def _get_default_vals_budget_line(self, budget, vals={}):
+    
+    def _get_default_vals_budget_line(self, budget_id, vals={}, default=False):
+        default = 'default_' if default else ''
+
         return {
-            'budget_id': budget.id,
-            'date': budget.date_from
+            default + 'project_id': self.id,
+            default + 'partner_id': self.partner_id.id,
+            default + 'budget_id': budget_id.id,
+            default + 'date': self._get_default_project_budget_line_date(budget_id)
         } | vals
 
     #===== Button =====#
     def button_open_budget_lines(self):
+        budget_id = fields.first(self.budget_ids)
+        view_id_ = self.env.ref('project_budget.view_account_move_budget_line_tree_simplified').id
+
         return {
             'type': 'ir.actions.act_window',
             'res_model': 'account.move.budget.line',
-            'view_mode': 'tree,form',
+            'view_mode': 'tree',
+            'view_id': view_id_, # simplified budget lines view for projects 
             'name': _('Budget lines'),
-            'context': {
-                'default_project_id': self.id
-            },
+            'context': self._get_default_vals_budget_line(budget_id, default=True),
             'domain': [('project_id', '=', self.id)]
         }

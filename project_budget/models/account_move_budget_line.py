@@ -7,7 +7,18 @@ class AccountMoveBudgetLine(models.Model):
     _inherit = ["account.move.budget.line"]
     _order = "seq_analytic, date desc, id desc"
 
+    #===== Fields methods =====#
+    def _default_account_id(self):
+        """ On `create`, if an analytic account or a product_tmpl is given,
+            tries to default account_id
+        """
+        product_tmpl_id = self.product_tmpl_id or self.analytic_account_id.product_tmpl_id
+        return product_tmpl_id and product_tmpl_id._get_product_accounts().get('expense')
+
     #===== Fields =====#
+    account_id = fields.Many2one(
+        default=_default_account_id
+    )
     budget_id = fields.Many2one(
         domain="[('project_id', '=', project_id)]"
     )
@@ -90,12 +101,18 @@ class AccountMoveBudgetLine(models.Model):
         store=True,
     )
 
+    _sql_constraints = [(
+        'unique_aac_per_project',
+        'UNIQUE (analytic_account_id, project_id)',
+        "A budget line is already set on this project to the same analytic account."
+    )]
+
     #===== Compute: prefilling =====#
-    @api.onchange('product_tmpl_id')
-    def _onchange_product_default_account_id(self):
+    @api.onchange('analytic_account_id', 'product_tmpl_id')
+    def _onchange_default_account_id(self):
         """ `account_id` is suggested as per product's accounting settings (expense account) """
         for line in self:
-            line.account_id = line.product_tmpl_id._get_product_accounts().get('expense')
+            line.account_id = line._default_account_id()
 
     #===== Compute: valuation =====#
     @api.depends(
