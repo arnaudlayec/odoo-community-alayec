@@ -49,6 +49,7 @@
                 <attribute name="attrs">{'readonly': [('type', '!=', 'standard')]}</attribute>
                 <attribute name="optional">show</attribute>
                 <attribute name="widget">monetary</attribute>
+                <attribute name="sum">1</attribute>
             </field>
             <field name="debit" position="after">
                 <field name="qty_debit" optional="show" attrs="{'invisible': [('type', '=', 'standard')]}"/>
@@ -58,6 +59,7 @@
                 <attribute name="attrs">{'readonly': [('type', '!=', 'standard')]}</attribute>
                 <attribute name="optional">show</attribute>
                 <attribute name="widget">monetary</attribute>
+                <attribute name="sum">1</attribute>
             </field>
             <field name="credit" position="after">
                 <field name="qty_credit" optional="show" attrs="{'invisible': [('type', '=', 'standard')]}" />
@@ -66,6 +68,7 @@
             <!-- Balance -->
             <field name="balance" position="attributes">
                 <attribute name="widget">monetary</attribute>
+                <attribute name="sum">1</attribute>
             </field>
             <field name="balance" position="after">
                 <field name="qty_balance" attrs="{'invisible': [('type', '=', 'standard')]}" optional="show" />
@@ -81,7 +84,7 @@
         <field name="mode">primary</field>
 
         <field name="arch" type="xml">
-            <!-- Hide feilds that should be pro-populated from Analytic Account and Product Template configuration -->
+            <!-- Hide fields that should be pro-populated from Analytic Account and Product Template configuration -->
             <field name="account_id" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
@@ -101,6 +104,9 @@
             </field>
 
             <!-- Show only `debit` and `qty_debit` -->
+            <button name="button_open_budget_line_form" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </button>
             <field name="credit" position="attributes">
                 <attribute name="invisible">1</attribute>
             </field>
@@ -111,14 +117,30 @@
                 <attribute name="invisible">1</attribute>
             </field>
             <field name="balance" position="attributes">
-                <!-- Don't need to repeat `debit` twice, since balance will be equal -->
-                <attribute name="attrs">{'invisible': [('type', '=', 'standard')]}</attribute>
+                <attribute name="invisible">1</attribute>
             </field>
 
             <!-- Directly give access to `unitary_fix` settings on the line -->
-            <field name="debit" position="before">
+            <field name="analytic_account_id" position="before">
                 <field name="type" />
+            </field>
+
+            <!-- Show qty_debit, standard_price and debit like "Qty", "Unit price" and "Total" -->
+            <field name="debit" position="before">
+                <field name="name" position="move" />
+                <field name="qty_debit" position="move" />
                 <field name="standard_price" attrs="{'invisible': [('type', '!=', 'fix')]}" />
+            </field>
+            <field name="qty_debit" position="attributes">
+                <attribute name="string">Quantity</attribute>
+            </field>
+            <field name="debit" position="attributes">
+                <attribute name="string">Total</attribute>
+            </field>
+
+            <!-- Display `Analytic Account` like "Budget" -->
+            <field name="analytic_account_id" position="attributes">
+                <attribute name="string">Budget</attribute>
             </field>
         </field>
     </record>

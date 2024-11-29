@@ -13,7 +13,7 @@ class AccountMoveBudgetLine(models.Model):
             tries to default account_id
         """
         product_tmpl_id = self.product_tmpl_id or self.analytic_account_id.product_tmpl_id
-        return product_tmpl_id and product_tmpl_id._get_product_accounts().get('expense')
+        return bool(product_tmpl_id.id) and product_tmpl_id._get_product_accounts().get('expense')
 
     #===== Fields =====#
     account_id = fields.Many2one(
@@ -60,9 +60,8 @@ class AccountMoveBudgetLine(models.Model):
     # values
     standard_price = fields.Monetary(
         # only displayed/used if `fix`
-        string='Line Value',
-        currency_field='company_currency_id',
-        help='Fix line value'
+        string='Unit price',
+        currency_field='company_currency_id'
     )
     product_variant_ids = fields.One2many(
         # displayed/used if `fix` or `date_range`
