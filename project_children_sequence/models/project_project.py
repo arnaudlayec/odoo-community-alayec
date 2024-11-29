@@ -5,7 +5,6 @@ from odoo.osv import expression
 
 class Project(models.Model):
     _inherit = ["project.project"]
-    _order = "sequence_code DESC"
 
     #====== Fields ======#
     # 2024-11-27: don't keep the functionaly that children projects's names follow parent's one
