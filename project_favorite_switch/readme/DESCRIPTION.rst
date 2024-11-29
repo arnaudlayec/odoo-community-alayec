@@ -15,7 +15,7 @@ project(s). This module alone have little interest, but when combined with defau
 wanted views, it allows end-users to be freed of the pain to filter themselves on their
 working project(s) - see "§ Configuration".
 
-Note: this is an alternative to new project-bar arriving in Odoo 18.0.
+Note: this is an alternative to new project-bar of Odoo 18.0.
 
 
 2. Synchronization between project's followers and user's favorites project

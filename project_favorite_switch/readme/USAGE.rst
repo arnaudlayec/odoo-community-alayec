@@ -6,9 +6,11 @@
 #. On any screen, click on *"Projects"* on right-top corner
 #. Select / un-select projects to promote or remove them from its favorites
 
-Note: project's favorite icon (yellow stars) is hidden from standard project's
+Note 1: project's favorite icon (yellow stars) is hidden from standard project's
 views (Form, List, ...) to avoid discrepencies between those and the new
 top-right corner menu.
+
+Note 2: only projects on non-folded stages are shown in the top-right dropdown menu.
 
 
 **Automatic addition of projects in users' favorites**
