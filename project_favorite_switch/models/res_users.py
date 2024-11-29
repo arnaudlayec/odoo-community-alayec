@@ -12,10 +12,13 @@ class Users(models.Model):
         store=True
     )
     favorite_project_ids = fields.One2many(
+        # (!) NON-FOLDED projects in user's favorites,
+        # thus not exactly the reverse field of `project_project.favorite_user_ids`
         comodel_name='project.project',
         inverse_name='favorite_user_ids',
         string='Favorite projects',
-        readonly=True
+        readonly=True,
+        domain=[('stage_id.fold', '=', False)]
     )
     
     @api.depends('favorite_project_ids')

@@ -35,7 +35,7 @@ class ProjectDefaultMixin(models.AbstractModel):
         default=_get_project_id,
         domain="""[
             ('favorite_user_ids', '=', uid),
-            ('stage_id.fold', '=', False),
+            ('stage_id.fold', '=', False)
         ]""",
         help="Within your favorite projects"
     )
