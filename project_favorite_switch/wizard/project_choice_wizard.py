@@ -12,7 +12,7 @@ class ProjectWizard(models.TransientModel):
     def button_validate(self):
         """ Called from wizzard or `onchange` """
         return self.action_choose_project_and_redirect(
-            self._context.get('action'),
+            self._context.get('action_arg'),
             self._context.get('context_keys')
         )
 
@@ -26,7 +26,7 @@ class ProjectWizard(models.TransientModel):
             :option context_keys: list of context keys to receive `project_id_` as value
 
             :return: An action's dict, either:
-                 (a) the requested action in `action`, if the project is guessable from user or context
+                 (a) the requested action in `action_arg`, if the project is guessable from user or context
                  (b) else, a wizard to chose 1 project, which then opens (a)
                 In both case, the action's `context` and `domain` is extended with project-related data.
         """
@@ -44,7 +44,7 @@ class ProjectWizard(models.TransientModel):
                 'res_model': 'project.choice.wizard',
                 'view_mode': 'form',
                 'name': 'Choose a project',
-                'context': self._context | {'action': action_arg, 'context_keys': context_keys},
+                'context': self._context | {'action_arg': action_arg, 'context_keys': context_keys},
                 'target': 'new'
             }
         return action
@@ -69,7 +69,7 @@ class ProjectWizard(models.TransientModel):
         context = action_dict.get('context')
         context = safe_eval(context) if isinstance(context, str) else context or {}
         action_dict['context'] = (
-            self._context
+            {k: v for k, v in self._context.items() if k not in ['action_arg', 'context_keys']}
             | context
             | {'action_origin': action_dict.copy()}
             | {key: project_id.id for key in context_keys}
@@ -83,10 +83,12 @@ class ProjectWizard(models.TransientModel):
             domain,
             [('project_id', '=', project_id.id)]
         ])
+
         return action_dict
 
 
     def _resolve_action_arg(self, project_id, action_arg):
+        print('=== _resolve_action_arg ===')
         # 1. a python dict of action
         if isinstance(action_arg, dict):
             return action_arg

@@ -15,6 +15,16 @@ class ProjectDefaultMixin(models.AbstractModel):
             `self.env['project.default.mixin']._get_project_id()`
             c.f. usage in `wizard/project_choice_wizard.py`
         """
+        print('=== _get_project_id ===')
+        print('vals.get(project_id)', vals.get('project_id'))
+        print('project_id in self and self.project_id.id', 'project_id' in self and self.project_id.id)
+        print('active_model & active_id', (
+            self._context.get('active_model') == 'project.project'
+            and self._context.get('active_id')
+        ))
+        print('self.env.user.favorite_project_id.id', self.env.user.favorite_project_id.id)
+        print('self.env.user.favorite_project_id.ids', self.env.user.favorite_project_id.ids)
+        
         return (
             vals.get('project_id') # custom call
             or 'project_id' in self and self.project_id.id # when validating this wizard
