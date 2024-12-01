@@ -6,14 +6,19 @@ class Task(models.Model):
     _inherit = ["project.task"]
 
     #===== Fields' method =====#
-    def _get_default_stage_id(self):
+    def _get_shared_stage_ids(self):
+        return self.env['project.task.type'].search([('user_id', '=', False), ('fold', '=', False)])
+    
+    def stage_find(self, section_id, domain=[], order='sequence, id'):
         """ Gives default stage_id: override so stages are shared between projects """
-        return self.env['project.task.type'].search([], limit=1).id
+        print('_get_default_stage_id', self._get_shared_stage_ids())
+        return fields.first(self._get_shared_stage_ids()).id
     
     @api.model
     def _read_group_stage_ids(self, stages, domain, order):
         """ Do not show personal stage on `My Task` Kanban """
-        return self.env['project.task.type'].search([('user_id', '=', False)])
+        return self._get_shared_stage_ids()
+    
     
     #===== Fields =====#
     stage_id = fields.Many2one(
@@ -25,7 +30,7 @@ class Task(models.Model):
     #===== Logics =====#
     def _populate_missing_personal_stages(self):
         """ If wanted to fully disable *Personal Stage*,
-            return an empty result without calling *super()* 
+            return an empty result without calling *super()*
         """
         res = super()._populate_missing_personal_stages()
         self.env['project.task.type'].sudo().search([('user_id', '!=', False)]).active = False
