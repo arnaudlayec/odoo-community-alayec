@@ -20,7 +20,7 @@ msgstr ""
 #. module: project_task_attachment
 #: model:ir.model.fields,field_description:project_task_attachment.field_project_task__attachment_ids
 msgid "Attachments"
-msgstr "Pièces jointes principales"
+msgstr "Pièces jointes"
 
 #. module: project_task_attachment
 #: model:ir.model,name:project_task_attachment.model_project_task

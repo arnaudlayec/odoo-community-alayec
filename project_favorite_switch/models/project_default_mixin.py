@@ -33,10 +33,10 @@ class ProjectDefaultMixin(models.AbstractModel):
         ondelete='cascade',
         index='btree_not_null',
         default=_get_project_id,
-        domain="""[
-            ('favorite_user_ids', '=', uid),
+        domain=lambda self: [
+            ('favorite_user_ids', '=', self.env.uid),
             ('stage_id.fold', '=', False)
-        ]""",
+        ],
         help="Within your favorite projects"
     )
     

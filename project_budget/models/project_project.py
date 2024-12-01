@@ -166,11 +166,24 @@ class Project(models.Model):
             default + 'budget_id': budget_id.id,
             default + 'date': self._get_default_project_budget_line_date(budget_id)
         } | vals
+    
+    def _get_default_project_budget_line_date(self, budget_id):
+        """ Tries `today` if within budget dates, else `budget_id.date_from` """
+        today = fields.Date.today()
+        return (
+            today if today > budget_id.date_from and today < budget_id.date_to
+            else budget_id.date_from
+        )
 
     #===== Button =====#
     def button_open_budget_lines(self):
+        self.ensure_one()
         budget_id = fields.first(self.budget_ids)
         view_id_ = self.env.ref('project_budget.view_account_move_budget_line_tree_simplified').id
+        context_default = (
+            self._get_default_vals_budget_line(budget_id, default=True)
+            | {'default_type': 'fix'}
+        )
 
         return {
             'type': 'ir.actions.act_window',
@@ -178,6 +191,6 @@ class Project(models.Model):
             'view_mode': 'tree',
             'view_id': view_id_, # simplified budget lines view for projects 
             'name': _('Budget lines'),
-            'context': self._get_default_vals_budget_line(budget_id, default=True),
+            'context': context_default,
             'domain': [('project_id', '=', self.id)]
         }

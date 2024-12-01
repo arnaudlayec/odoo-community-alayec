@@ -19,10 +19,11 @@
         <field name="inherit_id" ref="analytic.view_account_analytic_account_form" />
 
         <field name="arch" type="xml">
-            <!-- Add product on form -->
+            <!-- Product & 'Budget only accoutnant' settings on analytic account form -->
             <sheet position="inside">
                 <group name="project_budget" string="Project budgets" colspan="1">
                     <field name="product_tmpl_id" />
+                    <field name="budget_only_accountant" widget="boolean_toggle" />
                 </group>
             </sheet>
         </field>

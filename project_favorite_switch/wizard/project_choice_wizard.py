@@ -19,8 +19,10 @@ class ProjectWizard(models.TransientModel):
     def action_choose_project_and_redirect(self, action_arg, context_keys=['default_project_id']):
         """ To call from a server action attached to a menuitem
             :arg action_arg: is either:
-                - a string (XMLID) of the original action to open
-                - or a dict of a custom action
+                1. or a dict of a custom action
+                2. a string of a method of `project.project` returning an action dict, like a
+                   `button_...`
+                3. a string (XMLID) of the original action to open
             :option context_keys: list of context keys to receive `project_id_` as value
 
             :return: An action's dict, either:
@@ -33,10 +35,7 @@ class ProjectWizard(models.TransientModel):
 
         # If project is guessable or was choosen from wizard: open the target action
         if project_id.id:
-            action = self._automate_context_and_domain(project_id, context_keys, (
-                action_arg if isinstance(action_arg, dict)
-                else self.env['ir.actions.act_window']._for_xml_id(action_arg)
-            ))
+            action = self._automate_context_and_domain(project_id, context_keys, action_arg)
         
         # If project can't be guessed, open the project-choice wizard
         else:
@@ -51,15 +50,20 @@ class ProjectWizard(models.TransientModel):
         return action
     
     
-    def _automate_context_and_domain(self, project_id, context_keys, action_dict):
+    def _automate_context_and_domain(self, project_id, context_keys, action_arg):
         """ When project is known, add relevant keys
             in `context` and part in `domain`
 
             note: both action_dict['context'] and action_dict['domain'] can be str or python object
             depending `action_arg` was a dict or a XML_ID
         """
+        action_dict = self._resolve_action_arg(project_id, action_arg)
+
         # Prefix action's name with project's
-        action_dict['name'] = '{} / {}' . format(project_id.display_name, action_dict['name'])
+        action_dict['display_name'] = '{} / {}' . format(
+            project_id.display_name,
+            action_dict.get('display_name', action_dict['name'])
+        )
 
         # Update context to add project's default keys
         context = action_dict.get('context')
@@ -80,3 +84,24 @@ class ProjectWizard(models.TransientModel):
             [('project_id', '=', project_id.id)]
         ])
         return action_dict
+
+
+    def _resolve_action_arg(self, project_id, action_arg):
+        # 1. a python dict of action
+        if isinstance(action_arg, dict):
+            return action_arg
+        
+        elif isinstance(action_arg, str):
+            return (
+                # 2. `action_arg` is a method of project.project
+                getattr(project_id, action_arg)() if hasattr(project_id, action_arg)
+
+                # 3. XMLID
+                else self.env['ir.actions.act_window']._for_xml_id(action_arg)
+            )
+        
+        else:
+            raise exceptions.ValidationError(_(
+                'Unexpected action after choosing the project (%s).',
+                action_arg
+            ))

@@ -18,12 +18,8 @@ class Task(models.Model):
     #===== Fields =====#
     stage_id = fields.Many2one(
         # we don't fully disabled *Personal Stages*, so we filter only on non-user Stages
-        domain=[('user_id', '=', False)]
+        domain=[('user_id', '=', False)],
     )
-
-    #===== CRUD =====#
-    # def write(self, vals):
-    #     """ Allow setting `stage_id` on a task without project """
 
 
     #===== Logics =====#

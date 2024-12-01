@@ -76,7 +76,9 @@ class Project(models.Model):
         """ Manages sub-projects with sequence_code per parent project (eg. 1234-01) """
         self.ensure_one()
 
-        seq_tmpl = self.with_context(active_test=False).env.ref('project_parent_sequence.seq_child_project_sequence')
+        domain = [('code', '=', 'project.sequence.child_tmpl')]
+        seq_tmpl = self.env['ir.sequence'].sudo().with_context(active_test=False).search(domain, limit=1)
+
         seq_new = seq_tmpl.sudo().copy()
         seq_new.write({
             'code': seq_tmpl.code + '_' + self.sequence_code,

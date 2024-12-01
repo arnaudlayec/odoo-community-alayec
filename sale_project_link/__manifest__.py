@@ -20,7 +20,7 @@
         'data/ir.sequence.xml',
         # views
         'views/project_project.xml',
-        'views/sale_order_view.xml'
+        'views/sale_order.xml'
     ],
     'uninstall_hook': 'uninstall_hook',
 }

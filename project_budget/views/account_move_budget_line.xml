@@ -82,25 +82,26 @@
         <field name="model">account.move.budget.line</field>
         <field name="inherit_id" ref="view_account_move_budget_line_tree" />
         <field name="mode">primary</field>
+        <field name="priority">100</field>
 
         <field name="arch" type="xml">
             <!-- Hide fields that should be pro-populated from Analytic Account and Product Template configuration -->
             <field name="account_id" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="optional">hide</attribute>
             </field>
             <field name="product_tmpl_id" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="optional">hide</attribute>
             </field>
             <field name="uom_id" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="optional">hide</attribute>
             </field>
             <field name="partner_id" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="optional">hide</attribute>
             </field>
 
             <!-- Hide fields with context key `default_...` -->
             <field name="date" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="optional">hide</attribute>
             </field>
 
             <!-- Show only `debit` and `qty_debit` -->
@@ -108,25 +109,21 @@
                 <attribute name="invisible">1</attribute>
             </button>
             <field name="credit" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="optional">hide</attribute>
             </field>
             <field name="qty_credit" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="optional">hide</attribute>
             </field>
             <field name="qty_balance" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="optional">hide</attribute>
             </field>
             <field name="balance" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="optional">hide</attribute>
             </field>
-
-            <!-- Directly give access to `unitary_fix` settings on the line -->
-            <field name="analytic_account_id" position="before">
-                <field name="type" />
-            </field>
-
+            
             <!-- Show qty_debit, standard_price and debit like "Qty", "Unit price" and "Total" -->
             <field name="debit" position="before">
+                <field name="type" invisible="1" />
                 <field name="name" position="move" />
                 <field name="qty_debit" position="move" />
                 <field name="standard_price" attrs="{'invisible': [('type', '!=', 'fix')]}" />
@@ -141,6 +138,7 @@
             <!-- Display `Analytic Account` like "Budget" -->
             <field name="analytic_account_id" position="attributes">
                 <attribute name="string">Budget</attribute>
+                <attribute name="required">True</attribute>
             </field>
         </field>
     </record>
