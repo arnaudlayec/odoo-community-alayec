@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+    <!-- Form: add Notebook page `Copy from` -->
     <record id="edit_project" model="ir.ui.view">
         <field name="name">project.task.form.attachment</field>
         <field name="model">project.task</field>
@@ -15,6 +16,22 @@
                     </group>
                 </page>
             </notebook>
+        </field>
+    </record>
+
+    <!-- Tree: add action `Copy to another project` -->
+    <record id="view_task_tree2" model="ir.ui.view">
+        <field name="name">project.task.tree.copy</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2" />
+
+        <field name="arch" type="xml">
+            <!-- Copy to... -->
+            <tree position="inside">
+                <header>
+                    <button name="%(action_open_project_task_copy_wizard)d" type="action" string="Copy to..." icon="fa-files-o" class="mx-2" />
+                </header>
+            </tree>
         </field>
     </record>
 </odoo>

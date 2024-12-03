@@ -8,7 +8,7 @@
 
     'application': False,
     'installable': True,
-    'category': 'Carpentry/Carpentry',
+    'category': 'Project',
     'version': '16.0.1.0.0',
 
     'depends': [

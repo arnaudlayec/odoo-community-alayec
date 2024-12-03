@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Task Copy',
-    'summary': 'Allow to fill main Tasks forms fields from another task.',
+    'summary': 'Allow copy Task unitary or in bulk between projects.',
     'category': 'Project',
     'version': '16.0.1.0.1',
     'license': 'LGPL-3',
@@ -12,6 +12,11 @@
     'installable': True,
     'depends': ['project'],
     'data': [
-        'views/project_task.xml'
+        # security
+        'security/ir.model.access.csv',
+        # wizard
+        'wizard/project_task_copy_wizard.xml',
+        # views
+        'views/project_task.xml',
     ],
 }

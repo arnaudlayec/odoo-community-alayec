@@ -23,7 +23,14 @@ class Lead(models.Model):
         self.project_id = self.env['project.project'].sudo().create(
             self._get_copied_vals()
         )
-        return self.project_id
+        # redirect to the project
+        return {
+            'type': 'ir.actions.act_window',
+            'view_mode': 'form',
+            'res_model': 'project.project',
+            'res_id': self.project_id.id,
+        }
+
     def _get_copied_vals(self):
         """ Can be overwritten """
         return {
