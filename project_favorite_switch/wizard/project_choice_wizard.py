@@ -71,7 +71,6 @@ class ProjectWizard(models.TransientModel):
         action_dict['context'] = (
             {k: v for k, v in self._context.items() if k not in ['action_arg', 'context_keys']}
             | context
-            | {'action_origin': action_dict.copy()}
             | {key: project_id.id for key in context_keys}
         )
         
@@ -88,7 +87,6 @@ class ProjectWizard(models.TransientModel):
 
 
     def _resolve_action_arg(self, project_id, action_arg):
-        print('=== _resolve_action_arg ===')
         # 1. a python dict of action
         if isinstance(action_arg, dict):
             return action_arg

@@ -12,7 +12,7 @@
                 <attribute name="invisible">1</attribute>
             </button>
             <page name="description" position="inside">
-                <group string="User roles">
+                <group string="User roles" name="assignments">
                     <field name="assignment_ids" mode="kanban" nolabel="1" colspan="2" />
                 </group>
             </page>
