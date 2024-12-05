@@ -12,9 +12,8 @@ class HrTimesheetSheet(models.Model):
         copy=False # recalculate default when copying
     )
 
-    @api.model
     def copy(self, default=None):
         """ Allow copying any sheet into the default `current period` sheet """
         self = self.with_context(allow_copy_timesheet = True)
-        return super(HrTimesheetSheet, self).copy(default)
+        return super().copy(default)
     
