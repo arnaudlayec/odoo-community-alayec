@@ -13,6 +13,7 @@
                 <button type="object" name="button_open_budget_lines"
                     class="oe_stat_button"
                     icon="fa-bank"
+                    groups="project.group_project_manager,account.group_account_user"
                 >
                     <div class="o_field_statinfo">
                         <span class="o_stat_info o_stat_value">
@@ -28,7 +29,11 @@
                 <attribute name="readonly">True</attribute>
             </field>
             <field name="allocated_hours" position="after">
-                <field name="budget_template_ids" widget="many2many_tags" attrs="{'invisible': [('id', '!=', False)]}" />
+                <field name="budget_template_ids"
+                    widget="many2many_tags"
+                    attrs="{'invisible': [('id', '!=', False)]}"
+                    groups="project.group_project_manager,account.group_account_user"
+                />
             </field>
         </field>
     </record>
