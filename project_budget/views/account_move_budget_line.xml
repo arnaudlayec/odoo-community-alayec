@@ -230,8 +230,8 @@
                 <field name="partner_id" type="row"/>
                 <field name="uom_id" type="row"/>
 
-                <field name="balance" />
-                <field name="qty_balance" />
+                <field name="qty_balance" type="measure" />
+                <field name="balance" type="measure" />
             </pivot>
         </field>
     </record>
