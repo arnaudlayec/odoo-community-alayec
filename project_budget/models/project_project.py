@@ -66,15 +66,31 @@ class Project(models.Model):
     @api.depends('budget_line_ids', 'budget_line_ids.balance')
     def _compute_budget_line_sum(self):
         """ Sum the balance of budget lines to show it in project's form smart button """
-        rg_result = self.env['account.move.budget.line'].sudo().read_group(
-            domain=[('project_id', 'in', self.ids)],
-            fields=['balance:sum'],
-            groupby=['project_id'],
-        )
-        mapped_data = {x['project_id'][0]: x['balance'] for x in rg_result}
+        mapped_data = self._get_mapped_budget_line()
         for project in self:
             project.budget_line_sum = mapped_data.get(project.id)
     
+    def _get_mapped_budget_line(self, analytic_account_ids=False):
+        """ `analytic_account_ids` is used in `project_budget_timesheet` """
+        analytic = bool(analytic_account_ids) # for timesheet
+        field = 'qty_balance' if analytic else 'balance'
+
+        rg_result = self.env['account.move.budget.line'].sudo().read_group(
+            domain=self._get_budget_line_domain(analytic_account_ids),
+            fields=[field + ':sum'],
+            groupby=['project_id'] + (['analytic_account_id'] if analytic else []),
+            lazy=(not analytic)
+        )
+
+        def __key(proj, x):
+            return (proj, x['analytic_account_id'][0]) if analytic else proj
+        return {__key(x['project_id'][0], x): x[field] for x in rg_result}
+    
+    def _get_budget_line_domain(self, analytic_account_ids):
+        domain = [('project_id', 'in', self.ids)]
+        if analytic_account_ids:
+            domain += [('analytic_account_id', 'in', analytic_account_ids.ids)]
+        return domain
     
     @api.depends(
         'budget_ids.line_ids',
@@ -112,7 +128,7 @@ class Project(models.Model):
             line_uom_id = pivot_product_to_uom.get(x['product_tmpl_id'][0])
             qty_in_hour = line_uom_id._compute_quantity(x['qty_balance'], uom_whour)
             mapped_data[x['project_id'][0]] += qty_in_hour
-
+        
         for project in self:
             project.allocated_hours = mapped_data.get(project.id)
 
@@ -129,13 +145,14 @@ class Project(models.Model):
         """
         empty_project_ids = self._filter_without_budgets()
         for project in empty_project_ids:
-            for budget in project.budget_template_ids:
-                budget_id = budget.copy(project._get_default_vals_budget())
-                # *manually* copy the lines because of date constrain
-                budget_id.line_ids = [
-                    Command.link(line.copy(project._get_default_vals_budget_line(budget)).id)
-                    for line in budget.line_ids
-                ]
+            for budget_tmpl in project.budget_template_ids:
+                budget_new = budget_tmpl.copy(project._get_default_vals_budget())
+
+                # *manually* copy the lines (because of date constrain)
+                for line in budget_tmpl.line_ids:
+                    vals = project._get_default_vals_budget_line(budget_new)
+                    line.copy(vals)
+                
                 empty_project_ids -= project
         
         # Create an empty budget
@@ -152,7 +169,7 @@ class Project(models.Model):
             'date_from': self.date_start or fields.Date.today(),
             'date_to': self.date or fields.Date.today() + timedelta(days=1),
             'company_id': self.company_id.id,
-            'line_ids': [Command.clear()], # don't copy `line_ids` because of `date` constrain
+            'line_ids': [Command.clear()], # don't copy `line_ids` yet (because of `date` constrain)
             'template': False,
             'template_default_project': False
         } | vals
@@ -171,7 +188,7 @@ class Project(models.Model):
         """ Tries `today` if within budget dates, else `budget_id.date_from` """
         today = fields.Date.today()
         return (
-            today if today > budget_id.date_from and today < budget_id.date_to
+            today if (budget_id.date_from and today > budget_id.date_from) and (budget_id.date_to and today < budget_id.date_to)
             else budget_id.date_from
         )
 

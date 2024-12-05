@@ -54,6 +54,11 @@ class AccountMoveBudgetLine(models.Model):
             '|', ('company_id', '=', False), ('company_id', '=', company_id)
         ]"""
     )
+    detailed_type = fields.Selection(
+        # for pivot view
+        related='product_tmpl_id.detailed_type',
+        store=True
+    )
     name = fields.Char(
         related='product_tmpl_id.name', store=True, readonly=False, # follows product's name
     )
@@ -145,3 +150,6 @@ class AccountMoveBudgetLine(models.Model):
             'res_id': self.id,
             'target': 'new'
         }
+
+    def copy(self, default=None):
+        return super().copy(default)

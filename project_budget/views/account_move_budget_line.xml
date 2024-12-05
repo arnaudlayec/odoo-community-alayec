@@ -213,4 +213,48 @@
             </form>
         </field>
     </record>
+
+    <!-- Pivot view -->
+    <record id="view_account_move_budget_line_pivot" model="ir.ui.view">
+        <field name="name">account.move.budget.line.pivot.project</field>
+        <field name="model">account.move.budget.line</field>
+
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="project_id" type="col" />
+                <field name="budget_id" type="col"/>
+                <field name="detailed_type" type="col"/>
+
+                <field name="analytic_account_id" type="row" />
+                <field name="account_id" type="row"/>
+                <field name="partner_id" type="row"/>
+                <field name="uom_id" type="row"/>
+
+                <field name="balance" />
+                <field name="qty_balance" />
+            </pivot>
+        </field>
+    </record>
+
+    <!-- Graph view -->
+    <record id="view_account_move_budget_line_pivot" model="ir.ui.view">
+        <field name="name">account.move.budget.line.pivot.project</field>
+        <field name="model">account.move.budget.line</field>
+
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="project_id" />
+                <field name="budget_id"/>
+                <field name="detailed_type"/>
+
+                <field name="analytic_account_id" />
+                <field name="account_id" />
+                <field name="partner_id" />
+                <field name="uom_id" />
+
+                <field name="balance" />
+                <field name="qty_balance" />
+            </pivot>
+        </field>
+    </record>
 </odoo>

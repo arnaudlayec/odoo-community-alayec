@@ -3,7 +3,7 @@
     'name': "Project Budget",
     'summary': "Manage several budgets within a project",
     'author': "Arnaud LAYEC",
-    'website': "https://github.com/aluval49/odoo",
+    'website': "https://github.com/arnaudlayec/odoo-community-alayec",
     'license': "AGPL-3",
 
     'application': False,
