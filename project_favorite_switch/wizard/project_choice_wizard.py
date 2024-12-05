@@ -17,7 +17,7 @@ class ProjectWizard(models.TransientModel):
     def _domain_project_id(self):
         """ Return all visible projects for the user if she/he has no favorites """
         return (
-            [] if not self.env.user._get_favorite_projects.ids
+            [] if not self.env.user._get_favorite_projects().ids
             else self.env['project.project']._get_domain_fav_projects()
         )
 
