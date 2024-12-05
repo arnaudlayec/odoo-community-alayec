@@ -14,6 +14,17 @@ class ProjectWizard(models.TransientModel):
     _description = "Project Choice"
     _inherit = ['project.default.mixin']
     
+    def _domain_project_id(self):
+        """ Return all visible projects for the user if she/he has no favorites """
+        return (
+            [] if not self.env.user._get_favorite_projects.ids
+            else self.env['project.project']._get_domain_fav_projects()
+        )
+
+    project_id = fields.Many2one(
+        domain=_domain_project_id
+    )
+
     def button_validate(self):
         """ Called from wizzard or `onchange` """
         return self.action_choose_project_and_redirect(

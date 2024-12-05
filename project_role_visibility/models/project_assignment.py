@@ -52,7 +52,9 @@ class ProjectAssignment(models.Model):
                 )
     @api.onchange('role_id')
     def _onchange_role_id(self):
-        """ Set `primary` to True if this role is not already set as Primary on this project """
+        """ Suggest `primary` to True if this role is not already set as Primary on this project
+            Very useful in assignation form
+        """
         assignments_primary = self._get_other_primary_assignments()
         for assignment in self:
             assignment.primary = not assignment._primary_already_set(assignments_primary)
@@ -73,17 +75,15 @@ class ProjectAssignment(models.Model):
         self._remove_project_followers()
         super().unlink()
     
-    #===== Synchro of users assigned to roles as primary -> to followers =====
+    #===== Synchro of assignees -> to followers =====
     def _should_synch(self, vals):
         """ Can be overriden to change logic on `primary` """
-        return vals.get('primary')
+        return True # vals.get('primary')
     def _filter_has_access(self):
-        return self.filtered('primary')
+        return True # self.filtered('primary')
     
     def _add_project_followers(self, vals_list):
-        """ Called by create(): add internal user to followers
-            if assigned to roles as primary
-        """
+        """ Called by create(): add assignees to followers """
         # Get projects with privacy `followers` before loop on `vals_list`
         mapped_followers_ids = {
             vals['project_id']: []
@@ -118,16 +118,18 @@ class ProjectAssignment(models.Model):
                 project._message_subscribe(partner_ids_)
 
     def _update_project_followers(self, vals):
-        """ Called by write(): update followers on changes of `primary` """
-        if (
-            'primary' in vals and vals.get('primary') != self.primary
-            and self.project_id._should_synch_roles()
-        ):
-            partner_ids_ = self.user_id.partner_id.ids
-            if self._should_synch(vals): # moved to `primary`
-                self.project_id._message_subscribe(partner_ids_)
-            else: # `primary` unset
-                self.project_id.with_context(unsubscribe_no_raise=True).message_unsubscribe(partner_ids_)
+        pass
+
+        # """ Called by write(): update followers on changes of `primary` """
+        # if (
+        #     'primary' in vals and vals.get('primary') != self.primary
+        #     and self.project_id._should_synch_roles()
+        # ):
+        #     partner_ids_ = self.user_id.partner_id.ids
+        #     if self._should_synch(vals): # moved to `primary`
+        #         self.project_id._message_subscribe(partner_ids_)
+        #     else: # `primary` unset
+        #         self.project_id.with_context(unsubscribe_no_raise=True).message_unsubscribe(partner_ids_)
     
     def _remove_project_followers(self):
         """ Removes the follower object before role assignments """

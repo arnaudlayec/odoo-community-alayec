@@ -5,6 +5,14 @@ from odoo import api, fields, models, Command
 class ProjectProject(models.Model):
     _inherit = ["project.project"]
 
+
+    def _get_domain_fav_projects(self):
+        """ Can be overwritten or called by other models """
+        return [
+            ('favorite_user_ids', '=', self.env.uid),
+            ('stage_id.fold', '=', False)
+        ]
+    
     # Refresh `res_users.favorite_project_id`
     def _inverse_is_favorite(self):
         res = super()._inverse_is_favorite()

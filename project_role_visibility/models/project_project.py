@@ -15,7 +15,7 @@ class ProjectProject(models.Model):
         if self._should_synch_roles(vals):
             internal_followers = self.message_partner_ids.filtered(lambda x: x.user_id.id)
             assignees = self.assignment_ids._filter_has_access().user_id.partner_id
-            # unsubscribe all internal users not assigned to roles as primary
+            # unsubscribe all internal users not assigned to roles
             # subscribe those last ones
             self.message_unsubscribe((internal_followers - assignees).ids)
             self.message_subscribe(assignees.ids)
@@ -27,7 +27,7 @@ class ProjectProject(models.Model):
     
     #===== Constrain (assignees/followers synch) =====
     def message_subscribe(self, partner_ids=None, subtype_ids=None):
-        """ Can't add internal users to followers if not primary assignees """
+        """ Can't add internal users to followers if not assignees """
         user_ids = self.sudo().env['res.partner'].browse(partner_ids).user_ids
         if user_ids.ids:
             assignee_ids = self.assignment_ids._filter_has_access().user_id.ids
@@ -37,7 +37,7 @@ class ProjectProject(models.Model):
     
     def message_unsubscribe(self, partner_ids=None):
         """ Can't remove internal users from followers
-            if they are primary assignees
+            if they assignees
         """
         assignees_ids_ = self.assignment_ids._filter_has_access().user_id.partner_id.ids
         if any([x in assignees_ids_ for x in partner_ids]):

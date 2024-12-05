@@ -14,7 +14,7 @@
     'depends': ['project'],
     'data': [
         # data
-        'data/project.task.type.csv',
+        'data/project.task.type.xml',
         # views
         'views/project_task.xml',
         'views/project_task_type.xml',

@@ -10,19 +10,15 @@ class ProjectDefaultMixin(models.AbstractModel):
     _description = "Project Default"
     
     project_id = fields.Many2one(
-        'project.project',
+        comodel_name='project.project',
         string='Project',
         required=True,
         ondelete='cascade',
         index='btree_not_null',
         default=lambda self: self._get_project_id(),
-        domain=lambda self: [
-            ('favorite_user_ids', '=', self.env.uid),
-            ('stage_id.fold', '=', False)
-        ],
+        domain=lambda self: self.env['project.project']._get_domain_fav_projects(),
         help="Within your favorite projects"
     )
-    
 
     def _get_project_id(self, vals={}, record=False, raise_if_not_found=False):
         """ Try to get a `project_id_` from various possible source

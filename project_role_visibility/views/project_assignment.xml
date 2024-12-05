@@ -68,6 +68,7 @@
                 <attribute name="t-att-class">{'bg-primary-light': record.primary.raw_value}</attribute>
             </div>
             <t t-esc="record.role_id.value" position="after">
+                <t t-if="record.primary.raw_value"> (primary)</t>
                 <field name="primary" widget="boolean_toggle" class="oe_inline ms-2" nolabel="1" />
             </t>
 
