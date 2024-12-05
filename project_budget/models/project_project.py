@@ -58,7 +58,7 @@ class Project(models.Model):
         """ Synchro `name`, `date_from`, `date_to` with budget """
         res = super().write(vals)
         if any(x in vals for x in ['name', 'date_start', 'date']):
-            self.budget_ids._synchro_fields_with_project()
+            self.sudo().budget_ids._synchro_fields_with_project()
         return res
     
     
