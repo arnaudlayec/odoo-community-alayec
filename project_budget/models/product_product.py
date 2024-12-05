@@ -55,7 +55,7 @@ class ProductProduct(models.Model):
         mapped_dates_from = {x['product_tmpl_id'][0]: x['dates_from'] for x in rg_result}
         for variant in self:
             dates_from = mapped_dates_from.get(variant.product_tmpl_id.id, []) # all `date_from` of siblings
-            next_date_from = [date for date in dates_from if date > variant.date_from]
+            next_date_from = [date for date in dates_from if date and date > variant.date_from]
             variant.date_to = date_utils.subtract(min(next_date_from), days=1) if next_date_from else False
 
     #===== Buttons & actions =====#
