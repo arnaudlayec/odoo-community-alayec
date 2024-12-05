@@ -1,13 +1,13 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# 	* project_parent_sequence
+# 	* project_role_visibility
 #
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-11-20 09:51+0000\n"
-"PO-Revision-Date: 2024-11-20 20:50+0100\n"
+"POT-Creation-Date: 2024-12-05 16:31+0000\n"
+"PO-Revision-Date: 2024-12-05 17:33+0100\n"
 "Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -17,60 +17,110 @@ msgstr ""
 "Plural-Forms: \n"
 "X-Generator: Poedit 3.5\n"
 
-#. module: project_parent_sequence
+#. module: project_role_visibility
 #. odoo-python
-#: code:addons/project_parent_sequence/models/project_project.py:0
+#: code:addons/project_role_visibility/models/project_assignment.py:0
 #, python-format
-msgid "A child project cannot become itself a parent project."
-msgstr "Un projet enfant ne peut pas devenir lui-même un projet parent."
+msgid "A primary assignment may be assigned only once per role within a project."
+msgstr "Un rôle avec la mention \"principal\" ne peut être assigné qu'une seule fois par projet."
 
-#. module: project_parent_sequence
-#. odoo-python
-#: code:addons/project_parent_sequence/models/project_project.py:0
-#, python-format
-msgid "Child Project sequence of "
-msgstr "Séquence des projets enfants de "
+#. module: project_role_visibility
+#: model_terms:ir.ui.view,arch_db:project_role_visibility.project_assignment_kanban
+msgid "Are you sure?"
+msgstr "Êtes-vous sûr ?"
 
-#. module: project_parent_sequence
-#: model_terms:ir.ui.view,arch_db:project_parent_sequence.edit_project
-msgid "Choose parent project"
-msgstr "Choisir le projet parent"
+#. module: project_role_visibility
+#: model:ir.model.fields,field_description:project_role_visibility.field_project_assignment__domain_user_ids
+msgid "Domain User"
+msgstr "Utilisateur du domaine"
 
-#. module: project_parent_sequence
-#: model:ir.model.fields,field_description:project_parent_sequence.field_project_project__child_project
-msgid "Is a sub-project?"
-msgstr "Sous-projet ?"
-
-#. module: project_parent_sequence
-#: model:ir.model.fields,field_description:project_parent_sequence.field_project_project__name
-msgid "Name"
-msgstr "Nom"
-
-#. module: project_parent_sequence
-#: model:ir.model.fields,help:project_parent_sequence.field_project_project__name
+#. module: project_role_visibility
+#: model:ir.model.fields,help:project_role_visibility.field_project_project__privacy_visibility
 msgid ""
-"Name of your project. It can be anything you want e.g. the name of a "
-"customer or a service."
+"People to whom this project and its tasks will be visible.\n"
+"\n"
+"- Invited internal users: when following a project, internal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
+" A user with the project > administrator access right level can still access this project and its tasks, even if they are not explicitly part of the followers.\n"
+"\n"
+"- All internal users: all internal users can access the project and all of its tasks without distinction.\n"
+"\n"
+"- Invited portal users and all internal users: all internal users can access the project and all of its tasks without distinction.\n"
+"When following a project, portal users will get access to all of its tasks without distinction. Otherwise, they will only get access to the specific tasks they are following.\n"
+"\n"
+"When a project is shared in read-only, the portal user is redirected to their portal. They can view the tasks, but not edit them.\n"
+"When a project is shared in edit, the portal user is redirected to the kanban and list views of the tasks. They can modify a selected number of fields on the tasks.\n"
+"\n"
+"In any case, an internal user with no project access rights can still access a task, provided that they are given the corresponding URL (and that they are part of the followers if the project is private)."
 msgstr ""
-"Nom de votre projet. Il peut s'agir de n'importe quoi, par exemple le nom "
-"d'un client ou d'un service."
+"Personnes pour lesquelles ce projet et ses tâches seront visibles.\n"
+"\n"
+"- Utilisateurs internes invités : lorsqu'ils sont abonnés à un projet, les utilisateurs internes auront accès à toutes ses tâches sans distinction. Autrement, ils auront uniquement accès aux tâches spécifiques auxquelles ils "
+"sont abonnés.\n"
+"Un utilisateur avec le niveau de droits d'accès projet > administrateur peut toujours accéder au projet et à ses tâches, même s'il ne fait pas explicitement partie des abonnés.\n"
+" \n"
+"- Tous les utilisateurs internes : tous les utilisateurs internes peuvent accéder au projet et à toutes ses tâches sans distinction.\n"
+"\n"
+"- Utilisateurs portail invités et tous les utilisateurs internes : tous les utilisateurs internes peuvent accéder au projet et à toutes ses tâches sans distinction.\n"
+"Lorsqu'ils sont abonnés à un projet, les utilisateurs portail auront accès à toutes ses tâches sans distinction. Autrement, ils auront uniquement accès aux tâches spécifiques auxquelles ils sont abonnés.\n"
+"\n"
+"Lorsqu'un projet est partagé en lecture seule, l'utilisateur portail est redirigé vers son portail. Il peut voir les tâches, mais pas les modifier.\n"
+"Lorsqu'un projet est partagé en édition, l'utilisateur portail est redirigé vers les vues kanban et liste des tâches. Ils peuvent modifier un certain nombre de champs sur les tâches.\n"
+"\n"
+"Dans tous les cas, un utilisateur interne qui n'a pas de droits d'accès à projet peut toujours accéder à une tâche, à condition qu'on lui ait donné l'URL correspondant (et qu'il fasse partie des abonnés si le projet est privé)."
 
-#. module: project_parent_sequence
-#: model:ir.model.fields,field_description:project_parent_sequence.field_project_project__parent_id
-msgid "Parent Project"
-msgstr "Projet parent"
+#. module: project_role_visibility
+#: model_terms:ir.ui.view,arch_db:project_role_visibility.project_assignment_search
+msgid "Primary roles"
+msgstr "Rôles principaux"
 
-#. module: project_parent_sequence
-#: model:ir.model,name:project_parent_sequence.model_project_project
+#. module: project_role_visibility
+#: model:ir.model.fields,field_description:project_role_visibility.field_project_assignment__primary
+msgid "Primary?"
+msgstr "Principal ?"
+
+#. module: project_role_visibility
+#: model:ir.model,name:project_role_visibility.model_project_project
 msgid "Project"
 msgstr "Projet"
 
-#. module: project_parent_sequence
-#: model:ir.model.fields,field_description:project_parent_sequence.field_project_project__children_sequence_id
-msgid "Sequence for children projects"
-msgstr "Séquence pour les projets enfants"
+#. module: project_role_visibility
+#: model:ir.model,name:project_role_visibility.model_project_assignment
+msgid "Project Assignment"
+msgstr "Assignation du projet"
 
-#. module: project_parent_sequence
-#: model_terms:ir.ui.view,arch_db:project_parent_sequence.view_project_project_filter
-msgid "Sub-projects & their parents"
-msgstr "Sous-projets et leurs parents"
+#. module: project_role_visibility
+#: model:ir.ui.menu,name:project_role_visibility.project_menu_config_roles_section
+msgid "Project roles"
+msgstr "Rôles du projet"
+
+#. module: project_role_visibility
+#: model_terms:ir.ui.view,arch_db:project_role_visibility.project_assignment_kanban
+msgid "Remove"
+msgstr "Supprimer"
+
+#. module: project_role_visibility
+#: model:ir.model.fields,field_description:project_role_visibility.field_project_assignment__role_id
+msgid "Role"
+msgstr "Rôle"
+
+#. module: project_role_visibility
+#. odoo-python
+#: code:addons/project_role_visibility/models/project_project.py:0
+#, python-format
+msgid "To (un)subscribe internal users to the projet, please (un)assign them to project Roles."
+msgstr "Pour (dés)inscrire des utilisateurs internes au projet, veuillez les (dés)assigner aux rôles du projet."
+
+#. module: project_role_visibility
+#: model:res.groups,name:project_role_visibility.group_project_user_global
+msgid "User (all projects)"
+msgstr "Utilisateur (tous les projets)"
+
+#. module: project_role_visibility
+#: model_terms:ir.ui.view,arch_db:project_role_visibility.edit_project
+msgid "User roles"
+msgstr "Rôles des utilisateurs"
+
+#. module: project_role_visibility
+#: model:ir.model.fields,field_description:project_role_visibility.field_project_project__privacy_visibility
+msgid "Visibility"
+msgstr "Visibilité"

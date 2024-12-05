@@ -2,7 +2,7 @@
 <odoo>
     <!-- New group `User (all projects)` -->
     <record id="group_project_user_global" model="res.groups">
-        <field name="name">User (all projects)</field>
+        <field name="name">User (view all projects)</field>
         <field name="implied_ids" eval="[(4, ref('project.group_project_user'))]"/>
         <field name="category_id" ref="base.module_category_services_project"/>
     </record>

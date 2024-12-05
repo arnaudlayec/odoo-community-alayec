@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "Project Budget",
+    'name': "Project Budget Timesheet",
     'summary': "Limit Tasks' planned hours to available budgets",
     'author': "Arnaud LAYEC",
     'website': "https://github.com/arnaudlayec/odoo-community-alayec",

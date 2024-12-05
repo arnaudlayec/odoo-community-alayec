@@ -4,6 +4,11 @@ from odoo import models, fields, api, exceptions, _, Command
 from odoo.osv import expression
 from odoo.tools.safe_eval import safe_eval
 
+
+def _resolve_string_to_python(string):
+    return safe_eval(string) if isinstance(string, str) else string or {}
+
+
 class ProjectWizard(models.TransientModel):
     _name = "project.choice.wizard"
     _description = "Project Choice"
@@ -59,15 +64,8 @@ class ProjectWizard(models.TransientModel):
         """
         action_dict = self._resolve_action_arg(project_id, action_arg)
 
-        # Prefix action's name with project's
-        action_dict['display_name'] = '{} / {}' . format(
-            project_id.display_name,
-            action_dict.get('display_name', action_dict['name'])
-        )
-
         # Update context to add project's default keys
-        context = action_dict.get('context')
-        context = safe_eval(context) if isinstance(context, str) else context or {}
+        context = _resolve_string_to_python(action_dict.get('context'))
         action_dict['context'] = (
             {k: v for k, v in self._context.items() if k not in ['action_arg', 'context_keys']}
             | context
@@ -75,13 +73,20 @@ class ProjectWizard(models.TransientModel):
         )
         
         # Domain: get existing
-        domain = action_dict.get('domain')
+        domain = _resolve_string_to_python(action_dict.get('domain'))
         domain = safe_eval(domain) if isinstance(domain, str) else domain or []
         # Update domain to filter on selected project
         action_dict['domain'] = expression.AND([
             domain,
             [('project_id', '=', project_id.id)]
         ])
+
+        # Prefix action's name with project's
+        project_id = project_id.with_context(action_dict['context'])
+        action_dict['display_name'] = '{} / {}' . format(
+            project_id.display_name,
+            action_dict.get('display_name', action_dict['name'])
+        )
 
         return action_dict
 

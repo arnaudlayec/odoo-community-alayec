@@ -1,0 +1,59 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* project_budget_timesheet
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2024-12-05 15:46+0000\n"
+"PO-Revision-Date: 2024-12-05 16:48+0100\n"
+"Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.5\n"
+
+#. module: project_budget_timesheet
+#. odoo-python
+#: code:addons/project_budget_timesheet/models/project_task.py:0
+#, python-format
+msgid ""
+"A task cannot reserve more budget than available in the project. Project "
+"budget: %s. Already planned budget: %s. This task budget: %s"
+msgstr ""
+"Une tâche ne peut pas réserver plus de budget que celui disponible dans le "
+"projet. Budget du projet : %s. Budget déjà planifié : %s. Budget de cette "
+"tâche : %s"
+
+#. module: project_budget_timesheet
+#: model_terms:ir.ui.view,arch_db:project_budget_timesheet.project_task_view_search
+msgid "Analytic Account"
+msgstr "Compte analytique"
+
+#. module: project_budget_timesheet
+#: model:ir.model.fields,field_description:project_budget_timesheet.field_project_task__available_budget
+msgid "Available Budget"
+msgstr "Budget disponible"
+
+#. module: project_budget_timesheet
+#: model:ir.model,name:project_budget_timesheet.model_project_task
+msgid "Task"
+msgstr "Tâche"
+
+#. module: project_budget_timesheet
+#: model_terms:ir.ui.view,arch_db:project_budget_timesheet.project_task_view_search
+msgid "Timesheets"
+msgstr "Feuilles de temps"
+
+#. module: project_budget_timesheet
+#: model:ir.model.fields,help:project_budget_timesheet.field_project_task__available_budget
+msgid ""
+"[Project budget*] - [Budget* reserved in project's tasks, including this "
+"one] of the task's analytic account"
+msgstr ""
+"[Budget du projet] - [Budget réservé dans les tâches du projet, y compris "
+"celle-ci]"

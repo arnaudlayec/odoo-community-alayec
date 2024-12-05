@@ -12,8 +12,7 @@ class Task(models.Model):
         string='Available Budget',
         compute='_compute_available_budget',
         store=True,
-        help="[Project budget*] - [Budget* reserved in project's tasks, including this one]"
-             " of the task's analytic account"
+        help="[Project budget] - [Budget reserved in project's tasks, including this one]"
     )
     
     #===== Compute =====#
