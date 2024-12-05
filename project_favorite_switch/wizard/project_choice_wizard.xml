@@ -9,6 +9,7 @@
                 <sheet>
                     <group>
                         <field name="id" invisible="1" />
+                        <field name="project_ids_domain" invisible="1" />
                         
                         <field name="project_id" widget="project_radio_redirect" />
                     </group>

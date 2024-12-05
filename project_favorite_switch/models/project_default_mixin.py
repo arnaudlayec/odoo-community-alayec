@@ -32,17 +32,17 @@ class ProjectDefaultMixin(models.AbstractModel):
                             standalone and `record` can be passed instead of `self`
         """
         record = record or self
-        vals = vals or self._context
+        vals = self._context | vals
 
         project_id_ = (
             vals.get('project_id') # custom call
             or 'project_id' in record and record.project_id.id # when validating this wizard
-            or record._context.get('default_project_id') # 1/ passed from a form to an embedded tree view or 2/ custom (server action)
+            or vals.get('default_project_id') # 1/ passed from a form to an embedded tree view or 2/ custom (server action)
             or ( # on smart button click from a Project form
-                record._context.get('active_model') == 'project.project'
-                and record._context.get('active_id')
+                vals.get('active_model') == 'project.project'
+                and vals.get('active_id')
             )
-            or record.env.user.favorite_project_id.id # works if single project
+            or self.env.user.favorite_project_id.id # works if single project
         )
 
         if not project_id_ and raise_if_not_found:

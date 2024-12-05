@@ -93,11 +93,11 @@ class Project(models.Model):
         return domain
     
     @api.depends(
-        'budget_ids.line_ids',
-        'budget_ids.line_ids.qty_balance',
-        'budget_ids.line_ids.product_tmpl_id',
-        'budget_ids.line_ids.product_tmpl_id.uom_id',
-        'budget_ids.line_ids.product_tmpl_id.uom_id.category_id',
+        'budget_line_ids',
+        'budget_line_ids.qty_balance',
+        'budget_line_ids.product_tmpl_id',
+        'budget_line_ids.product_tmpl_id.uom_id',
+        'budget_line_ids.product_tmpl_id.uom_id.category_id',
     )
     def _compute_allocated_hours(self):
         """ Find and groupsum hours in budget """
