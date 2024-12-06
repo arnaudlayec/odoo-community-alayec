@@ -146,12 +146,12 @@ class Project(models.Model):
         empty_project_ids = self._filter_without_budgets()
         for project in empty_project_ids:
             for budget_tmpl in project.budget_template_ids:
-                budget_new = budget_tmpl.copy(project._get_default_vals_budget())
+                budget_new = budget_tmpl.sudo().copy(project._get_default_vals_budget())
 
                 # *manually* copy the lines (because of date constrain)
                 for line in budget_tmpl.line_ids:
                     vals = project._get_default_vals_budget_line(budget_new)
-                    line.copy(vals)
+                    line.sudo().copy(vals)
                 
                 empty_project_ids -= project
         

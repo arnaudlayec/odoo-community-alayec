@@ -7,13 +7,30 @@
         <field name="inherit_id" ref="project_sequence.project_sequence_form_view" />
 
         <field name="arch" type="xml">
+            <!-- Explicit `sequence_code_choose` -->
+            <h1 position="before">
+                <group attrs="{'invisible': [('id', '!=', False)]}">
+                    <field name="sequence_code_choose" />
+                </group>
+
+                <label for="name" />
+            </h1>
+
             <!-- Change display of project's sequence_code to left title -->
             <field name="name" position="attributes">
                 <attribute name="class">o_text_overflow flex-shrink-0</attribute>
+                <attribute name="style">width: 90%</attribute>
             </field>
             <field name="name" position="before">
-                <field name="sequence_code" class="me-3 flex-grow-1" />
+                <!-- Display Code in editable only on Create form and if `sequence_code_choose` is activated by user -->
+                <field name="sequence_code"
+                    nolabel="1"
+                    attrs="{'readonly': ['|', ('id', '!=', False), ('sequence_code_choose', '=', False)]}"
+                    class="me-3 flex-grow-1"
+                />
             </field>
+
+            <!-- Hide `div` from `project_sequence` which is under the name -->
             <div name="sequence_code" position="attributes">
                 <attribute name="invisible">1</attribute>
             </div>
@@ -31,8 +48,6 @@
                 <group attrs="{'invisible': [('id', '!=', False)]}">
                     <field name="child_project" />
                 </group>
-                
-                <label for="name" />
             </h1>
 
             <!-- Move `parent_id` below project's name -->

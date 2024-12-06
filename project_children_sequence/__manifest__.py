@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 {
-    'name': 'Project Parent Sequence',
+    'name': 'Project Children Sequence',
     'summary': 'Manage child projects sequence code per parent project (e.g. 1234-01)',
     'category': 'Project',
     'version': '16.0.1.0.1',

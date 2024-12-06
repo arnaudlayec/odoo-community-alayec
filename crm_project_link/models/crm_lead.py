@@ -6,7 +6,7 @@ class Lead(models.Model):
     _inherit = 'crm.lead'
 
     project_id = fields.Many2one(
-        'project.project',
+        comodel_name='project.project',
         string='Project',
         copy=False
     )

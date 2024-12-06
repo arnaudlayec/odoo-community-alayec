@@ -14,6 +14,14 @@ class Project(models.Model):
     #     recursive=True,
     #     readonly=False
     # )
+    sequence_code = fields.Char(
+        string='Code'
+    )
+    sequence_code_choose = fields.Boolean(
+        string='Set a custom Code',
+        default=False,
+        store=False,
+    )
     parent_id = fields.Many2one(
         ondelete='restrict',
         domain=['&', ('parent_id', '=', False), '|', ('active', '=', True), ('active', '=', False)]
