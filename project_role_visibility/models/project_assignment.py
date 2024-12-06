@@ -80,7 +80,7 @@ class ProjectAssignment(models.Model):
         """ Can be overriden to change logic on `primary` """
         return True # vals.get('primary')
     def _filter_has_access(self):
-        return True # self.filtered('primary')
+        return self # self.filtered('primary')
     
     def _add_project_followers(self, vals_list):
         """ Called by create(): add assignees to followers """

@@ -11,6 +11,11 @@ class ProjectProject(models.Model):
         return [
             ('favorite_user_ids', '=', self.env.uid),
             ('stage_id.fold', '=', False)
+        ] + self._get_native_project_rule()
+    def _get_native_project_rule(self):
+        return ['|',
+            ('privacy_visibility', '!=', 'followers'),
+            ('message_partner_ids', 'in', [self.env.user.partner_id.id])
         ]
     
     # Refresh `res_users.favorite_project_id`
