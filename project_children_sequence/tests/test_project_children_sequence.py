@@ -32,8 +32,6 @@ class TestProjectChildrenSequence(common.SingleTransactionCase):
 
     def test_2level_hierarchy(self):
         """ Tests maximum of 2-levels hierarchy, i.e. a child project cannot also become a parent project """
-        # Test compute of `child_project
-        self.assertTrue(self.project_child.child_project)
         # A sub-project of sub-project should raise
         with self.assertRaises(exceptions.ValidationError):
             self.Project.create({'parent_id': self.project_child.id})

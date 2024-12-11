@@ -21,15 +21,6 @@
         <field name="inherit_id" ref="hr_timesheet.project_task_view_search" />
 
         <field name="arch" type="xml">
-            <!-- Add "Timesheets" filter -->
-            <filter name="unassigned" position="after">
-                <separator />
-                <filter name="budget_timesheet"
-                    string="Timesheets"
-                    domain="['|', ('effective_hours', '!=', 0.0), ('planned_hours', '!=', 0.0)]"
-                />
-            </filter>
-            
             <!-- Add GroupBy `analytic_account_id` -->
             <group position="inside">
                 <filter name="analytic_account_id" string="Analytic Account" context="{'group_by': 'analytic_account_id'}" />

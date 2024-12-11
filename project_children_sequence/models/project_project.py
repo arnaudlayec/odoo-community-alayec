@@ -32,13 +32,6 @@ class Project(models.Model):
         check_company=True,
         copy=False
     )
-    # only used for fancier user-experience on project's form creation
-    child_project = fields.Boolean(
-        string='Is a sub-project?',
-        default=False,
-        compute='_compute_child_project',
-        readonly=False
-    )
 
     #===== Constraints  =====#
     @api.constrains("parent_id")
@@ -109,7 +102,3 @@ class Project(models.Model):
     #         if project.parent_id.id:
     #             project.name = project.parent_id.name
     
-    @api.depends('parent_id')
-    def _compute_child_project(self):
-        for project in self:
-            project.child_project = bool(project.parent_id.id)

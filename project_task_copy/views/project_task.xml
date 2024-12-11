@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
             <!-- Copy from -->
             <notebook position="inside">
-                <page name="Copy from...">
+                <page name="copy_from" string="Copy from...">
                     <group>
                         <field name="copy_project_id" />
                         <field name="copy_task_id" />

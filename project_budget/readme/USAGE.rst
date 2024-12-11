@@ -1,31 +1,39 @@
 
 
-"charge des comptes analytiques par projet"
-- possibilité de template
-- sequence sur account_analytic_id pour retrouver tjs le même order sur les budgets
-   par projets
-- account_id par défaut selon la config produit / catégorie
-- produit par défaut sur compte analytique
 
-template / création par défaut :
-- liste de template
-- proposé par défaut : liste des template pré-remplis sur tous les projets, l'utilisateur peut les retirer
-- si aucun proposé par défaut ou si tous retiré par l'utilisateur, dans tous les cas au moins
-  1 budget vide sera créé par projet
+
+Budget templating feature (for projects)
+----------------------------------------
 
 #. Browse to *Accounting / Accounting / Account Move Budget / Budgets* and create
-   a new budget sheet
-#. Check *Template* and *Template (default)* boxes
+   a new *Budget 1* and *Budget 2*
+#. In *Budget 1*, check *Template* and *Template (default)* boxes
+#. In *Budget 2*, check only the *Template* box
 
-#. Browse to *Project* app and create a new *Project*. Notice the *Budget templates*
-   fields next to *Allocated Hours*, having previous budget suggested
-#. Save the project. Notice the *Budget templates* field is now hidden. The *Budget*
-   smart-button brings you to project's budget lines.
+#. Browse to *Project* app and create a new *Project*
+#. Notice the *Budget 1* is added by default in the new *Budget templates* field
+   (next to *Allocated Hours*)
+#. Notice the *Budget 2* is selectable in *Budget templates*, but not suggested by default
+#. Save the project
+#. Notice the *Budget templates* field is now hidden. The *Budget* smart-button brings you
+   to project's budget lines.
 
-#. On any budget lines, *Details* button allow you to choose between 2 new valuation
-   types. Select **Unit-Price**: budget debit and credit are computed via unit price
-   and respective quantities
-#. Selecting a *Product* allow to set a unit (and pre-fill unit price). Note that time
-   unit are summed in *Allocated Hours* project field.
-#. When choosing **Date-range**, unit-price is valued per time period, via product's
-   variants. See *§Configuration*.
+Note: if no budget templates are selected at project creation, an empty budget will be
+created linked to the project.
+
+
+
+Types of budget lines (valuation types)
+----------------------------------------
+
+#. On any budget lines, *Details* button allow you to choose between valuation types
+#. Select **Unit-Price** to compute debit and credit via unit price and respective quantities
+
+
+
+Budget lines sequence
+----------------------------------------
+
+#. Browse to *Accounting / Configuration / Analytic Accounting / Analytic Account*
+#. It is now possible to order Analytic Accounts
+#. The budget lines order follows Analytic Accounts order

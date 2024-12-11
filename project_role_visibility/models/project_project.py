@@ -12,6 +12,9 @@ class ProjectProject(models.Model):
         """ If project's privacy is moved to `followers`,
             rebase project's followers from roles
         """
+        if 'privacy_visibility' in vals:
+            self = self.with_context(project_role_no_raise=True)
+        
         if self._should_synch_roles(vals):
             internal_followers = self.message_partner_ids.filtered(lambda x: x.user_id.id)
             assignees = self.assignment_ids._filter_has_access().user_id.partner_id
@@ -20,6 +23,7 @@ class ProjectProject(models.Model):
             self.message_unsubscribe((internal_followers - assignees).ids)
             self.message_subscribe(assignees.ids)
         return super().write(vals)
+    
     def _should_synch_roles(self, vals=None):
         """ Can be overriden to change logic on `privacy_visibility` """
         privacy = vals.get('privacy_visibility') if vals else self.privacy_visibility
@@ -46,7 +50,7 @@ class ProjectProject(models.Model):
         return super().message_unsubscribe(partner_ids)
     
     def _raise_followers_error(self):
-        if self._should_synch_roles() and not self._context.get('unsubscribe_no_raise'):
+        if self._should_synch_roles() and not self._context.get('project_role_no_raise'):
             raise exceptions.ValidationError(_(
                 "To (un)subscribe internal users to the projet,"
                 " please (un)assign them to project Roles."

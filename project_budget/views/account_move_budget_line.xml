@@ -13,7 +13,6 @@
                 <field name="company_currency_id" invisible="1" />
                 <field name="budget_id" invisible="context.get('default_budget_id')" />
                 <field name="project_id" invisible="context.get('default_budget_id') or context.get('default_project_id')" />
-                <field name="type" invisible="1" />
 
                 <button type="object"
                     name="button_open_budget_line_form"
@@ -24,18 +23,8 @@
             <!-- Move analytic right after fiscal account -->
             <field name="account_id" position="after">
                 <field name="analytic_account_id" position="move" />
-            </field>
-            <!-- Add product information afer `date` -->
-            <field name="date" position="after">
-                <field name="product_tmpl_id"
-                    attrs="{
-                        'invisible': [('type', '=', 'standard')],
-                        'required': [('type', '=', 'date_range')]
-                    }"
-                    optional="show"
-                    options="{'no_create': True}"
-                />
-                <field name="uom_id" attrs="{'invisible': [('type', '=', 'standard')]}" optional="show" />
+                <field name="type" optional="hide" />
+                <field name="standard_price" optional="hide" />
             </field>
             
             <!-- Partner -->
@@ -46,23 +35,23 @@
             <!-- Add budget's debit/credit/balance next to existing one -->
             <!-- Debit -->
             <field name="debit" position="attributes">
-                <attribute name="attrs">{'readonly': [('type', '!=', 'standard')]}</attribute>
+                <attribute name="attrs">{'readonly': [('type', '!=', 'amount')]}</attribute>
                 <attribute name="optional">show</attribute>
                 <attribute name="widget">monetary</attribute>
                 <attribute name="sum">1</attribute>
             </field>
             <field name="debit" position="after">
-                <field name="qty_debit" optional="show" attrs="{'invisible': [('type', '=', 'standard')]}"/>
+                <field name="qty_debit" optional="show" attrs="{'invisible': [('type', '=', 'amount')]}"/>
             </field>
             <!-- Credit -->
             <field name="credit" position="attributes">
-                <attribute name="attrs">{'readonly': [('type', '!=', 'standard')]}</attribute>
+                <attribute name="attrs">{'readonly': [('type', '!=', 'amount')]}</attribute>
                 <attribute name="optional">show</attribute>
                 <attribute name="widget">monetary</attribute>
                 <attribute name="sum">1</attribute>
             </field>
             <field name="credit" position="after">
-                <field name="qty_credit" optional="show" attrs="{'invisible': [('type', '=', 'standard')]}" />
+                <field name="qty_credit" optional="show" attrs="{'invisible': [('type', '=', 'amount')]}" />
             </field>
             
             <!-- Balance -->
@@ -71,7 +60,7 @@
                 <attribute name="sum">1</attribute>
             </field>
             <field name="balance" position="after">
-                <field name="qty_balance" attrs="{'invisible': [('type', '=', 'standard')]}" optional="show" />
+                <field name="qty_balance" attrs="{'invisible': [('type', '=', 'amount')]}" optional="show" />
             </field>
         </field>
     </record>
@@ -85,14 +74,8 @@
         <field name="priority">100</field>
 
         <field name="arch" type="xml">
-            <!-- Hide fields that should be pro-populated from Analytic Account and Product Template configuration -->
+            <!-- Hide fields that should be suggested from Line Template -->
             <field name="account_id" position="attributes">
-                <attribute name="optional">hide</attribute>
-            </field>
-            <field name="product_tmpl_id" position="attributes">
-                <attribute name="optional">hide</attribute>
-            </field>
-            <field name="uom_id" position="attributes">
                 <attribute name="optional">hide</attribute>
             </field>
             <field name="partner_id" position="attributes">
@@ -123,10 +106,9 @@
             
             <!-- Show qty_debit, standard_price and debit like "Qty", "Unit price" and "Total" -->
             <field name="debit" position="before">
-                <field name="type" invisible="1" />
                 <field name="name" position="move" />
                 <field name="qty_debit" position="move" />
-                <field name="standard_price" attrs="{'invisible': [('type', '!=', 'fix')]}" />
+                <field name="standard_price" attrs="{'invisible': [('type', '!=', 'unit')]}" />
             </field>
             <field name="qty_debit" position="attributes">
                 <attribute name="string">Quantity</attribute>
@@ -159,50 +141,27 @@
                         <field name="name" />
                     </group>
     
-                    <group name="settings_right" attrs="{'invisible': [('type', '=', 'standard')]}">
-                        <!-- If fix value -->
-                        <field name="standard_price" attrs="{'invisible': [('type', '!=', 'fix')]}" />
-                        <!-- If fix or date-range value -->
-                        <field name="product_tmpl_id"
-                            options="{'no_create': True}"
-                            attrs="{'required': [('type', '=', 'date_range')]}"
-                        />
-                        <field name="uom_id" />
+                    <group name="settings_right">
+                        <field name="analytic_account_id" />
+                        <field name="standard_price" attrs="{'invisible': [('type', '!=', 'unit')]}" />
                     </group>
                 </group>
 
                 <group name="values" string="Values">
-                    <group name="values_qty" attrs="{'invisible': [('type', '=', 'standard')]}">
+                    <group name="values_qty" attrs="{'invisible': [('type', '=', 'amount')]}">
                         <field name="qty_debit" />
                         <field name="qty_credit" />
                         <field name="qty_balance" />
                     </group>
 
                     <group name="values_computed">
-                        <field name="debit" attrs="{'readonly': [('type', '!=', 'standard')]}" />
-                        <field name="credit" attrs="{'readonly': [('type', '!=', 'standard')]}" />
+                        <field name="debit" attrs="{'readonly': [('type', '!=', 'amount')]}" />
+                        <field name="credit" attrs="{'readonly': [('type', '!=', 'amount')]}" />
                         <field name="balance" />
                     </group>
                 </group>
 
                 <group name="bottom" string="Line settings">
-                    <!-- If variants (value per date range) -->
-                    <label for="product_variant_ids"
-                        string="Valuation per date range"
-                        attrs="{'invisible': [('type', '!=', 'date_range')]}"
-                        colspan="2"
-                    />
-                    <field name="product_variant_ids" nolabel="1" colspan="2" readonly="True"
-                        attrs="{'invisible': [('type', '!=', 'date_range')]}"
-                    >
-                        <tree>
-                            <field name="display_name" string="Product Variant" />
-                            <field name="standard_price"/>
-                            <field name="date_from"/>
-                            <field name="date_to"/>
-                        </tree>
-                    </field>
-
                     <field name="project_id" readonly="True" />
                     <field name="budget_id" />
                     <field name="date" />
@@ -223,12 +182,11 @@
             <pivot>
                 <field name="project_id" type="col" />
                 <field name="budget_id" type="col"/>
-                <field name="detailed_type" type="col"/>
+                <field name="budget_type" type="col"/>
 
                 <field name="analytic_account_id" type="row" />
                 <field name="account_id" type="row"/>
                 <field name="partner_id" type="row"/>
-                <field name="uom_id" type="row"/>
 
                 <field name="qty_balance" type="measure" />
                 <field name="balance" type="measure" />
@@ -245,12 +203,11 @@
             <pivot>
                 <field name="project_id" />
                 <field name="budget_id"/>
-                <field name="detailed_type"/>
+                <field name="budget_type"/>
 
                 <field name="analytic_account_id" />
                 <field name="account_id" />
                 <field name="partner_id" />
-                <field name="uom_id" />
 
                 <field name="balance" />
                 <field name="qty_balance" />

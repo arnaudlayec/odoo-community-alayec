@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2024 Moduon Team S.L. <info@moduon.team>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
+<odoo>
+
+    <record id="hr_employee_timesheet_cost_view_tree" model="ir.ui.view">
+        <field name="name">hr.employee.timesheet.cost.history.view.tree</field>
+        <field name="model">hr.employee.timesheet.cost.history</field>
+        <field name="inherit_id" ref="hr_employee_cost_history.hr_employee_timesheet_cost_view_tree" />
+        
+        <field name="arch" type="xml">
+            <field name="hourly_cost" position="before">
+                <field name="department_id" />
+                <field name="employee_id" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Action to view costs history *from department* -->
+    <record id="hr_department_timesheet_cost_action" model="ir.actions.act_window">
+        <field name="name">Timesheet Cost History</field>
+        <field name="res_model">hr.employee.timesheet.cost.history</field>
+        <field name="view_mode">tree</field>
+        <field name="domain">['|', ('department_id', '=', active_id), ('employee_id.department_id', '=', active_id)]</field>
+        <field name="target">current</field>
+    </record>
+
+    <!-- Also view histories of both department and employee costs, from Department or Employee form -->
+    <record id="hr_employee_cost_history.hr_employee_timesheet_cost_action" model="ir.actions.act_window">
+        <field name="name">Timesheet Cost History</field>
+        <field name="domain">['|', ('employee_id', '=', active_id), ('department_id.member_ids', '=', active_id)]</field>
+    </record>
+
+</odoo>

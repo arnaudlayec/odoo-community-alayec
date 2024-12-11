@@ -20,7 +20,7 @@ class ProjectDefaultMixin(models.AbstractModel):
         help="Within your favorite projects"
     )
 
-    def _get_project_id(self, vals={}, record=False, raise_if_not_found=False):
+    def _get_project_id(self, vals={}, record=False, raise_if_not_found=False, return_record=False):
         """ Try to get a `project_id_` from various possible source
             Useful in other situation than here, can be called like:
             `self.env['project.default.mixin']._get_project_id()`
@@ -52,4 +52,7 @@ class ProjectDefaultMixin(models.AbstractModel):
                 self._context
             ))
         
-        return project_id_
+        return (
+            self.env['project.project'].sudo().browse(project_id_) if return_record
+            else project_id_
+        )

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Form view of Budget Line: add date-range value -->
+    <record id="view_account_move_budget_line_form" model="ir.ui.view">
+        <field name="name">account.move.budget.line.form.workforce</field>
+        <field name="model">account.move.budget.line</field>
+        <field name="inherit_id" ref="project_budget.view_account_move_budget_line_form" />
+
+        <field name="arch" type="xml">
+            <group name="bottom" position="before">
+                <group name="hourly_cost" string="Hour Cost per date ranges"
+                    attrs="{'invisible': [('type', '!=', 'workforce')]}"
+                >
+                    <field name="timesheet_cost_history_ids" nolabel="1" colspan="2" readonly="True" />
+                </group>
+            </group>
+        </field>
+    </record>
+</odoo>

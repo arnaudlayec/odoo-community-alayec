@@ -8,6 +8,10 @@ class HrDepartment(models.Model):
     analytic_account_id = fields.Many2one(
         comodel_name='account.analytic.account',
         string='Analytic Account',
-        help='Will defined the Analytic Account of the Tasks created by'
+        domain="""[
+            ('timesheetable', '=', True),
+            '|', ('company_id', '=', False), ('company_id', '=', company_id),
+        ]""",
+        help='Analytic Account of the Tasks created by'
              ' the employees of the department.'
     )

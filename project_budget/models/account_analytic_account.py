@@ -4,27 +4,26 @@ from odoo import api, fields, models, _
 
 class AccountAnalyticAccount(models.Model):
     """ Configuration on Analytic Account for Project Budget """
-    
-    _inherit = ['account.analytic.account']
+    _name = 'account.analytic.account'
+    _inherit = ['account.analytic.account', 'account.move.budget.update.mixin']
 
     sequence = fields.Integer(
-        # so all project's budget lines follows the same sequence
+        # used in account.move.budget.line: budget lines sequence follows analytic account's sequence
     )
     budget_only_accountant = fields.Boolean(
-        string='Only selectable by accountant?',
+        string='Accountant only?',
         default=True,
-        help='Only relevant for selection in budgets. If unchecked,'
-             ' projects managers will be able to select it by themselves in'
-             ' project\'s budgets.'
+        help='If checked, projects managers will not be able to select it in budgets.'
     )
-    product_tmpl_id = fields.Many2one(
-        comodel_name='product.template',
-        string='Default Product',
-        domain=[('budget_ok', '=', True)],
-        help='For budget, this product will be pre-selected in budget lines linked to'
-             ' this analytic account, which itself allows:\n'
-             ' 1. pre-selection of Account from product\'s expense account (or product\'s'
-             ' category\'s in budget lines;\n'
-             ' 2. date-ranged valuation of budget lines, as per product variant cost per'
-             ' date range.'
+    budget_type = fields.Selection(
+        selection=[
+            ('goods', 'Goods'),
+            ('service', 'Service')
+        ],
+        string='Budget type',
     )
+
+
+    def _get_default_line_type(self):
+        """ Defines default `type` of account.move.budget.line """
+        return 'unit' if self.budget_type == 'service' else 'amount'

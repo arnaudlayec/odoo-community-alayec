@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- Action & menu: view cost history from accounting budget -->
+    <record id="account_move_budget_workforce_act_window" model="ir.actions.act_window">
+        <field name="name">HR Cost History</field>
+        <field name="res_model">hr.employee.timesheet.cost.history</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'display_analytic': True}</field>
+    </record>
+    <menuitem id="account_move_budget_workforce_menu"
+        action="account_move_budget_workforce_act_window"
+        parent="project_budget.account_move_budget_section"
+    />
+
+    <!-- Tree view, only in Accounting app, add:
+        - Date To
+        - Analytic Account
+        - button to Department or Employee
+    -->
+    <record id="hr_employee_timesheet_cost_view_tree" model="ir.ui.view">
+        <field name="name">hr.employee.timesheet.cost.history.view.tree</field>
+        <field name="model">hr.employee.timesheet.cost.history</field>
+        <field name="inherit_id" ref="hr_employee_cost_history.hr_employee_timesheet_cost_view_tree" />
+        
+        <field name="arch" type="xml">
+            <field name="department_id" position="before">
+                <button name="button_open_department_or_employee"
+                    type="object"
+                    string="Open"
+                    icon="fa-bars"
+                    invisible="not context.get('display_analytic')"
+                />
+                <field name="analytic_account_id" invisible="not context.get('display_analytic')" />
+            </field>
+
+            <field name="starting_date" position="after">
+                <field name="date_to" />
+            </field>
+
+            <!-- Make fields optional -->
+            <field name="department_id" position="attributes">
+                <attribute name="optional">show</attribute>
+            </field>
+            <field name="employee_id" position="attributes">
+                <attribute name="optional">show</attribute>
+            </field>
+        </field>
+    </record>
+
+</odoo>

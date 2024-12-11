@@ -15,11 +15,6 @@ class Project(models.Model):
         return [Command.set(default_budget_ids.ids)]
     
     #===== Fields =====#
-    allocated_hours = fields.Float(
-        # overwrite origin field
-        compute='_compute_allocated_hours',
-        readonly=True
-    )
     budget_ids = fields.One2many(
         comodel_name='account.move.budget',
         inverse_name='project_id',
@@ -44,8 +39,8 @@ class Project(models.Model):
     )
     budget_line_sum = fields.Monetary(
         string='Budget Sum',
-        compute='_compute_budget_line_sum',
         currency_field='currency_id',
+        compute='_compute_budget_line_sum',
         store=True
     )
     date_start = fields.Date(
@@ -70,69 +65,32 @@ class Project(models.Model):
         for project in self:
             project.budget_line_sum = mapped_data.get(project.id)
     
-    def _get_mapped_budget_line(self, analytic_account_ids=False):
-        """ `analytic_account_ids` is used in `project_budget_timesheet` """
-        analytic = bool(analytic_account_ids) # for timesheet
-        field = 'qty_balance' if analytic else 'balance'
+    def _get_mapped_budget_line(self, field='balance', groupby=['project_id']):
+        """ `field` is used in other module `project_budget_timesheet` """
+        lazy = bool(len(groupby) == 1)
 
+        # print('== _get_mapped_budget_line ==')
         rg_result = self.env['account.move.budget.line'].sudo().read_group(
-            domain=self._get_budget_line_domain(analytic_account_ids),
+            domain=self._get_budget_line_domain(),
             fields=[field + ':sum'],
-            groupby=['project_id'] + (['analytic_account_id'] if analytic else []),
-            lazy=(not analytic)
+            groupby=groupby,
+            lazy=lazy
         )
-
-        def __key(proj, x):
-            return (proj, x['analytic_account_id'][0]) if analytic else proj
-        return {__key(x['project_id'][0], x): x[field] for x in rg_result}
-    
-    def _get_budget_line_domain(self, analytic_account_ids):
-        domain = [('project_id', 'in', self.ids)]
-        if analytic_account_ids:
-            domain += [('analytic_account_id', 'in', analytic_account_ids.ids)]
-        return domain
-    
-    @api.depends(
-        'budget_line_ids',
-        'budget_line_ids.qty_balance',
-        'budget_line_ids.product_tmpl_id',
-        'budget_line_ids.product_tmpl_id.uom_id',
-        'budget_line_ids.product_tmpl_id.uom_id.category_id',
-    )
-    def _compute_allocated_hours(self):
-        """ Find and groupsum hours in budget """
-        # Get sum of `qty_balance` for budgets of working-time category
-        uom_whour = self.env.ref('uom.product_uom_hour')
-        domain = [
-            ('project_id', 'in', self.ids),
-            ('qty_balance', '!=', 0),
-            ('product_tmpl_id.uom_id.category_id', '=', uom_whour.category_id.id)
-        ]
-        rg_result = self.env['account.move.budget.line'].sudo().read_group(
-            domain=domain,
-            groupby=['project_id', 'product_tmpl_id'],
-            fields=['qty_balance:sum'],
-            lazy=False
-        )
-
-        # `product_tmpl_id` to `uom_id`: for conversion of `product_tmpl_id.uom_id` to hours
-        product_tmpl_ids_ = [x['product_tmpl_id'][0] for x in rg_result]
-        pivot_product_to_uom = {
-            x.id: x.uom_id
-            for x in self.env['product.template'].sudo().search([('id', 'in', product_tmpl_ids_)])
-        }
-
-        # Convert `qty_balance` in hour (if needed)
-        mapped_data = defaultdict(int)
-        for x in rg_result:
-            line_uom_id = pivot_product_to_uom.get(x['product_tmpl_id'][0])
-            qty_in_hour = line_uom_id._compute_quantity(x['qty_balance'], uom_whour)
-            mapped_data[x['project_id'][0]] += qty_in_hour
+        # print('rg_result', rg_result)
+        # print('domain', self._get_budget_line_domain())
+        # print('groupby', groupby)
+        # print('lazy', lazy)
         
-        for project in self:
-            project.allocated_hours = mapped_data.get(project.id)
-
-
+        return {
+            x[groupby[0]][0] if lazy else tuple([x[key][0] for key in groupby]): x[field]
+            for x in rg_result
+        }
+    
+    def _get_budget_line_domain(self):
+        """ Overwritten in module `project_budget_timesheet` """
+        return [('project_id', 'in', self.ids)]
+    
+    
     #===== Compute (budget templates) =====#
     def _compute_budget_template_ids(self):
         default_budget_ids_cmd = self._default_budget_template_ids()
@@ -197,10 +155,7 @@ class Project(models.Model):
         self.ensure_one()
         budget_id = fields.first(self.budget_ids)
         view_id_ = self.env.ref('project_budget.view_account_move_budget_line_tree_simplified').id
-        context_default = (
-            self._get_default_vals_budget_line(budget_id, default=True)
-            | {'default_type': 'fix'}
-        )
+        context = self._get_default_vals_budget_line(budget_id, vals={'default_type': 'amount'}, default=True)
 
         return {
             'type': 'ir.actions.act_window',
@@ -208,6 +163,6 @@ class Project(models.Model):
             'view_mode': 'tree',
             'view_id': view_id_, # simplified budget lines view for projects 
             'name': _('Budget lines'),
-            'context': context_default,
+            'context': context,
             'domain': [('project_id', '=', self.id)]
         }

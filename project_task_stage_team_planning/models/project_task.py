@@ -7,7 +7,7 @@ class Task(models.Model):
 
     #===== Fields' method =====#
     def _get_shared_stage_ids(self):
-        return self.env['project.task.type'].search([('user_id', '=', False), ('fold', '=', False)])
+        return self.env['project.task.type'].search([('user_id', '=', False)])
     
     def stage_find(self, section_id, domain=[], order='sequence, id'):
         """ Gives default stage_id: override so stages are shared between projects """

@@ -12,8 +12,11 @@
     'category': 'Project',
     'version': '16.0.1.0.0',
 
-    'depends': ['project', 'analytic'],
-    'data': ['views/hr_views.xml']
+    'depends': ['project', 'analytic', 'hr_timesheet'],
+    'data': [
+        'views/account_analytic_account.xml',
+        'views/hr_views.xml',
+    ]
 }
 
 

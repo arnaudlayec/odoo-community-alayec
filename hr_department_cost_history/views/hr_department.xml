@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <record id="view_department_form" model="ir.ui.view" >
+        <field name="name">hr.department.form.cost_history</field>
+        <field name="model">hr.department</field>
+        <field name="inherit_id" ref="hr.view_department_form" />
+
+        <field name="arch" type="xml">
+            <field name="parent_id" position="after">
+                <field name="member_ids" invisible="1" /> <!-- for action's domain -->
+                <field name="currency_id" invisible="1"/>
+
+                <label for="hourly_cost" />
+                <div name="hourly_cost">
+                    <field name="hourly_cost" readonly="1" class="oe_inline" />
+                    
+                    <!-- Same buttons than in `hr_employee_cost_history` -->
+                    <field
+                        name="timesheet_cost_history_ids"
+                        invisible="1"
+                        groups="hr.group_hr_user"
+                    />
+                    <button
+                        type="action"
+                        name="%(hr_employee_cost_history.action_hr_employee_timesheet_cost_wizard)d"
+                        class="btn btn-link oe_inline"
+                        role="button"
+                        groups="hr.group_hr_user"
+                        context="{'default_department_id': id, 'default_hourly_cost': hourly_cost}"
+                    >
+                        <i class="fa fa-fw o_button_icon fa-arrow-right" /> Update Cost
+                    </button>
+                    <button
+                        type="action"
+                        name="%(hr_department_timesheet_cost_action)d"
+                        class="btn btn-link oe_inline"
+                        role="button"
+                        context="{'default_department_id': id}"
+                        groups="hr.group_hr_user"
+                        attrs="{'invisible': [('timesheet_cost_history_ids', '=', [])]}"
+                    >
+                        <i class="fa fa-fw o_button_icon fa-history" /> Cost History
+                    </button>
+                </div>
+            </field>
+        </field>
+    </record>
+
+</odoo>

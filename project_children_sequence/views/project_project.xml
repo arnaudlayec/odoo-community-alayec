@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
-    <!-- Project's Form -->
+    <!-- Project's Form (sequence) -->
     <record id="project_sequence_form_view" model="ir.ui.view">
         <field name="name">project.project.form.project_sequence.children_sequence</field>
         <field name="model">project.project</field>
@@ -36,32 +36,21 @@
             </div>
         </field>
     </record>
-    <!-- Project's Form -->
+
+    <!-- Project's Form (parent) -->
     <record id="edit_project" model="ir.ui.view">
         <field name="name">project.project.form.project_parent.children_sequence</field>
         <field name="model">project.project</field>
         <field name="inherit_id" ref="project_parent.edit_project" />
 
         <field name="arch" type="xml">
-            <!-- Add toggle `child_project` -->
-            <h1 position="before">
-                <group attrs="{'invisible': [('id', '!=', False)]}">
-                    <field name="child_project" />
-                </group>
-            </h1>
-
             <!-- Move `parent_id` below project's name -->
             <field name="partner_id" position="before">
                 <field name="parent_id" position="move" />
             </field>
             <field name="parent_id" position="attributes">
-                <attribute name="class">h2</attribute>
-                <attribute name="attrs">{
-                    'invisible': [('child_project', '=', False)],
-                    'required': [('child_project', '=', True)],
-                    'readonly': [('id', '!=', False)],
-                }</attribute>
-                <attribute name="placeholder">Choose parent project</attribute>
+                <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
+                <attribute name="placeholder">Choose to make it a child project, or leave empty for main projects</attribute>
             </field>
         </field>
     </record>

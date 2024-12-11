@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Action & menu -->
+    <record model="ir.actions.act_window" id="account_move_budget_line_template_act_window">
+        <field name="name">Budget lines templates</field>
+        <field name="res_model">account.move.budget.line.template</field>
+        <field name="view_mode">tree,form</field>
+    </record>
+    <menuitem id="account_move_budget_line_template_menu"
+        action="account_move_budget_line_template_act_window"
+        parent="account.menu_finance_entries_accounting_miscellaneous"
+    />
+    
+    <!-- Tree: Budget Line Template -->
+    <record id="view_account_move_budget_line_template_tree" model="ir.ui.view">
+        <field name="name">account.move.budget.line.template.tree</field>
+        <field name="model">account.move.budget.line.template</field>
+
+        <field name="arch" type="xml">
+            <tree editable="top" multi_edit="True">
+                <field name="sequence" widget="handle" />
+                <field name="account_id" />
+                <field name="analytic_account_id"
+                    groups="analytic.group_analytic_accounting"
+                />
+                <field name="partner_id" />
+                <field name="name" />
+                <field name="company_id" groups="base.group_multi_company" />
+            </tree>
+        </field>
+    </record>
+    
+    <!-- Form: Budget Line Template -->
+    <record id="view_account_move_budget_line_template_form" model="ir.ui.view">
+        <field name="name">account.move.budget.line.template.form</field>
+        <field name="model">account.move.budget.line.template</field>
+
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <div class="oe_title">
+                        <h1> <field name="name" /> </h1>
+                    </div>
+
+                    <group>
+                        <field name="company_id" groups="base.group_multi_company" />
+
+                        <field name="account_id" />
+                        <field name="analytic_account_id"
+                            groups="analytic.group_analytic_accounting"
+                        />
+                        <field name="partner_id" />
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+    
+    
+</odoo>

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-06 16:41+0000\n"
-"PO-Revision-Date: 2024-12-06 17:43+0100\n"
+"POT-Creation-Date: 2024-12-11 10:40+0000\n"
+"PO-Revision-Date: 2024-12-11 11:42+0100\n"
 "Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -33,13 +33,20 @@ msgstr "Séquence des projets enfants de "
 
 #. module: project_children_sequence
 #: model_terms:ir.ui.view,arch_db:project_children_sequence.edit_project
-msgid "Choose parent project"
-msgstr "Choisir le projet parent"
+msgid "Choose to make it a child project, or leave empty for main projects"
+msgstr ""
+"Laissez vide pour les projets principaux, et remplissez pour faire de ce "
+"projet un sous-projet."
+
+#. module: project_children_sequence
+#: model:ir.model.fields,field_description:project_children_sequence.field_project_project__sequence_code
+msgid "Code"
+msgstr "Code"
 
 #. module: project_children_sequence
 #: model:ir.model.fields,field_description:project_children_sequence.field_project_project__child_project
 msgid "Is a sub-project?"
-msgstr "Sous-projet ?"
+msgstr "S'agit-il d'un sous-projet ?"
 
 #. module: project_children_sequence
 #: model:ir.model.fields,field_description:project_children_sequence.field_project_project__parent_id
@@ -54,7 +61,12 @@ msgstr "Projet"
 #. module: project_children_sequence
 #: model:ir.model.fields,field_description:project_children_sequence.field_project_project__children_sequence_id
 msgid "Sequence for children projects"
-msgstr "Séquence pour les projets enfant"
+msgstr "Séquence pour les projets d'enfants"
+
+#. module: project_children_sequence
+#: model:ir.model.fields,field_description:project_children_sequence.field_project_project__sequence_code_choose
+msgid "Set a custom Code"
+msgstr "Choisir le code du projet"
 
 #. module: project_children_sequence
 #: model_terms:ir.ui.view,arch_db:project_children_sequence.view_project_project_filter

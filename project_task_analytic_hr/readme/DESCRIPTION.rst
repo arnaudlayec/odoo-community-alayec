@@ -1,7 +1,8 @@
 
-By default, Task inherites Analytic Account from their project.
-This module changes this default behavior to set tasks' analytic account
-based on HR department's or employee's default Analytic Account.
+Natively, Task inherites their *Analytic Account* from their project.
+This module adds *Analytic Account* field on HR Department and Employee forms,
+and set default *Analytic Account* of tasks creating following the HR information
+of the user who creates the task.
 
 This can be useful, for instance in conjonction with modules `project_budget`
 and `hr_timesheet`: project's Planned Hours can be splitted into several budgets,

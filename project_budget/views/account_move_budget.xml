@@ -1,5 +1,20 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
+    <!-- New menu section -->
+    <menuitem id="account_move_budget_section"
+        parent="account.menu_finance_entries"
+        name="Account Move Budgets"
+    >
+        <menuitem id="account_move_budget.account_move_budget_menu"
+            action="account_move_budget.account_move_budget_act_window"
+        />
+    </menuitem>
+    <record model="ir.ui.menu"
+        id="project_budget_line_template.account_move_budget_line_template_menu"
+    >
+        <field name="parent_id" ref="account_move_budget_section" />
+    </record>
+
     <!-- Form -->
     <record model="ir.ui.view" id="account_move_budget_form_view">
         <field name="name">account.move.budget.form.project</field>
@@ -13,7 +28,7 @@
             </field>
             <!-- Add `template` and `template_default_project` on bottom -->
             <group name="dates" position="after">
-                <group name="tempalte">
+                <group name="template">
                     <field name="template" widget="boolean_toggle" />
                     <field name="template_default_project"
                         widget="boolean_toggle"
@@ -47,6 +62,8 @@
             <search position="inside">
                 <field name="project_id" />
                 
+                <filter string="Template" name="template" domain="[('template', '=', True)]"/>
+                <separator />
                 <filter string="★ Projects" name="my_favorite_projects" domain="[('project_id.favorite_user_ids', '=', uid)]"/>
 
                 <searchpanel>

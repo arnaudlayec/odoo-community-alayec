@@ -2,25 +2,31 @@
 
 from odoo import models, fields, api, _
 
+SELECTION_TYPE = [
+    # `amount` is default feature of origin `account_move_budget` OCA module
+    ('amount', 'Amount'),
+    ('unit', 'Unit price'),
+]
+
 class AccountMoveBudgetLine(models.Model):
     _name = "account.move.budget.line"
-    _inherit = ["account.move.budget.line"]
+    _inherit = ["account.move.budget.line", "account.move.budget.update.mixin"]
     _order = "seq_analytic, date desc, id desc"
 
-    #===== Fields methods =====#
-    def _default_account_id(self):
-        """ On `create`, if an analytic account or a product_tmpl is given,
-            tries to default account_id
-        """
-        product_tmpl_id = self.product_tmpl_id or self.analytic_account_id.product_tmpl_id
-        return bool(product_tmpl_id.id) and product_tmpl_id._get_product_accounts().get('expense')
-
+    #===== Fields' methods =====#
+    def _domain_analytic_account_id(self):
+        """ Limit selection of restricted analytic account to accountants only """
+        return (
+            [] if self.env.user.has_group('account.group_account_manager')
+            else [('budget_only_accountant', '=', False)]
+        )
+    
     #===== Fields =====#
-    account_id = fields.Many2one(
-        default=_default_account_id
+    analytic_account_id = fields.Many2one(
+        domain=_domain_analytic_account_id
     )
     budget_id = fields.Many2one(
-        domain="[('project_id', '=', project_id)]"
+        domain="['|', ('project_id', '=', project_id), ('project_id', '=', False)]"
     )
     project_id = fields.Many2one(
         related='budget_id.project_id',
@@ -31,62 +37,43 @@ class AccountMoveBudgetLine(models.Model):
         store=True
     )
     partner_id = fields.Many2one(
-        # default line's partner to project's
-        related='project_id.partner_id', store=True, readonly=False, # follows project's partner
+        # follows project's partner
+        related='project_id.partner_id',
+        store=True,
+        readonly=False,
     )
     type = fields.Selection(
-        # `standard` is default feature of origin `account_move_budget` OCA module
-        selection=[
-            ('standard', 'Direct valuation'),
-            ('fix', 'Unit-price valuation'),
-            ('date_range', 'Date-range valuation'),
-        ],
-        default='standard',
-        required=True
+        selection=SELECTION_TYPE,
+        string='Type',
+        required=True,
+        precompute=True,
+        compute='_compute_type', # follows' analytic budget_type
+        store=True,
+        readonly=False,
+        help='- "Amount": Debit and Credit are filled in\n'
+             '- "Unit": Qty Debit, Qty Credit and Unit Price are filled in, and\n'
+             ' Debit and Credit are calculated accordingly'
     )
-    product_tmpl_id = fields.Many2one(
-        comodel_name='product.template',
-        string='Product',
-        related='analytic_account_id.product_tmpl_id', store=True, readonly=False, # follows analytic account's product
-        ondelete='restrict',
-        domain="""[
-            ('budget_ok', '=', True),
-            '|', ('company_id', '=', False), ('company_id', '=', company_id)
-        ]"""
-    )
-    detailed_type = fields.Selection(
-        # for pivot view
-        related='product_tmpl_id.detailed_type',
+    budget_type = fields.Selection(
+        # from analytic. Store for pivot view
+        related='analytic_account_id.budget_type',
         store=True
-    )
-    name = fields.Char(
-        related='product_tmpl_id.name', store=True, readonly=False, # follows product's name
     )
     # values
     standard_price = fields.Monetary(
-        # only displayed/used if `fix`
+        # only displayed/used if `unit`
         string='Unit price',
         currency_field='company_currency_id'
-    )
-    product_variant_ids = fields.One2many(
-        # displayed/used if `fix` or `date_range`
-        # if `date_range`: variants are used for valuation (if none: 0€)
-        related='product_tmpl_id.product_variant_ids'
-    )
-    uom_id = fields.Many2one(
-        related='product_tmpl_id.uom_id',
     )
 
     # debit & credit: h->€
     debit = fields.Monetary(
         compute='_compute_debit_credit',
-        compute_sudo=True,
         store=True,
         readonly=False
     )
     credit = fields.Monetary(
         compute='_compute_debit_credit',
-        compute_sudo=True,
         store=True,
         readonly=False
     )
@@ -111,45 +98,44 @@ class AccountMoveBudgetLine(models.Model):
         "A budget line is already set on this project to the same analytic account."
     )]
 
-    #===== Compute: prefilling =====#
-    @api.onchange('analytic_account_id', 'product_tmpl_id')
-    def _onchange_default_account_id(self):
-        """ `account_id` is suggested as per product's accounting settings (expense account) """
+
+    #===== CRUD =====#
+    def _trigger_depends(self, method, fields=[]):
+        # [example] project_project.budget_line_sum
+        # if 'balance' in fields or method in ['create', 'unlink']:
+        #     recordset.project_id._compute_budget_line_sum()
+        return super()._trigger_depends(method, fields)
+    
+
+    #===== Type (Create, Default, Onchange): default line type from analytic_account_id =====#
+    @api.depends('analytic_account_id', 'analytic_account_id.budget_type')
+    def _compute_type(self):
         for line in self:
-            line.account_id = line._default_account_id()
+            line.type = line.analytic_account_id._get_default_line_type() or 'amount'
 
     #===== Compute: valuation =====#
-    @api.depends(
-        'qty_debit', 'qty_credit',
-        'budget_id', 'budget_id.date_from', 'budget_id.date_to',
-        'product_tmpl_id', 'product_tmpl_id.standard_price',
-        'product_variant_ids', 'product_variant_ids.standard_price',  'product_variant_ids.date_from',
-    )
+    @api.depends('standard_price', 'qty_debit', 'qty_credit')
     def _compute_debit_credit(self):
         for line in self:
+            line._compute_debit_credit_one()
             line.qty_balance = line.qty_debit - line.qty_credit
-
-            if line.type == 'fix':
-                line.debit = line.qty_debit * line.standard_price
-                line.credit = line.qty_credit * line.standard_price
-            elif line.type == 'date_range':
-                line.debit = line._value_qty(line.qty_debit)
-                line.credit = line._value_qty(line.qty_credit)
-            
             line.balance = line.debit - line.credit
     
-    def _value_qty(self, qty):
+    def _compute_debit_credit_one(self):
         self.ensure_one()
-        return self.product_tmpl_id.id and self.product_tmpl_id._value_qty(qty, self.budget_id)
+        if self.type == 'unit':
+            self.debit = self.qty_debit * self.standard_price
+            self.credit = self.qty_credit * self.standard_price
+
 
     #===== Button ======#
     def button_open_budget_line_form(self):
-        return self.project_id.button_open_budget_lines() | {
-            'name': 'Budget Line details',
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Budget line details'),
             'view_mode': 'form',
+            'res_model': 'account.move.budget.line',
             'res_id': self.id,
+            'context': {'default_type': 'unit'},
             'target': 'new'
         }
-
-    def copy(self, default=None):
-        return super().copy(default)

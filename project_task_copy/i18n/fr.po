@@ -6,15 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-03 17:02+0000\n"
-"PO-Revision-Date: 2024-12-03 18:05+0100\n"
-"Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
+"POT-Creation-Date: 2024-12-11 12:03+0000\n"
+"PO-Revision-Date: 2024-12-11 13:03+0100\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.5\n"
 
 #. module: project_task_copy
@@ -30,8 +30,13 @@ msgid "Copy"
 msgstr "Copier"
 
 #. module: project_task_copy
+#: model_terms:ir.ui.view,arch_db:project_task_copy.edit_project
+msgid "Copy from..."
+msgstr "Copier depuis..."
+
+#. module: project_task_copy
 #: model:ir.actions.act_window,name:project_task_copy.action_open_project_task_copy_wizard
-msgid "Copy to another project"
+msgid "Copy tasks to another project"
 msgstr "Copier dans un autre projet"
 
 #. module: project_task_copy
@@ -62,7 +67,7 @@ msgstr "Nom affiché"
 #. module: project_task_copy
 #: model:ir.model.fields,field_description:project_task_copy.field_project_task_copy_wizard__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: project_task_copy
 #: model:ir.model.fields,field_description:project_task_copy.field_project_task_copy_wizard____last_update
@@ -103,8 +108,8 @@ msgstr "Assistant de copie de tâches projet"
 
 #. module: project_task_copy
 #: model_terms:ir.ui.view,arch_db:project_task_copy.view_project_task_copy_wizard
-msgid "Selected tasks will be copied to following project:"
-msgstr "Les tâches sélectionnées seront copiées dans le projet suivant :"
+msgid "Selected tasks will be copied to the following project:"
+msgstr "Les tâches sélectionnez seront copiées vers le projet suivant:"
 
 #. module: project_task_copy
 #: model:ir.model,name:project_task_copy.model_project_task

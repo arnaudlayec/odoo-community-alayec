@@ -6,25 +6,31 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-01 13:00+0000\n"
-"PO-Revision-Date: 2024-12-01 14:02+0100\n"
-"Last-Translator: \n"
+"POT-Creation-Date: 2024-12-10 13:20+0000\n"
+"PO-Revision-Date: 2024-12-11 12:23+0100\n"
+"Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: \n"
 "X-Generator: Poedit 3.5\n"
 
 #. module: project_budget
-#: model_terms:ir.ui.view,arch_db:project_budget.product_normal_form_view
-#: model_terms:ir.ui.view,arch_db:project_budget.product_variant_easy_edit_view
+#: model:ir.model.fields,help:project_budget.field_account_move_budget_line__type
 msgid ""
-"<i class=\"fa fa-long-arrow-right mx-2 oe_edit_only\" aria-label=\"Arrow icon\" title=\"Arrow\"/>"
+"- \"Amount\": Debit and Credit are filled in- \"Unit\": Qty Debit, Qty "
+"Credit and Unit Price are filled in, and Debit and Credit are calculated "
+"accordingly- \"Workforce\": same as \"Unit\" but Unit Price is calculated "
+"as per HR history costs of the budget line's Analytic Account."
 msgstr ""
-"<i class=\"fa fa-long-arrow-right mx-2 oe_edit_only\" aria-label=\"Icône de flèche\" "
-"title=\"Flèche\"/>"
+"- \"Montant\" : Le débit et le crédit sont renseignés\n"
+"- \"Unité\" : Qté débit, Qté crédit et prix unitaire sont renseignés, et le "
+"débit et le crédit sont calculés en conséquence\n"
+"- \"Main d'oeuvre\" : comme \"Unité\", mais le prix unitaire est calculé en "
+"fonction des coûts de l'historique RH du compte analytique de la ligne "
+"budgétaire."
 
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.edit_project
@@ -33,13 +39,10 @@ msgstr "<span class=\"o_stat_text\">Budget</span>"
 
 #. module: project_budget
 #: model:ir.model.constraint,message:project_budget.constraint_account_move_budget_line_unique_aac_per_project
-msgid "A budget line is already set on this project to the same analytic account."
-msgstr "Une autre ligne de budget est déjà définie avec ce compte analytique dans ce projet."
-
-#. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__account_id
-msgid "Account"
-msgstr "Compte"
+msgid ""
+"A budget line is already set on this project to the same analytic account."
+msgstr ""
+"Une autre ligne de budget utilise déjà ce compte analytique dans ce projet."
 
 #. module: project_budget
 #: model:ir.model,name:project_budget.model_account_move_budget
@@ -52,6 +55,11 @@ msgid "Account Move Budget Line"
 msgstr "Ligne de budget comptable"
 
 #. module: project_budget
+#: model:ir.model,name:project_budget.model_account_move_budget_line_template
+msgid "Account Move Budget Line Template"
+msgstr "Modèle de ligne budgétaire"
+
+#. module: project_budget
 #. odoo-python
 #: code:addons/project_budget/hooks.py:0
 #: model:ir.ui.menu,name:project_budget.account_move_budget_section
@@ -60,33 +68,21 @@ msgid "Account Move Budgets"
 msgstr "Budgets comptables"
 
 #. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_project_project__allocated_hours
-msgid "Allocated Hours"
-msgstr "Heures allouées"
+#: model:ir.model.fields,field_description:project_budget.field_account_analytic_account__budget_only_accountant
+msgid "Accountant only?"
+msgstr "Comptables uniquement ?"
+
+#. module: project_budget
+#: model:ir.model.fields.selection,name:project_budget.selection__account_move_budget_line__type__amount
+#: model:ir.model.fields.selection,name:project_budget.selection__account_move_budget_line_template__type__amount
+msgid "Amount"
+msgstr "Montant"
 
 #. module: project_budget
 #: model:ir.model,name:project_budget.model_account_analytic_account
+#: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__analytic_account_id
 msgid "Analytic Account"
 msgstr "Compte analytique"
-
-#. module: project_budget
-#: model:ir.model.constraint,message:project_budget.constraint_product_product_date_from_per_tmpl
-msgid "Another variant already has the same start date (for cost valuation in budgets)."
-msgstr ""
-"Un autre variant a déjà la même date de début (pour la valorisation des coûts dans les budgets)."
-
-#. module: project_budget
-#: model:ir.model,name:project_budget.model_product_attribute_value
-msgid "Attribute Value"
-msgstr "Code valeur de l'attribut"
-
-#. module: project_budget
-#. odoo-python
-#: code:addons/project_budget/models/product_product.py:0
-#: model_terms:ir.ui.view,arch_db:project_budget.product_product_tree_view_budget
-#, python-format
-msgid "Attributes"
-msgstr "Attributs"
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__qty_balance
@@ -100,15 +96,16 @@ msgid "Budget"
 msgstr "Budget"
 
 #. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_product_product__budget_lines_ids
-#: model:ir.model.fields,field_description:project_budget.field_product_template__budget_lines_ids
-msgid "Budget Lines"
-msgstr "Lignes budgétaires"
-
-#. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_project_project__budget_line_sum
 msgid "Budget Sum"
 msgstr "Somme du budget"
+
+#. module: project_budget
+#. odoo-python
+#: code:addons/project_budget/models/account_move_budget_line.py:0
+#, python-format
+msgid "Budget line details"
+msgstr "Détails de la ligne budgétaire"
 
 #. module: project_budget
 #. odoo-python
@@ -121,7 +118,7 @@ msgstr "Lignes budgétaires"
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_project_project__budget_ids
 msgid "Budget sheets"
-msgstr "Feuille de budget"
+msgstr "Feuilles de budget"
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_project_project__budget_template_ids
@@ -129,22 +126,10 @@ msgid "Budget templates"
 msgstr "Modèles de budget"
 
 #. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_product_product__budget_ok
-#: model:ir.model.fields,field_description:project_budget.field_product_template__budget_ok
-#: model_terms:ir.ui.view,arch_db:project_budget.product_template_search_view
-msgid "Can be used in Budget"
-msgstr "Peut être utilisé dans un budget"
-
-#. module: project_budget
-#. odoo-python
-#: code:addons/project_budget/models/product_template.py:0
-#, python-format
-msgid ""
-"Cannot change Unit of Measure neither Product Type as there are already account move budgets on "
-"this product."
-msgstr ""
-"Impossible de modifier l'unité de mesure ou le type de produit car il existe déjà des budgets "
-"comptables associés à ce produit."
+#: model:ir.model.fields,field_description:project_budget.field_account_analytic_account__budget_type
+#: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__budget_type
+msgid "Budget type"
+msgstr "Type de budget"
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__credit
@@ -157,42 +142,6 @@ msgid "Credit (qty)"
 msgstr "Crédit (qty)"
 
 #. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_product_attribute_value__date_from
-msgid "Date"
-msgstr "Date"
-
-#. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_product_product__date_from
-msgid "Date From"
-msgstr "Date de début"
-
-#. module: project_budget
-#: model_terms:ir.ui.view,arch_db:project_budget.product_normal_form_view
-#: model_terms:ir.ui.view,arch_db:project_budget.product_variant_easy_edit_view
-msgid "Date Range"
-msgstr "Période"
-
-#. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_product_product__date_to
-msgid "Date To"
-msgstr "Date de fin"
-
-#. module: project_budget
-#: model:ir.model.fields.selection,name:project_budget.selection__account_move_budget_line__type__date_range
-msgid "Date-range valuation"
-msgstr "Valorisation par périodes"
-
-#. module: project_budget
-#: model:ir.actions.act_window,name:project_budget.action_open_account_move_budget_product
-msgid "Date-ranged values"
-msgstr "Valeurs par périodes"
-
-#. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_product_attribute__values_date_ranged
-msgid "Date-ranged values?"
-msgstr "Valeurs par périodes?"
-
-#. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__debit
 msgid "Debit"
 msgstr "Débit"
@@ -203,92 +152,44 @@ msgid "Debit (qty)"
 msgstr "Débit (qté)"
 
 #. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_account_analytic_account__product_tmpl_id
-msgid "Default Product"
-msgstr "Produit par défaut"
-
-#. module: project_budget
-#: model:ir.model.fields,help:project_budget.field_account_move_budget_line__uom_id
-msgid "Default unit of measure used for all stock operations."
-msgstr "Unité de mesure par défaut utilisée pour toutes les opérations de stock."
-
-#. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_tree
 msgid "Details"
 msgstr "Détails"
 
 #. module: project_budget
-#: model:ir.model.fields.selection,name:project_budget.selection__account_move_budget_line__type__standard
-msgid "Direct valuation"
-msgstr "Valorisation directe"
-
-#. module: project_budget
-#: model:ir.model.fields,help:project_budget.field_account_analytic_account__product_tmpl_id
-#: model:ir.model.fields,help:project_budget.field_account_move_budget_line__product_tmpl_id
-msgid ""
-"For budget, this product will be pre-selected in budget lines linked to this analytic account, "
-"which itself allows:\n"
-" 1. pre-selection of Account from product's expense account (or product's category's in budget "
-"lines;\n"
-" 2. date-ranged valuation of budget lines, as per product variant cost per date range."
-msgstr ""
-"Pour le budget, ce produit sera présélectionné dans les lignes budgétaires liées à ce compte "
-"analytique, qui lui-même permet :\n"
-" 1. la présélection du compte de charges du produit (ou de la catégorie de produit) dans les "
-"lignes budgétaires ;\n"
-" 2. l'évaluation des lignes budgétaires en suivant les coût par période des variants de l'artilcle."
-
-#. module: project_budget
-#: model:ir.model.fields,help:project_budget.field_product_attribute_value__date_from
-msgid ""
-"For budgets, date from which the variant with this attribute becomes the reference one for the "
-"product cost."
-msgstr ""
-"Pour les budgets, date à partir de laquelle le variant de produit avec cet attribut devient le "
-"référent pour le coût du produit."
-
-#. module: project_budget
-#: model:ir.model.fields,help:project_budget.field_product_product__date_from
-msgid ""
-"For budgets, date from which this variant becomes the reference one for the product cost (until "
-"next one)."
-msgstr ""
-"Pour les budgets, date à partir de laquelle ce variant devient la référence pour le coût du "
-"produit (jusqu'au suivant)."
-
-#. module: project_budget
-#: model:ir.model.fields,help:project_budget.field_product_attribute__values_date_ranged
-msgid "For budgets, if the products with this attribute are used to value a budget per date range."
-msgstr ""
-"Pour les budgets, si les produits avec cet attribut sont utilisés pour évaluer un budget par "
-"périodes."
-
-#. module: project_budget
-#: model:ir.model.fields,help:project_budget.field_product_product__standard_price_date_ranged
-msgid "If activated, the standard cost is only applicable between Date From and Date To"
-msgstr "Si coché, le coût standard n'est applicable qu'entre la date de début et la date de fin"
+#: model:ir.model.fields.selection,name:project_budget.selection__account_analytic_account__budget_type__goods
+msgid "Goods"
+msgstr "Fournitures"
 
 #. module: project_budget
 #: model:ir.model.fields,help:project_budget.field_account_move_budget__template
-msgid "If activated, this budget will be selectable to be copied from, on other projects."
+msgid ""
+"If activated, this budget will be selectable to be copied from, on other "
+"projects."
 msgstr ""
-"S'il est activé, ce budget sera proposé comme modèle pour être être importé dans les nouveaux "
+"Si activé, ce budget sera sélectionnable comme modèle pour les nouveaux "
 "projets."
 
 #. module: project_budget
 #: model:ir.model.fields,help:project_budget.field_account_move_budget__template_default_project
-msgid "If activated, this budget will be suggested by default for all new projects."
-msgstr "S'il est activé, ce budget sera proposé par défaut pour tous les nouveaux projets."
+msgid ""
+"If activated, this budget will be suggested by default for all new projects."
+msgstr ""
+"Si activé, ce budget sera proposé par défaut comme modèle pour tous les "
+"nouveaux projets."
 
 #. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__name
-msgid "Label"
-msgstr "Libellé"
+#: model:ir.model.fields,help:project_budget.field_account_analytic_account__budget_only_accountant
+msgid ""
+"If checked, projects managers will not be able to select it in budgets."
+msgstr ""
+"Si activé, les chefs de projets ne pourront pas sélectionner ce compte "
+"analytique dans les budgets."
 
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_form
 msgid "Line information"
-msgstr "Informations sur les lignes"
+msgstr "Informations de la ligne"
 
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_form
@@ -299,45 +200,6 @@ msgstr "Paramètres de la ligne"
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__partner_id
 msgid "Partner"
 msgstr "Contact"
-
-#. module: project_budget
-#: model_terms:ir.ui.view,arch_db:project_budget.product_normal_form_view
-#: model_terms:ir.ui.view,arch_db:project_budget.product_variant_easy_edit_view
-msgid "Planned Date"
-msgstr "Date prévue"
-
-#. module: project_budget
-#: model:ir.model,name:project_budget.model_product_template
-#: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__product_tmpl_id
-#: model_terms:ir.ui.view,arch_db:project_budget.product_product_tree_view_budget
-msgid "Product"
-msgstr "Produit"
-
-#. module: project_budget
-#: model:ir.model,name:project_budget.model_product_attribute
-msgid "Product Attribute"
-msgstr "Attribut de l'article"
-
-#. module: project_budget
-#: model:ir.model,name:project_budget.model_product_product
-#: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_form
-msgid "Product Variant"
-msgstr "Variante de produit"
-
-#. module: project_budget
-#: model_terms:ir.ui.view,arch_db:project_budget.product_product_tree_view_budget
-msgid "Product Variants (Budget)"
-msgstr "Variantes de produits (budget)"
-
-#. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__product_variant_ids
-msgid "Products"
-msgstr "Produits"
-
-#. module: project_budget
-#: model:ir.ui.menu,name:project_budget.account_move_budget_product
-msgid "Products (budget)"
-msgstr "Valeurs par périodes"
 
 #. module: project_budget
 #: model:ir.model,name:project_budget.model_project_project
@@ -368,9 +230,9 @@ msgid "Sequence"
 msgstr "Séquence"
 
 #. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_product_product__standard_price_date_ranged
-msgid "Standard Price Date Ranged"
-msgstr "Prix standard par période"
+#: model:ir.model.fields.selection,name:project_budget.selection__account_analytic_account__budget_type__service
+msgid "Service"
+msgstr "Service"
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_project_project__date_start
@@ -379,6 +241,7 @@ msgstr "Date de début"
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget__template
+#: model_terms:ir.ui.view,arch_db:project_budget.account_move_budget_search_view
 msgid "Template"
 msgstr "Modèle"
 
@@ -398,24 +261,10 @@ msgid "Type"
 msgstr "Type"
 
 #. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__uom_id
-msgid "Unit of Measure"
-msgstr "Unité de mesure"
-
-#. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__standard_price
+#: model:ir.model.fields.selection,name:project_budget.selection__account_move_budget_line__type__unit
 msgid "Unit price"
-msgstr "Valeur de la ligne"
-
-#. module: project_budget
-#: model:ir.model.fields.selection,name:project_budget.selection__account_move_budget_line__type__fix
-msgid "Unit-price valuation"
-msgstr "Valorisation par prix unitaire"
-
-#. module: project_budget
-#: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_form
-msgid "Valuation per date range"
-msgstr "Valorisation par périodes"
+msgstr "Montant unitaire"
 
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_form
