@@ -13,6 +13,7 @@ class Task(models.Model):
         """ Show all timesheetable in column, in task's kanban view """
 
         domain = ['|', ('id', 'in', analytics.ids), ('timesheetable', '=', True)]
+        
         analytics = analytics.sudo().with_context(display_short_name=True).search(domain, order=order)
         
         # If project can be guessed, limit columns to the ones with budget line(s) on the project

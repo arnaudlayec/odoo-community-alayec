@@ -11,7 +11,7 @@ class Task(models.Model):
     
     def stage_find(self, section_id, domain=[], order='sequence, id'):
         """ Gives default stage_id: override so stages are shared between projects """
-        return fields.first(self._get_shared_stage_ids()).id
+        return fields.first(self._get_shared_stage_ids().filtered(lambda x: not x.fold)).id
     
     @api.model
     def _read_group_stage_ids(self, stages, domain, order):
