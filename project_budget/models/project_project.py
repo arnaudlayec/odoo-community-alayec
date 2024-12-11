@@ -68,21 +68,14 @@ class Project(models.Model):
     def _get_mapped_budget_line(self, field='balance', groupby=['project_id']):
         """ `field` is used in other module `project_budget_timesheet` """
         lazy = bool(len(groupby) == 1)
-
-        # print('== _get_mapped_budget_line ==')
         rg_result = self.env['account.move.budget.line'].sudo().read_group(
             domain=self._get_budget_line_domain(),
             fields=[field + ':sum'],
             groupby=groupby,
             lazy=lazy
         )
-        # print('rg_result', rg_result)
-        # print('domain', self._get_budget_line_domain())
-        # print('groupby', groupby)
-        # print('lazy', lazy)
-        
         return {
-            x[groupby[0]][0] if lazy else tuple([x[key][0] for key in groupby]): x[field]
+            x[groupby[0]][0] if lazy else tuple([x[key] and x[key][0] for key in groupby]): x[field]
             for x in rg_result
         }
     
