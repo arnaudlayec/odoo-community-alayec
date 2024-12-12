@@ -84,19 +84,19 @@ class ProjectAssignment(models.Model):
     
     def _add_project_followers(self, vals_list):
         """ Called by create(): add assignees to followers """
+        env_follower = self.sudo().with_context(project_role_no_raise=True)
         # Get projects with privacy `followers` before loop on `vals_list`
         mapped_followers_ids = {
-            vals['project_id']: []
-            for vals in vals_list if vals.get('project_id')
+            vals['project_id']: [] for vals in vals_list if vals.get('project_id')
         }
-        Project = self.sudo().env['project.project']
+        Project = env_follower.env['project.project']
         mapped_project_ids = {
             project.id: project
             for project in Project.browse(set(mapped_followers_ids.keys()))
             if project._should_synch_roles()
         }
         # Get a quick user->partner dict
-        Users = self.sudo().env['res.users']
+        Users = env_follower.env['res.users']
         mapped_partner_ids_ = {
             user.id: user.partner_id.id
             for user in Users.browse([
@@ -118,6 +118,7 @@ class ProjectAssignment(models.Model):
                 project._message_subscribe(partner_ids_)
 
     def _update_project_followers(self, vals):
+        self = self.with_context(project_role_no_raise=True)
         pass
 
         # """ Called by write(): update followers on changes of `primary` """
@@ -133,6 +134,7 @@ class ProjectAssignment(models.Model):
     
     def _remove_project_followers(self):
         """ Removes the follower object before role assignments """
+        self = self.with_context(project_role_no_raise=True)
         assignment_ids_to_clean = self._filter_has_access()
         project_ids_to_clean = assignment_ids_to_clean.project_id.filtered(lambda x: x._should_synch_roles())
 
@@ -145,7 +147,7 @@ class ProjectAssignment(models.Model):
         
         # Unsubscribe
         for project, partner_ids_ in mapped_partner_ids.items():
-            project.with_context(unsubscribe_no_raise=True).message_unsubscribe(partner_ids_)
+            project.message_unsubscribe(partner_ids_)
 
     #===== Compute of dynamic domain user for `user_id` =====#
     @api.depends('project_id', 'role_id')

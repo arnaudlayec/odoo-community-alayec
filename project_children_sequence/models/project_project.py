@@ -7,7 +7,7 @@ class Project(models.Model):
     _inherit = ["project.project"]
 
     #====== Fields ======#
-    # 2024-11-27: don't keep the functionaly that children projects's names follow parent's one
+    # 2024-11-27: cancel feature of children projects's names following parent's one
     # name = fields.Char(
     #     compute='_compute_name',
     #     store=True,
@@ -15,7 +15,8 @@ class Project(models.Model):
     #     readonly=False
     # )
     sequence_code = fields.Char(
-        string='Code'
+        string='Code',
+        readonly=False
     )
     sequence_code_choose = fields.Boolean(
         string='Set a custom Code',
@@ -62,14 +63,13 @@ class Project(models.Model):
         
         for vals in vals_list:
             parent_id = mapped_parent_ids.get(vals.get('parent_id'))
-            if not parent_id: # if not a children: skip
-                continue
-
-            if not parent_id.children_sequence_id.id: # 1st parent's children: create sub-sequence
-                parent_id._create_child_sequence_code()
-            
-            vals |= {'sequence_code': parent_id.children_sequence_id.next_by_id()}
-            # 'name': parent_id.name if parent_id.name != parent_id.sequence_code else False,
+            if parent_id and parent_id.id:
+                # 1st time the parent project is a parent: initiate its sub-sequence
+                if not parent_id.children_sequence_id.id:
+                    parent_id._create_child_sequence_code()
+                
+                vals |= {'sequence_code': parent_id.children_sequence_id.next_by_id()}
+                # 'name': parent_id.name if parent_id.name != parent_id.sequence_code else False,
         
         return vals_list
         

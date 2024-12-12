@@ -9,6 +9,7 @@
             <!-- Add sequence on list -->
             <field name="company_id" position="before">
                 <field name="sequence" widget="handle" />
+                <field name="budget_type" optional="hide" />
             </field>
         </field>
     </record>
