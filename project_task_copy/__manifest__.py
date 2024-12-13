@@ -10,7 +10,7 @@
 
     'application': False,
     'installable': True,
-    'depends': ['project'],
+    'depends': ['project', 'project_favorite_switch'],
     'data': [
         # security
         'security/ir.model.access.csv',
