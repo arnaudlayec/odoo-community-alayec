@@ -24,6 +24,7 @@
         <field name="arch" type="xml">
             <!-- Add project on top -->
             <field name="date_range_id" position="before">
+                <field name="project_id_domain" invisible="1" />
                 <field name="project_id" />
             </field>
             <!-- Add `template` and `template_default_project` on bottom -->
@@ -47,6 +48,7 @@
 
         <field name="arch" type="xml">
             <field name="name" position="after">
+                <field name="project_id_domain" invisible="1" />
                 <field name="project_id" invisible="context.get('default_project_id')" />
             </field>
         </field>

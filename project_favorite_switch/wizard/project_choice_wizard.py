@@ -14,29 +14,6 @@ class ProjectWizard(models.TransientModel):
     _description = "Project Choice"
     _inherit = ['project.default.mixin']
 
-    #===== Fields' methods =====#
-    def _default_project_ids_domain(self):
-        """ In project choice wizard, display either:
-            - projects in user's favorites, if any
-            - else, all allowed projects 
-        """
-        fav_projects = self.env.user._get_favorite_projects()
-        if not fav_projects.ids:
-            fav_projects = self.env['project.project'].search([])
-        
-        return [Command.link(x) for x in fav_projects.ids]
-    
-
-    #===== Fields' =====#
-    project_id = fields.Many2one(
-        domain="[('id', 'in', project_ids_domain)]"
-    )
-    project_ids_domain = fields.One2many(
-        comodel_name='project.project',
-        default=_default_project_ids_domain,
-        store=False
-    )
-
 
     #===== Logics =====#
     def button_validate(self):

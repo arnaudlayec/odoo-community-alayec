@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Add `project_id_domain` to task view -->
+
+    <!-- Form tasks -->
+    <record id="view_task_form2" model="ir.ui.view">
+        <field name="name">project.task.form.carpentry.favorite_switch</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_form2" />
+
+        <field name="arch" type="xml">
+            <field name="project_id" position="before">
+                <field name="project_id_domain" invisible="1" />
+            </field>
+            <field name="project_id" position="attributes">
+                <attribute name="domain">[('id', 'in', project_id_domain)]</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- Task Form Kanban Quick Create -->
+    <record id="quick_create_task_form" model="ir.ui.view">
+        <field name="name">project.task.form.quick_create.favorite_switch</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.quick_create_task_form" />
+
+        <field name="arch" type="xml">
+            <field name="project_id" position="before">
+                <field name="project_id_domain" invisible="1" />
+            </field>
+            <field name="project_id" position="attributes">
+                <attribute name="domain">[('id', 'in', project_id_domain)]</attribute>
+            </field>
+        </field>
+    </record>
+
+    <!-- Task Tree -->
+    <record id="view_task_tree2" model="ir.ui.view">
+        <field name="name">project.task.tree.carpentry.favorite_switch</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project.view_task_tree2" />
+
+        <field name="arch" type="xml">
+            <field name="project_id" position="before">
+                <field name="project_id_domain" invisible="1" />
+            </field>
+            <field name="project_id" position="attributes">
+                <attribute name="domain">[('id', 'in', project_id_domain)]</attribute>
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -70,7 +70,7 @@ class UtilitiesDatabaseMixin(models.AbstractModel):
 
         # shorten format {val0_col1: val0_col2, ...}
         if format_m2m and len(cols) == 2:
-            return {int(row[0]): int(row[1]) for row in rows}
+            return {row[0]: row[1] for row in rows}
         else: # default `vals_list` format
             return [{
                 cols_mapping.get(col, col): row[x]
@@ -93,7 +93,7 @@ class UtilitiesDatabaseMixin(models.AbstractModel):
                 cols, rows = result['cols'], result['rows']
         except Exception as e:
             raise exceptions.UserError(
-                _('Issue when reading external table. Request: %s, Details: %s', request, e)
+                _('Issue when reading external table. Request: %s', request)
             )
         
         return cols, rows
@@ -108,13 +108,13 @@ class UtilitiesDatabaseMixin(models.AbstractModel):
             db_resource.connection_close()
         
     #===== Import external data to Odoo =====#
-    def _import_data(self, vals_list, existing_ids, primary_keys=['external_db_id'], sequence=True):
+    def _import_data(self, vals_list, existing_ids, primary_keys=['external_db_guid'], sequence=True):
         """ Create or update Odoo records from external db `vals_list`
             
             :option primary_keys:
                 Primary key fields. Saved in Odoo table, and allow matching
                  an Odoo record with its source in case of a new import.
-                 By default, single field `external_db_id` is used
+                 By default, single field `external_db_guid` is used
             :sequence: 
                 if True, `sequence` field is added to `vals` when creating new Odoo
                  records, allowing to keep same order than in external db

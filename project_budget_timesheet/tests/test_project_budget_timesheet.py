@@ -40,14 +40,6 @@ class TestProjectBudgetTimesheet(TestAccountMoveBudgetProject):
     def test_02_project_allocated_hours(self):
         """ Test project `allocated_hours` """
         # Total budget in H
-        print('project budget_line_ids', self.project.budget_line_ids.read(['qty_debit', 'analytic_account_id']))
-        print('project budget_line_ids.analytic_account_id', self.project.budget_line_ids.analytic_account_id.read(['timesheetable']))
-        print('project', self.project)
-        print('budget_line_project', self.project.budget_line_ids.read(['project_id']))
-        # print('_compute_allocated_hours')
-        # self.project._compute_allocated_hours()
-        # print('_test_compute')
-        # self.project._test_compute()
         self.assertEqual(self.project.allocated_hours, self.BUDGET_FIX)
 
     #===== project.task =====#

@@ -21,6 +21,7 @@
                         Selected tasks will be copied to the following project:
                     </p>
                     <group>
+                        <field name="project_id_domain" invisible="1" />
                         <field name="project_id" />
                     </group>
                 </sheet>

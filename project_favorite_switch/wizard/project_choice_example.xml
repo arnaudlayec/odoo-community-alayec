@@ -36,13 +36,16 @@
     <!-- Standard for extending existing views -->
     <!-- Form -->
     <field name="name" position="after">
+        <field name="project_id_domain" invisible="1" />
         <field name="project_id" attrs="{'readonly': [('id', '!=', False)]}" />
     </field>
-    <!-- Standard for extending existing views -->
+    
     <!-- Tree -->
     <field name="name" position="after">
+        <field name="project_id_domain" invisible="1" />
         <field name="project_id" invisible="context.get('default_project_id')" />
     </field>
+    
     <!-- Search -->
     <search position="inside">
         <field name="project_id" />

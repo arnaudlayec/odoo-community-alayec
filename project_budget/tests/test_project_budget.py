@@ -61,7 +61,6 @@ class TestAccountMoveBudgetProject(TestLineTemplate):
 
     def test_03_line_credit(self):
         self.budget.line_ids._compute_debit_credit()
-        print('line_unit', self.line_unit.read(['type', 'qty_debit', 'standard_price', 'debit', 'analytic_account_id']))
         self.assertEqual(self.line_unit.debit, self.BUDGET_FIX * self.UNIT_PRICE)
     
     def test_04_project_sum(self):

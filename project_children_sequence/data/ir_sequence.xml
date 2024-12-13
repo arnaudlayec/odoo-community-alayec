@@ -8,6 +8,7 @@
             <field name="prefix">-</field>
             <field name="padding">2</field>
             <field name="active" eval="False" />
+            <field name="implementation">no_gap</field>
         </record>
     </data>
 </odoo>

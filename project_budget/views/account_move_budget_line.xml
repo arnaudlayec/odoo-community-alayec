@@ -24,7 +24,7 @@
             <field name="account_id" position="after">
                 <field name="analytic_account_id" position="move" />
                 <field name="type" optional="hide" />
-                <field name="standard_price" optional="hide" />
+                <field name="standard_price" optional="show" attrs="{'invisible': [('type', '!=', 'unit')]}" />
             </field>
             
             <!-- Partner -->
@@ -103,21 +103,28 @@
             <field name="balance" position="attributes">
                 <attribute name="optional">hide</attribute>
             </field>
+            <field name="standard_price" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
             
-            <!-- Show qty_debit, standard_price and debit like "Qty", "Unit price" and "Total" -->
+            <!-- Show qty_debit and debit like "Qty", "Unit price" and "Total" -->
             <field name="debit" position="before">
                 <field name="name" position="move" />
                 <field name="qty_debit" position="move" />
-                <field name="standard_price" attrs="{'invisible': [('type', '!=', 'unit')]}" />
+                <field name="standard_price" position="move" />
             </field>
             <field name="qty_debit" position="attributes">
                 <attribute name="string">Quantity</attribute>
             </field>
             <field name="debit" position="attributes">
+                <attribute name="optional">show</attribute>
                 <attribute name="string">Total</attribute>
             </field>
 
-            <!-- Display `Analytic Account` like "Budget" -->
+            <!-- Display `Analytic Account` like "Budget" and show `budget_type` left to it -->
+            <field name="analytic_account_id" position="before">
+                <field name="budget_type" widget="badge" />
+            </field>
             <field name="analytic_account_id" position="attributes">
                 <attribute name="string">Budget</attribute>
                 <attribute name="required">True</attribute>
@@ -137,7 +144,6 @@
                 <group name="settings" string="Line information">
                     <group name="settings_left">
                         <field name="type" />
-                        <field name="analytic_account_id" />
                         <field name="name" />
                     </group>
     
@@ -212,6 +218,22 @@
                 <field name="balance" />
                 <field name="qty_balance" />
             </pivot>
+        </field>
+    </record>
+
+    <!-- Search view -->
+    <record id="view_account_move_budget_line_search" model="ir.ui.view">
+        <field name="name">account.move.budget.line.search.project</field>
+        <field name="model">account.move.budget.line</field>
+
+        <field name="arch" type="xml">
+            <search>
+                <field name="budget_type" />
+                <field name="analytic_account_id" />
+                <field name="type" />
+
+                <filter string="Zero amount" name="zero_amount" domain="[('debit', '=', 0)]" />
+            </search>
         </field>
     </record>
 </odoo>

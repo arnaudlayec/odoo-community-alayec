@@ -45,7 +45,7 @@ class Task(models.Model):
 
         if project_id:
             project = self.env['project.project'].browse(project_id)
-            analytic_id = vals.get('analytic_account_id')
+            analytic_id = vals.get('analytic_account_id') or self._context.get('default_analytic_account_id')
             is_default = not analytic_id or project.analytic_account_id.id == analytic_id
 
             if is_default:

@@ -66,7 +66,7 @@ class Project(models.Model):
             project.budget_line_sum = mapped_data.get(project.id)
     
     def _get_mapped_budget_line(self, field='balance', groupby=['project_id']):
-        """ `field` is used in other module `project_budget_timesheet` """
+        """ `field` is useful in module `project_budget_timesheet` """
         lazy = bool(len(groupby) == 1)
         rg_result = self.env['account.move.budget.line'].sudo().read_group(
             domain=self._get_budget_line_domain(),

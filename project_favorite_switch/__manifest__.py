@@ -15,7 +15,8 @@
         # security
         'security/ir.model.access.csv',
         # views
-        'views/project_views_favorite.xml',
+        'views/project_project.xml',
+        'views/project_task.xml',
         # wizard
         'wizard/project_choice_wizard.xml'
     ],

@@ -13,7 +13,5 @@
     'version': '16.0.1.0.0',
 
     'depends': ['project_budget', 'project_task_analytic_hr', 'hr_timesheet'],
-    'data': [
-        'views/project_task.xml',
-    ],
+    'data': ['views/project_task.xml'],
 }

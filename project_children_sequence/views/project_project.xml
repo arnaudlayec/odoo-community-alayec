@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
             <!-- Explicit `sequence_code_choose` -->
             <h1 position="before">
-                <group attrs="{'invisible': [('id', '!=', False)]}">
+                <group attrs="{'invisible': ['|', ('id', '!=', False), ('parent_id', '!=', False)]}">
                     <field name="sequence_code_choose" />
                 </group>
 
@@ -22,10 +22,16 @@
                 <attribute name="style">width: 90%</attribute>
             </field>
             <field name="name" position="before">
-                <!-- Display Code in editable only on Create form and if `sequence_code_choose` is activated by user -->
+                <!-- Display Code editable only on Create form:
+                    - if `sequence_code_choose` is activated by user
+                    - if not a children project
+                -->
                 <field name="sequence_code"
                     nolabel="1"
-                    attrs="{'readonly': ['|', ('id', '!=', False), ('sequence_code_choose', '=', False)]}"
+                    attrs="{
+                        'readonly': ['|', ('id', '!=', False), ('sequence_code_choose', '=', False)],
+                        'invisible': [('id', '=', False), ('parent_id', '!=', False)]
+                    }"
                     class="me-3 flex-grow-1"
                 />
             </field>
@@ -49,7 +55,10 @@
                 <field name="parent_id" position="move" />
             </field>
             <field name="parent_id" position="attributes">
-                <attribute name="attrs">{'readonly': [('id', '!=', False)]}</attribute>
+                <attribute name="attrs">{
+                    'readonly': [('id', '!=', False)],
+                    'invisible': [('id', '!=', False), ('parent_id', '=', False)],
+                }</attribute>
                 <attribute name="placeholder">Choose to make it a child project, or leave empty for main projects</attribute>
             </field>
         </field>

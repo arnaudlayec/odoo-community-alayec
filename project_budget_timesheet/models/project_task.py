@@ -13,8 +13,11 @@ class Task(models.Model):
         """ Show all timesheetable in column, in task's kanban view """
 
         domain = ['|', ('id', 'in', analytics.ids), ('timesheetable', '=', True)]
-        
-        analytics = analytics.sudo().with_context(display_short_name=True).search(domain, order=order)
+        analytics = (
+            analytics.sudo()
+            .with_context(display_short_name=True, display_analytic_budget=True)
+            .search(domain, order=order)
+        )
         
         # If project can be guessed, limit columns to the ones with budget line(s) on the project
         project_id_ = self.env['project.default.mixin']._get_project_id()
@@ -22,6 +25,18 @@ class Task(models.Model):
 
         return analytics if not project_id_ else analytics.filtered_domain(domain)
     
+    #===== Fields methods =====#
+    @api.model
+    def default_get(self, default_fields):
+        """ By default, Task analytic follow kanban column (context) """
+        vals = super().default_get(default_fields)
+        vals['analytic_account_id'] = (
+            self._context.get('default_analytic_account_id')
+            or vals.get('analytic_account_id')
+        )
+        return vals
+
+
     #===== Fields =====#
     analytic_account_id = fields.Many2one(
         domain="""[
@@ -34,20 +49,16 @@ class Task(models.Model):
     available_budget = fields.Float(
         string='Available Budget',
         compute='_compute_available_budget',
-        store=True,
         help="[Project budget] - [Budget reserved in project's tasks, including this one]"
     )
     
     @api.depends(
         # 1. reserved budget in this and other tasks
-        'planned_hours', 'project_id.task_ids.planned_hours',
-        # 2. task budget category (analytic account)
-        'analytic_account_id',
+        'planned_hours', 'analytic_account_id', # 2.
+        'project_id.task_ids.planned_hours',
         # 3. available budget in the project
         'project_id', 'project_id.budget_line_ids',
         'project_id.budget_line_ids.qty_balance',
-        'project_id.budget_line_ids.analytic_account_id',
-        'project_id.budget_line_ids.analytic_account_id.timesheetable'
     )
     def _compute_available_budget(self):
         # Calculate available budget at project level
@@ -73,7 +84,7 @@ class Task(models.Model):
                 if k != task.id
             ])
             
-            task.available_budget = project_budget - siblings_budget - task.planned_hours
+            task.available_budget = project_budget - siblings_budget - (task.planned_hours or 0.0)
 
             # if task.available_budget < 0:
             #     raise exceptions.UserError(_(

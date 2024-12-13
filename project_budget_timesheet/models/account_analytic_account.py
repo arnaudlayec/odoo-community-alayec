@@ -26,14 +26,15 @@ class AccountAnalyticAccount(models.Model):
         """
         # Get budgets per projects
         mapped_budgets = {}
-        project_id_ = self.env['project.default.mixin']._get_project_id()
-        if project_id_:
-            rg_result = self.env['account.move.budget.line'].sudo().read_group(
-                domain=[('project_id', '=', project_id_), ('analytic_account_id', 'in', self.ids)],
-                groupby=['analytic_account_id'],
-                fields=['qty_balance:sum']
-            )
-            mapped_budgets = {x['analytic_account_id'][0]: x['qty_balance'] for x in rg_result}
+        if self._context.get('display_analytic_budget') == True:
+            project_id_ = self.env['project.default.mixin']._get_project_id()
+            if project_id_:
+                rg_result = self.env['account.move.budget.line'].sudo().read_group(
+                    domain=[('project_id', '=', project_id_), ('analytic_account_id', 'in', self.ids)],
+                    groupby=['analytic_account_id'],
+                    fields=['qty_balance:sum']
+                )
+                mapped_budgets = {x['analytic_account_id'][0]: x['qty_balance'] for x in rg_result}
         
         res = []
         for analytic in self:
@@ -48,8 +49,8 @@ class AccountAnalyticAccount(models.Model):
                 name = f'{name} - {analytic.partner_id.commercial_partner_id.name}'
 
             # Append budget in the project (if possible)
-            budget_amount = mapped_budgets.get(analytic.id)
-            if budget_amount:
+            budget_amount = mapped_budgets.get(analytic.id, 0.0)
+            if budget_amount or self._context.get('display_analytic_budget'):
                 budget_amount = formatLang(self.env, budget_amount, dp='Product Unit of Measure')
                 name += ' ({}h)' . format(budget_amount)
 
