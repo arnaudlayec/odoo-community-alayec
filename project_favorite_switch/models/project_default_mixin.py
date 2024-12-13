@@ -39,11 +39,8 @@ class ProjectDefaultMixin(models.AbstractModel):
     project_id_domain = fields.One2many(
         comodel_name='project.project',
         default=_default_project_id_domain,
-        compute='_compute_project_id_domain'
+        store=False
     )
-
-    def _compute_project_id_domain(self):
-        self.project_id_domain = self._default_project_id_domain()
 
     def _get_project_id(self, vals={}, record=False, raise_if_not_found=False, return_record=False):
         """ Try to get a `project_id_` from various possible source
