@@ -11,6 +11,7 @@ class ProjectType(models.Model):
         compute='_compute_role_id',
         store=True,
         readonly=False,
+        recursive=True,
         help="Tasks affected to this type will be auto-assigned to users carrying"
              " this role in the project. If not configured, assignees of this task's"
              " type are not modified."
@@ -37,13 +38,13 @@ class ProjectType(models.Model):
         """ If role is changed on a parent, propagate it to childs """
         for type in self:
             type.child_ids.role_id = type.role_id
-    @api.depends('parent_id')
+    @api.depends('parent_id', 'parent_id.role_id')
     def _compute_role_id(self):
         """ If parent is changed, try to get its role (if any) """
         for type in self:
             type.role_id = type.computed_role_id
 
-    @api.depends('parent_id')
+    @api.depends('parent_id', 'parent_id.role_id')
     def _compute_computed_role_id(self):
         """ Find 1st role found in parents, recursively (if any) """
         for type in self:

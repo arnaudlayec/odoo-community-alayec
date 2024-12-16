@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Users may see account move they are validator for
+        Below rules are required, else validator are blocked to open Form of account.move
+    -->
+    <!-- Account Move -->
+    <record id="invoice_validation_reviewer_account_move_rule" model="ir.rule">
+        <field name="name">[Invoice Validation] account.move - base.user see if validator</field>
+        <field name="model_id" ref="account.model_account_move"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="domain_force">[('reviewer_ids', '=', user.id)]</field>
+    </record>
+    <!-- Cancel restriction for accountants -->
+    <record id="account.group_account_readonly" model="res.groups">
+        <field name="rule_groups" eval="[(3, ref('invoice_validation_reviewer_account_move_rule'))]" />
+    </record>
+    <record id="account.group_account_invoice" model="res.groups">
+        <field name="rule_groups" eval="[(3, ref('invoice_validation_reviewer_account_move_rule'))]" />
+    </record>
+
+    <!-- Account Move Line -->
+    <record id="invoice_validation_reviewer_account_move_line_rule" model="ir.rule">
+        <field name="name">[Invoice Validation] account.move.line - base.user see if validator</field>
+        <field name="model_id" ref="account.model_account_move_line"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="domain_force">[('move_id.reviewer_ids', '=', user.id)]</field>
+    </record>
+    <record id="account.group_account_readonly" model="res.groups">
+        <field name="rule_groups" eval="[(3, ref('invoice_validation_reviewer_account_move_line_rule'))]" />
+    </record>
+    <record id="account.group_account_invoice" model="res.groups">
+        <field name="rule_groups" eval="[(3, ref('invoice_validation_reviewer_account_move_line_rule'))]" />
+    </record>
+
+    <!-- Account Partial Reconcile -->
+    <record id="invoice_validation_reviewer_account_partial_reconcile_rule" model="ir.rule">
+        <field name="name">[Invoice Validation] account.partial.reconcile - base.user see if validator</field>
+        <field name="model_id" ref="account.model_account_partial_reconcile"/>
+        <field name="groups" eval="[(4, ref('base.group_user'))]" />
+        <field name="domain_force">[('exchange_move_id.reviewer_ids', '=', user.id)]</field>
+    </record>
+    <record id="account.group_account_readonly" model="res.groups">
+        <field name="rule_groups" eval="[(3, ref('invoice_validation_reviewer_account_partial_reconcile_rule'))]" />
+    </record>
+    <record id="account.group_account_invoice" model="res.groups">
+        <field name="rule_groups" eval="[(3, ref('invoice_validation_reviewer_account_partial_reconcile_rule'))]" />
+    </record>
+    
+</odoo>

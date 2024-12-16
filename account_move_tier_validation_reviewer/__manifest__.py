@@ -13,6 +13,10 @@
     'auto_install': False,
     'depends': ['sale', 'purchase', 'account_move_tier_validation'],
     'data': [
+        # security
+        'security/ir.model.access.csv',
+        'security/security.xml',
+        # views
         'views/account_move.xml',
     ],
 }
