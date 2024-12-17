@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Reviewers for Account Move validation',
-    'summary': "Make sale and purchase user reviewer of account move ",
+    'summary': "Validate purchase invoice by buyer",
     'category': 'Accounts',
     'version': '16.0.1.0.1',
     'license': 'LGPL-3',
@@ -11,7 +11,7 @@
     'application': False,
     'installable': True,
     'auto_install': False,
-    'depends': ['sale', 'purchase', 'account_move_tier_validation'],
+    'depends': ['purchase', 'account_move_tier_validation'],
     'data': [
         # security
         'security/ir.model.access.csv',

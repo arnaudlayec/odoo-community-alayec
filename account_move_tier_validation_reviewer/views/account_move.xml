@@ -9,6 +9,7 @@
         <field name="arch" type="xml">
             <field name="payment_state" position="after">
                 <field name="validation_status" 
+                 string="Validation"
                  optional="show"
                  widget="badge"
                  decoration-muted="validation_status == 'no'"
