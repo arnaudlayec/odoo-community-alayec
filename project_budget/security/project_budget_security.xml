@@ -15,20 +15,4 @@
         <field name="groups" eval="[(4, ref('account.group_account_user'))]" />
         <field name="domain_force">[(1, '=', 1)]</field>
     </record>
-
-
-    
-    <!-- SAME FOR BUDGET LINES -->
-    <record id="rule_project_budget_line_show_only_project" model="ir.rule">
-        <field name="name">Project budget: show only budgets lines related to project</field>
-        <field name="model_id" ref="account_move_budget.model_account_move_budget_line" />
-        <field name="groups" eval="[(4, ref('project.group_project_user'))]" />
-        <field name="domain_force">['|', ('project_id', '!=', False), ('budget_id.template', '=', True)]</field>
-    </record>
-    <record id="rule_budget_line_show_all" model="ir.rule">
-        <field name="name">Project budget: show all budget line</field>
-        <field name="model_id" ref="account_move_budget.model_account_move_budget_line" />
-        <field name="groups" eval="[(4, ref('account.group_account_user'))]" />
-        <field name="domain_force">[(1, '=', 1)]</field>
-    </record>
 </odoo>

@@ -86,27 +86,28 @@ class Project(models.Model):
     
     #===== Compute (budget templates) =====#
     def _compute_budget_template_ids(self):
-        default_budget_ids_cmd = self._default_budget_template_ids()
-        for project in self:
-            project.budget_template_ids = default_budget_ids_cmd
+        self.budget_template_ids = self._default_budget_template_ids()
     
     def _inverse_budget_template_ids(self):
         """    a) Copy selected budgets templates
             or b) create 1 default empty budget per project
         """
-        empty_project_ids = self._filter_without_budgets()
+        # Filter on project without budgets *and* existing
+        empty_project_ids = self._filter_without_budgets().filtered('id')
+        
+        # a) Copy selected budgets templates
         for project in empty_project_ids:
             for budget_tmpl in project.budget_template_ids:
-                budget_new = budget_tmpl.sudo().copy(project._get_default_vals_budget())
+                new_budget = budget_tmpl.sudo().copy(project._get_default_vals_budget())
 
                 # *manually* copy the lines (because of date constrain)
                 for line in budget_tmpl.line_ids:
-                    vals = project._get_default_vals_budget_line(budget_new)
+                    vals = project._get_default_vals_budget_line(new_budget)
                     line.sudo().copy(vals)
                 
                 empty_project_ids -= project
         
-        # Create an empty budget
+        # b) Create an empty budget
         vals_list_budget = [project._get_default_vals_budget() for project in empty_project_ids]
         self.env['account.move.budget'].sudo().create(vals_list_budget)
 
