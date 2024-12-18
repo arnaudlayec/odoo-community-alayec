@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Search view: add 'Timesheetable' -->
+    <record id="view_account_move_budget_line_search" model="ir.ui.view">
+        <field name="name">account.move.budget.line.search.timesheet</field>
+        <field name="model">account.move.budget.line</field>
+        <field name="inherit_id" ref="project_budget.view_account_move_budget_line_search" />
+
+        <field name="arch" type="xml">
+            <search position="inside">
+                <filter string="Timesheet 🕓" name="timesheetable" domain="[('analytic_account_id.timesheetable', '=', True)]" />
+            </search>
+        </field>
+    </record>
+</odoo>

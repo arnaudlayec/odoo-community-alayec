@@ -43,6 +43,7 @@ class ProjectWizard(models.TransientModel):
         # If project is guessable or was choosen from wizard: open the target action
         if project_id.id:
             action = self._automate_context_and_domain(project_id, context_keys, action_arg)
+            action['target'] = 'main' # clears breadcrumb
         
         # If project can't be guessed, open the project-choice wizard
         else:

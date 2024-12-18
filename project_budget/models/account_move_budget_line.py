@@ -36,12 +36,6 @@ class AccountMoveBudgetLine(models.Model):
         related='analytic_account_id.sequence',
         store=True
     )
-    partner_id = fields.Many2one(
-        # follows project's partner
-        related='project_id.partner_id',
-        store=True,
-        readonly=False,
-    )
     type = fields.Selection(
         selection=SELECTION_TYPE,
         string='Type',
