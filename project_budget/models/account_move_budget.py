@@ -9,7 +9,7 @@ class AccountMoveBudget(models.Model):
     #===== Fields =====#
     project_id = fields.Many2one(
         required=False, # keep possibility of budgets independant of any project
-        ondelete='set null'
+        ondelete='cascade'
     )
     template = fields.Boolean(
         string='Template',
