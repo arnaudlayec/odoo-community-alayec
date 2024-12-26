@@ -11,6 +11,7 @@
             <field name="account_id" position="before">
                 <field name="company_id" invisible="1" />
                 <field name="company_currency_id" invisible="1" />
+                <field name="analytic_account_id_domain" invisible="1" />
                 <field name="budget_id" invisible="context.get('default_budget_id')" />
                 <field name="project_id" invisible="context.get('default_budget_id') or context.get('default_project_id')" />
 
@@ -22,6 +23,7 @@
             </field>
             <!-- Move analytic right after fiscal account -->
             <field name="account_id" position="after">
+
                 <field name="analytic_account_id" position="move" />
                 <field name="type" optional="hide" />
                 <field name="standard_price" optional="show" attrs="{'invisible': [('type', '!=', 'unit')]}" />
@@ -140,6 +142,7 @@
         <field name="arch" type="xml">
             <form>
                 <field name="company_id" invisible="1" />
+                <field name="analytic_account_id_domain" invisible="1" />
 
                 <group name="settings" string="Line information">
                     <group name="settings_left">

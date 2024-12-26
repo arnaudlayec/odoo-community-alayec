@@ -12,23 +12,28 @@ class AccountMoveBudgetLine(models.Model):
     _name = "account.move.budget.line"
     _inherit = ["account.move.budget.line", "account.move.budget.update.mixin"]
     _order = "seq_analytic, date desc, id desc"
-
-    #===== Fields' methods =====#
-    def _domain_analytic_account_id(self):
-        """ Limit selection of restricted analytic account to accountants only """
+    
+    #===== Fields methods =====#
+    def _default_analytic_account_id_domain(self):
+        """ Limit selection of analytic account:
+            1. to accountants only, depending user' permission
+            2. to project-budget analytic account, depending on context
+        """
         domain = []
-
         if self._context.get('default_project_id'):
             domain += [('is_project_budget', '=', True)]
-
         if not self.env.user.has_group('account.group_account_manager'):
             domain += [('budget_only_accountant', '=', False)]
 
-        return domain
-    
+        return self.env['account.analytic.account'].search(domain)
+
     #===== Fields =====#
     analytic_account_id = fields.Many2one(
-        domain=_domain_analytic_account_id
+        domain="[('id', 'in', analytic_account_id_domain)]"
+    )
+    analytic_account_id_domain = fields.One2many(
+        comodel_name='account.analytic.account',
+        default=_default_analytic_account_id_domain,
     )
     budget_id = fields.Many2one(
         domain="['|', ('project_id', '=', project_id), ('project_id', '=', False)]"
@@ -106,9 +111,12 @@ class AccountMoveBudgetLine(models.Model):
         return super()._trigger_depends(method, fields)
     
 
-    #===== Type (Create, Default, Onchange): default line type from analytic_account_id =====#
+    #===== Compute =====#
     @api.depends('analytic_account_id', 'analytic_account_id.budget_type')
     def _compute_type(self):
+        """ Type (Create, Default, Onchange):
+            default line type from analytic_account_id
+        """
         for line in self:
             line.type = line.analytic_account_id._get_default_line_type() or 'amount'
 

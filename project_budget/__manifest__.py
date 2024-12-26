@@ -25,6 +25,7 @@
         'views/account_move_budget.xml',
         'views/account_move_budget_line.xml',
         'views/account_analytic_account.xml',
+        'views/res_config_settings.xml',
     ],
     "uninstall_hook": "uninstall_hook",
 }

@@ -22,13 +22,15 @@
         <field name="arch" type="xml">
             <!-- 'Budget' config group and 'Budget only accoutnant' field -->
             <sheet position="inside">
-                <group name="project_budget" string="Project budgets" colspan="1">
-                    <field name="is_project_budget" widget="boolean_toggle" />
-                    <field name="budget_type" attrs="{'invisible': [('is_project_budget', '=', False)]}" />
-                    <field name="budget_only_accountant"
-                        widget="boolean_toggle"
-                        attrs="{'invisible': [('is_project_budget', '=', False)]}"
-                    />
+                <field name="is_project_budget" invisible="1" />
+                
+                <group name="project_budget"
+                    string="Project budgets"
+                    colspan="1"
+                    attrs="{'invisible': [('is_project_budget', '=', False)]}"
+                >
+                    <field name="budget_type" />
+                    <field name="budget_only_accountant" widget="boolean_toggle" />
                 </group>
             </sheet>
         </field>
