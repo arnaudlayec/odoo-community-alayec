@@ -34,6 +34,7 @@ class AccountMoveBudgetLine(models.Model):
     analytic_account_id_domain = fields.One2many(
         comodel_name='account.analytic.account',
         default=_default_analytic_account_id_domain,
+        store=False
     )
     budget_id = fields.Many2one(
         domain="['|', ('project_id', '=', project_id), ('project_id', '=', False)]"
