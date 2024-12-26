@@ -10,10 +10,10 @@ class AccountAnalyticAccount(models.Model):
     sequence = fields.Integer(
         # used in account.move.budget.line: budget lines sequence follows analytic account's sequence
     )
-    budget_only_accountant = fields.Boolean(
-        string='Accountant only?',
-        default=True,
-        help='If checked, projects managers will not be able to select it in budgets.'
+    is_project_budget = fields.Boolean(
+        string='Is Budget for Project?',
+        default=False,
+        help="If activated, it can be selectable in project's budgets"
     )
     budget_type = fields.Selection(
         selection=[
@@ -21,6 +21,11 @@ class AccountAnalyticAccount(models.Model):
             ('service', 'Service')
         ],
         string='Budget type',
+    )
+    budget_only_accountant = fields.Boolean(
+        string='Accountant only?',
+        default=True,
+        help='If checked, projects managers will not be able to select it in budgets.'
     )
 
 

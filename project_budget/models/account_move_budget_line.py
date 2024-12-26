@@ -16,10 +16,15 @@ class AccountMoveBudgetLine(models.Model):
     #===== Fields' methods =====#
     def _domain_analytic_account_id(self):
         """ Limit selection of restricted analytic account to accountants only """
-        return (
-            [] if self.env.user.has_group('account.group_account_manager')
-            else [('budget_only_accountant', '=', False)]
-        )
+        domain = []
+
+        if self._context.get('default_project_id'):
+            domain += [('is_project_budget', '=', True)]
+
+        if not self.env.user.has_group('account.group_account_manager'):
+            domain += [('budget_only_accountant', '=', False)]
+
+        return domain
     
     #===== Fields =====#
     analytic_account_id = fields.Many2one(

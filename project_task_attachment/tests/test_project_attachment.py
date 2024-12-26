@@ -6,7 +6,7 @@ from odoo.tests import common, Form
 from odoo.addons.base.tests import test_ir_attachment
 import base64
 
-class TestProjectImage(test_ir_attachment.TestIrAttachment):
+class TestProjectAttachment(test_ir_attachment.TestIrAttachment):
 
     @classmethod
     def setUpClass(cls):

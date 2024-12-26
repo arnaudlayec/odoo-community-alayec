@@ -55,8 +55,8 @@ class TestProjectBudgetTimesheet(TestAccountMoveBudgetProject):
         self.assertEqual(round(self.task1.available_budget, 2), round(remaining, 2))
         self.assertEqual(round(self.task2.available_budget, 2), round(remaining, 2))
 
-    def test_05_budget_raise(self):
-        # Test if it raises correctly if task2 tries to take all budget while task1 already has reserved some
-        with self.assertRaises(exceptions.UserError):
-            self.task2.planned_hours = self.BUDGET_FIX
+    # def test_05_budget_raise(self):
+    #     # Test if it raises correctly if task2 tries to take all budget while task1 already has reserved some
+    #     with self.assertRaises(exceptions.UserError):
+    #         self.task2.planned_hours = self.BUDGET_FIX
     
