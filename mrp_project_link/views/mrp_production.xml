@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- WO tree -->
+    <record id="mrp_production_tree_view" model="ir.ui.view">
+        <field name="name">mrp.production.tree.project_link</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
+
+        <field name="arch" type="xml">
+            <!-- Add `Description` & `Project` -->
+            <field name="name" position="after">
+                <field name="project_id_domain" invisible="1" />
+                
+                <field name="description" />
+                <field name="project_id" />
+            </field>
+        </field>
+    </record>
+        
+    <!-- WO Form -->
+    <record id="mrp_production_form_view" model="ir.ui.view">
+        <field name="name">mrp.production.form.project_link</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        
+        <field name="arch" type="xml">
+            <!-- Add `Description` -->
+            <h1 position="inside">
+                <field name="description"
+                    placeholder="Title of WorkOrder"
+                    class="o_text_overflow flex-shrink-0"
+                    style="width: 70%"
+                />
+            </h1>
+            <field name="name" position="attributes">
+                <attribute name="class">flex-grow-1 me-3</attribute>
+            </field>
+
+            <!-- Add `Project` -->
+            <field name="product_id" position="before">
+                <field name="project_id_domain" invisible="1" />
+                <field name="project_id" />
+            </field>
+            
+        </field>
+    </record>
+
+    <!-- WO Search -->
+    <record id="view_mrp_production_filter" model="ir.ui.view">
+        <field name="name">mrp.production.select.project_link</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_filter" />
+
+        <field name="arch" type="xml">
+            <!-- Add `Description` in 1st search by name -->
+            <field name="name" position="attributes">
+                <attribute name="filter_domain">['|', '|',
+                    ('name', 'ilike', self),
+                    ('description', 'ilike', self),
+                    ('origin', 'ilike', self)
+                ]</attribute>
+            </field>
+
+            <!-- Add `project_id` -->
+            <field name="name" position="after">
+                <field name="project_id" />
+            </field>
+        </field>
+    </record>
+</odoo>

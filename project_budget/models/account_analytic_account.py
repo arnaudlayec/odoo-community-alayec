@@ -26,6 +26,11 @@ class AccountAnalyticAccount(models.Model):
         default=True,
         help='If checked, projects managers will not be able to select it in budgets.'
     )
+    budget_project_ids = fields.Many2many(
+        comodel_name='project.project',
+        search='_search_budget_project_ids',
+        store=False
+    )
 
     def _get_default_line_type(self):
         """ Defines default `type` of account.move.budget.line """
@@ -44,3 +49,10 @@ class AccountAnalyticAccount(models.Model):
     def _search_is_project_budget(self, operator, value):
         budget_plan = self.env.company.analytic_budget_plan_id
         return [('plan_id', '=', budget_plan.id)]
+    
+    @api.model
+    def _search_budget_project_ids(self, operator, value):
+        """ Analytic used in budget lines of some projects (value) """
+        domain = [('project_id', operator, value)]
+        lines = self.env['account.move.budget.line'].search(domain)
+        return [('id', 'in', lines.analytic_account_id.ids)]
