@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <odoo>
 
-    <!-- WO tree -->
+    <!-- MO tree -->
     <record id="mrp_production_tree_view" model="ir.ui.view">
         <field name="name">mrp.production.tree.project_link</field>
         <field name="model">mrp.production</field>
@@ -18,7 +18,7 @@
         </field>
     </record>
         
-    <!-- WO Form -->
+    <!-- MO Form -->
     <record id="mrp_production_form_view" model="ir.ui.view">
         <field name="name">mrp.production.form.project_link</field>
         <field name="model">mrp.production</field>
@@ -28,9 +28,9 @@
             <!-- Add `Description` -->
             <h1 position="inside">
                 <field name="description"
-                    placeholder="Title of WorkOrder"
+                    placeholder="Title of Manufacturing Order"
                     class="o_text_overflow flex-shrink-0"
-                    style="width: 70%"
+                    style="width: 80%"
                 />
             </h1>
             <field name="name" position="attributes">
@@ -46,7 +46,7 @@
         </field>
     </record>
 
-    <!-- WO Search -->
+    <!-- MO Search -->
     <record id="view_mrp_production_filter" model="ir.ui.view">
         <field name="name">mrp.production.select.project_link</field>
         <field name="model">mrp.production</field>
