@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_mrp_workcenter_form_inherit" model="ir.ui.view">
+        <field name="name">mrp.workcenter.form.inherit</field>
+        <field name="model">mrp.workcenter</field>
+        <field name="inherit_id" ref="mrp.mrp_workcenter_form"/>
+
+        <field name="arch" type="xml">
+            <field name="time_efficiency" position="before">
+                <field name="productivity_tracking" />
+                <field name="tracking_uom_id" attrs="{
+                    'required':  [('productivity_tracking', '=', 'unit')],
+                    'invisible': [('productivity_tracking', '=', 'global')]
+                }" />
+            </field>
+        </field>
+    </record>
+</odoo>

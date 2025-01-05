@@ -93,7 +93,7 @@ class UtilitiesDatabaseMixin(models.AbstractModel):
                 cols, rows = result['cols'], result['rows']
         except Exception as e:
             raise exceptions.UserError(
-                _('Issue when reading external table. Request: %s' % request)
+                _('Issue when reading external table. Request: %s') % request
             )
         
         return cols, rows

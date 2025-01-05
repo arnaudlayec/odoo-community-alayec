@@ -22,7 +22,7 @@ class AccountMoveBudgetLine(models.Model):
         domain = []
         if self._context.get('default_project_id'):
             domain += [('is_project_budget', '=', True)]
-        if not self.env.user.has_group('account.group_account_manager'):
+        if not self.env.user.has_group('account.group_account_user'):
             domain += [('budget_only_accountant', '=', False)]
 
         return self.env['account.analytic.account'].search(domain)

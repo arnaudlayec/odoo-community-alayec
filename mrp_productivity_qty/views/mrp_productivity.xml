@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_mrp_workcenter_productivity_tree_inherit" model="ir.ui.view">
+        <field name="name">mrp.workcenter.productivity.tree.inherit</field>
+        <field name="model">mrp.workcenter.productivity</field>
+        <field name="inherit_id" ref="mrp.mrp_workcenter_productivity_tree"/>
+        
+        <field name="arch" type="xml">
+            <field name="duration" position="attributes">
+                <attribute name="widget">float_time</attribute>
+            </field>
+            <field name="date_start" position="attributes">
+                <attribute name="widget">date</attribute>
+            </field>
+            <field name="date_end" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            
+            <!-- Add Quantity -->
+            <field name="duration" position="after">
+                <field name="productivity_tracking" invisible="1" />
+
+                <field name="qty_production" attrs="{
+                    'required': [('productivity_tracking', '=', 'unit')],
+                    'column_invisible': [('productivity_tracking', '=', 'global')],
+                }" />
+                <field name="tracking_uom_id" attrs="{
+                    'column_invisible': [('productivity_tracking', '=', 'global')]}
+                " />
+            </field>
+        </field>
+    </record>
+</odoo>
