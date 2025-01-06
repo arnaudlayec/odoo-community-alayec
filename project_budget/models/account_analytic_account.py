@@ -37,6 +37,7 @@ class AccountAnalyticAccount(models.Model):
         return 'unit' if self.budget_type == 'service' else 'amount'
 
     #===== Compute =====#
+    @api.depends('plan_id')
     def _compute_is_project_budget(self):
         """ Configuration per company defining if the analytic account
             can be used as a project's budget in budget lines
