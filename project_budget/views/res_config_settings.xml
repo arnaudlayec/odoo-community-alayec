@@ -16,7 +16,7 @@
                             <label for="analytic_budget_plan_id"/>
                             <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." groups="base.group_multi_company"/>
                             <div class="text-muted">
-                                Use Analytic Account of this plan as budgets in all projects.
+                                Use Analytic Accounts of this plan as budgets in all projects.
                             </div>
                             <div class="content-group">
                                 <div class="mt16">

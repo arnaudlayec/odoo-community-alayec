@@ -11,7 +11,7 @@ class ResCompany(models.Model):
         check_company=True,
         readonly=False,
         compute="_compute_analytic_budget_plan_id",
-        help="This plan gathers analytic analytics on which budget can be defined"
+        help="This plan gathers analytic accounts on which budget can be defined"
              " per projects and expensed on Purchase Orders, Timesheets, etc."
              " via analytic distribution or tasks."
     )

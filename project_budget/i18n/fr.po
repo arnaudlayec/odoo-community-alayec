@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-10 13:20+0000\n"
-"PO-Revision-Date: 2024-12-11 12:23+0100\n"
+"POT-Creation-Date: 2025-01-06 17:13+0000\n"
+"PO-Revision-Date: 2025-01-06 18:24+0100\n"
 "Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -20,17 +20,19 @@ msgstr ""
 #. module: project_budget
 #: model:ir.model.fields,help:project_budget.field_account_move_budget_line__type
 msgid ""
-"- \"Amount\": Debit and Credit are filled in- \"Unit\": Qty Debit, Qty "
-"Credit and Unit Price are filled in, and Debit and Credit are calculated "
-"accordingly- \"Workforce\": same as \"Unit\" but Unit Price is calculated "
-"as per HR history costs of the budget line's Analytic Account."
+"- \"Amount\": Debit and Credit are filled in\n"
+"- \"Unit\": Qty Debit, Qty Credit and Unit Price are filled in, and Debit and Credit are calculated accordingly\n"
+"- \"Workforce\": same as \"Unit\" but Unit Price is calculated as per HR\n"
+" history costs of the budget line's Analytic Account."
 msgstr ""
 "- \"Montant\" : Le débit et le crédit sont renseignés\n"
-"- \"Unité\" : Qté débit, Qté crédit et prix unitaire sont renseignés, et le "
-"débit et le crédit sont calculés en conséquence\n"
-"- \"Main d'oeuvre\" : comme \"Unité\", mais le prix unitaire est calculé en "
-"fonction des coûts de l'historique RH du compte analytique de la ligne "
-"budgétaire."
+"- \"Unité\" : Qté débit, Qté crédit et prix unitaire sont renseignés, et le débit et le crédit sont calculés en conséquence\n"
+"- \"Main d'oeuvre\" : comme \"Unité\", mais le prix unitaire est calculé en fonction des coûts de l'historique RH du compte analytique de la ligne budgétaire."
+
+#. module: project_budget
+#: model_terms:ir.ui.view,arch_db:project_budget.res_config_settings_view_form
+msgid "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
+msgstr "<span class=\"fa fa-lg fa-building-o\" title=\"Les valeurs définies ici sont spécifiques par société.\" groups=\"base.group_multi_company\"/>"
 
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.edit_project
@@ -39,10 +41,8 @@ msgstr "<span class=\"o_stat_text\">Budget</span>"
 
 #. module: project_budget
 #: model:ir.model.constraint,message:project_budget.constraint_account_move_budget_line_unique_aac_per_project
-msgid ""
-"A budget line is already set on this project to the same analytic account."
-msgstr ""
-"Une autre ligne de budget utilise déjà ce compte analytique dans ce projet."
+msgid "A budget line is already set on this project to the same analytic account."
+msgstr "Une autre ligne de budget utilise déjà ce compte analytique dans ce projet."
 
 #. module: project_budget
 #: model:ir.model,name:project_budget.model_account_move_budget
@@ -50,19 +50,13 @@ msgid "Account Move Budget"
 msgstr "Budget comptable"
 
 #. module: project_budget
-#: model:ir.model,name:project_budget.model_account_move_budget_line
-msgid "Account Move Budget Line"
-msgstr "Ligne de budget comptable"
-
-#. module: project_budget
-#: model:ir.model,name:project_budget.model_account_move_budget_line_template
-msgid "Account Move Budget Line Template"
-msgstr "Modèle de ligne budgétaire"
+#: model:ir.model,name:project_budget.model_account_move_budget_update_mixin
+msgid "Account Move Budget Update Mixin"
+msgstr "Transfert de compte Mise à jour du budget Mixin"
 
 #. module: project_budget
 #. odoo-python
-#: code:addons/project_budget/hooks.py:0
-#: model:ir.ui.menu,name:project_budget.account_move_budget_section
+#: code:addons/project_budget/hooks.py:0 model:ir.ui.menu,name:project_budget.account_move_budget_section
 #, python-format
 msgid "Account Move Budgets"
 msgstr "Budgets comptables"
@@ -74,15 +68,24 @@ msgstr "Comptables uniquement ?"
 
 #. module: project_budget
 #: model:ir.model.fields.selection,name:project_budget.selection__account_move_budget_line__type__amount
-#: model:ir.model.fields.selection,name:project_budget.selection__account_move_budget_line_template__type__amount
 msgid "Amount"
 msgstr "Montant"
 
 #. module: project_budget
-#: model:ir.model,name:project_budget.model_account_analytic_account
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__analytic_account_id
 msgid "Analytic Account"
 msgstr "Compte analytique"
+
+#. module: project_budget
+#: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__analytic_account_id_domain
+msgid "Analytic Account Id Domain"
+msgstr "Domaine d'identification du compte analytique"
+
+#. module: project_budget
+#: model:ir.model.fields,field_description:project_budget.field_res_company__analytic_budget_plan_id
+#: model:ir.model.fields,field_description:project_budget.field_res_config_settings__analytic_budget_plan_id
+msgid "Analytic Plan for Project Budgets"
+msgstr "Plan analytique pour les budgets de projets"
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__qty_balance
@@ -94,6 +97,11 @@ msgstr "Solde (qté)"
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_tree_simplified
 msgid "Budget"
 msgstr "Budget"
+
+#. module: project_budget
+#: model:ir.model.fields,field_description:project_budget.field_account_analytic_account__budget_project_ids
+msgid "Budget Project"
+msgstr "Projet de budget"
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_project_project__budget_line_sum
@@ -109,8 +117,7 @@ msgstr "Détails de la ligne budgétaire"
 
 #. module: project_budget
 #. odoo-python
-#: code:addons/project_budget/models/project_project.py:0
-#: model:ir.model.fields,field_description:project_budget.field_project_project__budget_line_ids
+#: code:addons/project_budget/models/project_project.py:0 model:ir.model.fields,field_description:project_budget.field_project_project__budget_line_ids
 #, python-format
 msgid "Budget lines"
 msgstr "Lignes budgétaires"
@@ -130,6 +137,16 @@ msgstr "Modèles de budget"
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__budget_type
 msgid "Budget type"
 msgstr "Type de budget"
+
+#. module: project_budget
+#: model:ir.model,name:project_budget.model_res_company
+msgid "Companies"
+msgstr "Sociétés"
+
+#. module: project_budget
+#: model:ir.model,name:project_budget.model_res_config_settings
+msgid "Config Settings"
+msgstr "Configuration"
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__credit
@@ -163,28 +180,23 @@ msgstr "Fournitures"
 
 #. module: project_budget
 #: model:ir.model.fields,help:project_budget.field_account_move_budget__template
-msgid ""
-"If activated, this budget will be selectable to be copied from, on other "
-"projects."
-msgstr ""
-"Si activé, ce budget sera sélectionnable comme modèle pour les nouveaux "
-"projets."
+msgid "If activated, this budget will be selectable to be copied from, on other projects."
+msgstr "Si activé, ce budget sera sélectionnable comme modèle pour les nouveaux projets."
 
 #. module: project_budget
 #: model:ir.model.fields,help:project_budget.field_account_move_budget__template_default_project
-msgid ""
-"If activated, this budget will be suggested by default for all new projects."
-msgstr ""
-"Si activé, ce budget sera proposé par défaut comme modèle pour tous les "
-"nouveaux projets."
+msgid "If activated, this budget will be suggested by default for all new projects."
+msgstr "Si activé, ce budget sera proposé par défaut comme modèle pour tous les nouveaux projets."
 
 #. module: project_budget
 #: model:ir.model.fields,help:project_budget.field_account_analytic_account__budget_only_accountant
-msgid ""
-"If checked, projects managers will not be able to select it in budgets."
-msgstr ""
-"Si activé, les chefs de projets ne pourront pas sélectionner ce compte "
-"analytique dans les budgets."
+msgid "If checked, projects managers will not be able to select it in budgets."
+msgstr "Si activé, seuls les comptables pourront sélectionner ce compte analytique dans les budgets."
+
+#. module: project_budget
+#: model:ir.model.fields,field_description:project_budget.field_account_analytic_account__is_project_budget
+msgid "Is Project Budget"
+msgstr "Est le budget d'un projet"
 
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_form
@@ -197,16 +209,22 @@ msgid "Line settings"
 msgstr "Paramètres de la ligne"
 
 #. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__partner_id
-msgid "Partner"
-msgstr "Contact"
-
-#. module: project_budget
-#: model:ir.model,name:project_budget.model_project_project
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget__project_id
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__project_id
 msgid "Project"
 msgstr "Projet"
+
+#. module: project_budget
+#. odoo-python
+#: code:addons/project_budget/models/res_company.py:0
+#, python-format
+msgid "Project Budgets"
+msgstr "Budgets des projets"
+
+#. module: project_budget
+#: model:ir.model.fields,field_description:project_budget.field_account_move_budget__project_id_domain
+msgid "Project Id Domain"
+msgstr "Domaine du projet"
 
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_analytic_account_form
@@ -251,6 +269,16 @@ msgid "Template (default)"
 msgstr "Modèle (par défaut)"
 
 #. module: project_budget
+#: model:ir.model.fields,help:project_budget.field_res_company__analytic_budget_plan_id
+#: model:ir.model.fields,help:project_budget.field_res_config_settings__analytic_budget_plan_id
+msgid ""
+"This plan gathers analytic analytics on which budget can be defined per projects and expensed on Purchase Orders, Timesheets, etc. via analytic distribution "
+"or tasks."
+msgstr ""
+"Ce plan rassemble les comptes analytiques pour lesquels un budget peut être défini par projet et utilisé bons de commande, les feuilles de temps, etc. par le "
+"biais des distribution analytique ou des tâches."
+
+#. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_tree_simplified
 msgid "Total"
 msgstr "Total"
@@ -267,6 +295,11 @@ msgid "Unit price"
 msgstr "Montant unitaire"
 
 #. module: project_budget
+#: model_terms:ir.ui.view,arch_db:project_budget.res_config_settings_view_form
+msgid "Use Analytic Account of this plan as budgets in all projects."
+msgstr "Utiliser les comptes analytiques de ce plan comme budget dans tous les projets."
+
+#. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_form
 msgid "Values"
 msgstr "Valeurs"
@@ -276,6 +309,11 @@ msgstr "Valeurs"
 #: model:ir.model.fields,help:project_budget.field_account_move_budget_line__project_id
 msgid "Within your favorite projects"
 msgstr "Parmis vos projets favoris"
+
+#. module: project_budget
+#: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_search
+msgid "Zero amount"
+msgstr "Montant nul"
 
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.account_move_budget_search_view

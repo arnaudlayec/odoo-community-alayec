@@ -6,31 +6,23 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-12-10 13:03+0000\n"
-"PO-Revision-Date: 2024-12-11 12:26+0100\n"
+"POT-Creation-Date: 2025-01-06 17:13+0000\n"
+"PO-Revision-Date: 2025-01-06 17:16+0000\n"
 "Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
+"Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-"X-Generator: Poedit 3.5\n"
 
 #. module: project_budget_timesheet
-#. odoo-python
-#: code:addons/project_budget_timesheet/models/project_task.py:0
-#, python-format
-msgid ""
-"A task cannot reserve more budget than available in the project.\n"
-"Project budget: %s. Already planned budget: %s. This task budget: %s"
-msgstr ""
-"Une tâche ne peut pas réserver plus de budget que celui disponible dans le projet.\n"
-"Budget du projet : %s.\n"
-"Budget déjà planifié : %s.\n"
-"Budget de cette tâche : %s"
+#: model:ir.model,name:project_budget_timesheet.model_account_move_budget_line
+msgid "Account Move Budget Line"
+msgstr "Ligne de budget comptable"
 
 #. module: project_budget_timesheet
+#: model:ir.model,name:project_budget_timesheet.model_account_analytic_account
 #: model:ir.model.fields,field_description:project_budget_timesheet.field_project_task__analytic_account_id
 #: model_terms:ir.ui.view,arch_db:project_budget_timesheet.project_task_view_search
 msgid "Analytic Account"
@@ -40,13 +32,11 @@ msgstr "Compte analytique"
 #: model:ir.model.fields,help:project_budget_timesheet.field_project_task__analytic_account_id
 msgid ""
 "Analytic account to which this task and its timesheets are linked.\n"
-"Track the costs and revenues of your task by setting its analytic account on your related documents (e.g. sales orders, invoices, "
-"purchase orders, vendor bills, expenses etc.).\n"
+"Track the costs and revenues of your task by setting its analytic account on your related documents (e.g. sales orders, invoices, purchase orders, vendor bills, expenses etc.).\n"
 "By default, the analytic account of the project is set. However, it can be changed on each task individually if necessary."
 msgstr ""
 "Compte analytique auquel sont liés cette tâche et ses feuilles de temps.\n"
-"Suivez les coûts et les revenus de votre tâche en paramétrant ce compte analytique sur vos documents associés (par ex. commandes "
-"clients, factures, bons de commande, factures fournisseurs, notes de frais, etc.).\n"
+"Suivez les coûts et les revenus de votre tâche en paramétrant ce compte analytique sur vos documents associés (par ex. commandes clients, factures, bons de commande, factures fournisseurs, notes de frais, etc.).\n"
 "Par défaut, le compte analytique du projet est défini. Toutefois, il peut être changé sur chaque tâche individuellement si nécessaire."
 
 #. module: project_budget_timesheet
@@ -60,11 +50,29 @@ msgid "Budget lines"
 msgstr "Lignes budgétaires"
 
 #. module: project_budget_timesheet
-#: model_terms:ir.ui.view,arch_db:project_budget_timesheet.project_task_view_search
-msgid "Timesheets"
-msgstr "Feuilles de temps"
+#: model:ir.model,name:project_budget_timesheet.model_project_project
+msgid "Project"
+msgstr "Projet"
+
+#. module: project_budget_timesheet
+#: model:ir.model,name:project_budget_timesheet.model_project_task
+msgid "Task"
+msgstr "Tâche"
+
+#. module: project_budget_timesheet
+#: model_terms:ir.ui.view,arch_db:project_budget_timesheet.view_account_move_budget_line_search
+msgid "Timesheet 🕓"
+msgstr "Feuille de temps 🕓"
+
+#. module: project_budget_timesheet
+#: model:ir.model.fields,field_description:project_budget_timesheet.field_account_analytic_account__timesheetable
+msgid "Timesheetable?"
+msgstr "Feuilles de temps ?"
 
 #. module: project_budget_timesheet
 #: model:ir.model.fields,help:project_budget_timesheet.field_project_task__available_budget
-msgid "[Project budget] - [Budget reserved in project's tasks, including this one]"
-msgstr "[Budget du projet] - [Budget réservé dans les tâches du projet, y compris celle-ci]"
+msgid ""
+"[Project budget] - [Budget reserved in project's tasks, including this one]"
+msgstr ""
+"[Budget du projet] - [Budget réservé dans les tâches du projet, y compris "
+"celle-ci]"
