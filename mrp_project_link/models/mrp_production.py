@@ -2,7 +2,7 @@
 
 from odoo import models, fields
 
-class WorkOrder(models.Model):
+class MrpProduction(models.Model):
     _name = "mrp.production"
     _inherit = ['mrp.production', 'project.default.mixin']
     _rec_name = 'display_name'
