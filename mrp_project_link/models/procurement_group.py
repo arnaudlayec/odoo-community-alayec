@@ -18,4 +18,5 @@ class ProcurementGroup(models.Model):
     def _compute_project_id(self):
         """ User-entry: update procurement's group project from the picking """
         for group in self:
-            group.project_id = group.stock_move_ids.picking_id.project_id
+            project = group.stock_move_ids.picking_id.project_id
+            group.project_id = len(project) == 1 and project
