@@ -8,9 +8,11 @@ class HrEmployeeTimesheetCostHistory(models.Model):
 
     department_id = fields.Many2one(
         comodel_name="hr.department",
-        string='Department'
+        string='Department',
+        ondelete='cascade',
     )
     employee_id = fields.Many2one(
-        help='If empty, department cost applies'
+        ondelete='cascade',
+        help='If empty, department cost applies',
     )
     

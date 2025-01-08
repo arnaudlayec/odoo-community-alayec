@@ -17,4 +17,4 @@ class StockPicking(models.Model):
     def _compute_project_id(self):
         """ Automatic project value from a MO (or a PO) via the procurement group """
         for picking in self:
-            picking.project_id = group_id.project_id
+            picking.project_id = picking.group_id.project_id
