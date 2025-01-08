@@ -8,11 +8,9 @@
         <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
 
         <field name="arch" type="xml">
-            <!-- Add `Description` & `Project` -->
+            <!-- Add `Project` -->
             <field name="name" position="after">
                 <field name="project_id_domain" invisible="1" />
-                
-                <field name="description" />
                 <field name="project_id" />
             </field>
         </field>
@@ -25,24 +23,11 @@
         <field name="inherit_id" ref="mrp.mrp_production_form_view" />
         
         <field name="arch" type="xml">
-            <!-- Add `Description` -->
-            <h1 position="inside">
-                <field name="description"
-                    placeholder="Title of Manufacturing Order"
-                    class="o_text_overflow flex-shrink-0"
-                    style="width: 80%"
-                />
-            </h1>
-            <field name="name" position="attributes">
-                <attribute name="class">flex-grow-1 me-3</attribute>
-            </field>
-
             <!-- Add `Project` -->
             <field name="product_id" position="before">
                 <field name="project_id_domain" invisible="1" />
                 <field name="project_id" />
             </field>
-            
         </field>
     </record>
 
@@ -53,15 +38,6 @@
         <field name="inherit_id" ref="mrp.view_mrp_production_filter" />
 
         <field name="arch" type="xml">
-            <!-- Add `Description` in 1st search by name -->
-            <field name="name" position="attributes">
-                <attribute name="filter_domain">['|', '|',
-                    ('name', 'ilike', self),
-                    ('description', 'ilike', self),
-                    ('origin', 'ilike', self)
-                ]</attribute>
-            </field>
-
             <!-- Add `project_id` -->
             <field name="name" position="after">
                 <field name="project_id" />

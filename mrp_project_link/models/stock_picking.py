@@ -3,14 +3,18 @@
 from odoo import api, models, fields, exceptions, _
 
 class StockPicking(models.Model):
-    _inherit = ['stock.picking']
+    _name = "stock.picking"
+    _inherit = ['stock.picking', 'project.default.mixin']
 
     project_id = fields.Many2one(
-        comodel_name='project.project',
-        string='Project'
+        # can be set manually or computed from procurment group
+        compute='_compute_project_id',
+        store=True,
+        readonly=False
     )
 
-    @api.onchange('project_id')
-    def _onchange_project_id(self):
+    @api.depends('group_id.project_id')
+    def _compute_project_id(self):
+        """ Automatic project value from a MO (or a PO) via the procurement group """
         for picking in self:
-            picking.move_ids.project_id = picking.project_id
+            picking.project_id = group_id.project_id

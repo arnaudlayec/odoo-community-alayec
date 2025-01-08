@@ -17,12 +17,13 @@ class TestMrpProjectLink(common.SingleTransactionCase):
             'uom_po_id': cls.env.ref('uom.product_uom_unit').id
         })
 
-    def test_workorder_count(self):
-        self.assertEqual(self.project.workorder_count, 0)
-
-        self.env['mrp.production'].create({
-            'product_id': self.product.id,
-            'project_id': self.project.id
+        cls.production = cls.env['mrp.production'].create({
+            'product_id': cls.product.id,
+            'project_id': cls.project.id
         })
 
-        self.assertEqual(self.project_workorder_count, 1)
+    def test_01_workorder_count(self):
+        self.assertEqual(self.project.manufacturing_order_count, 1)
+
+    def test_02_picking_project(self):
+        self.assertEqual(self.production.picking_ids.project_id, self.project)

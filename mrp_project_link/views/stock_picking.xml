@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="view_picking_form" model="ir.ui.view">
-        <field name="name">stock.picking.form</field>
+        <field name="name">stock.picking.form.mrp_project_link</field>
         <field name="model">stock.picking</field>
         <field name="inherit_id" ref="stock.view_picking_form" />
 
         <field name="arch" type="xml">
-            <field name="origin" position="after">
-                <field name="raw_material_production_id" attrs="{'invisible': [('raw_material_production_id', '=', False)]}" />
-            </field>
+            <xpath expr="//div[hasclass('o_td_label')]" position="before">
+                <field name="project_id_domain" invisible="1" />
+                <field name="project_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
+            </xpath>
         </field>
     </record>
 </odoo>

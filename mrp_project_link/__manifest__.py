@@ -20,5 +20,6 @@
         # data
         'views/project_project.xml',
         'views/mrp_production.xml',
+        'views/stock_picking.xml',
     ]
 }
