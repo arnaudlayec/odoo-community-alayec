@@ -14,6 +14,17 @@ class AccountMoveBudgetLine(models.Model):
     _order = "seq_analytic, date desc, id desc"
     
     #===== Fields methods =====#
+    def default_get(self, fields):
+        vals = super().default_get(fields)
+        
+        project_id = self._context.get('default_project_id')
+        if project_id:
+            project = self.env['project.project'].browse(project_id)
+            default_vals = project._get_default_vals_budget_line().items()
+            vals |= {k: v for k, v in default_vals if k in fields}
+    
+        return vals
+    
     def _default_analytic_account_id_domain(self):
         """ Limit selection of analytic account:
             1. to accountants only, depending user' permission

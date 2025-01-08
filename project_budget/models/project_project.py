@@ -23,6 +23,11 @@ class Project(models.Model):
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]",
         check_company=True
     )
+    budget_id = fields.Many2one(
+        comodel_name='account.move.budget',
+        compute='_compute_budget_id'
+    )
+    
     budget_template_ids = fields.One2many(
         # UI-field only, to copy budget template into `budget_ids`
         comodel_name='account.move.budget',
@@ -56,6 +61,11 @@ class Project(models.Model):
             self.sudo().budget_ids._synchro_fields_with_project()
         return res
     
+    #===== Compute =====#
+    @api.depends('budget_ids')
+    def _compute_budget_id(self):
+        for project in self:
+            project.budget_id = fields.first(project.budget_ids)
     
     #===== Compute (sums) =====#
     @api.depends('budget_line_ids', 'budget_line_ids.balance')
@@ -126,12 +136,15 @@ class Project(models.Model):
             'template_default_project': False
         } | vals
     
-    def _get_default_vals_budget_line(self, budget_id, vals={}, default=False):
+    def _get_default_vals_budget_line(self, budget_id=None, vals={}, default=False):
+        budget_id = budget_id or self.budget_id
+        if not budget_id:
+            return {}
+        
         default = 'default_' if default else ''
 
         return {
             default + 'project_id': self.id,
-            default + 'partner_id': self.partner_id.id,
             default + 'budget_id': budget_id.id,
             default + 'date': self._get_default_project_budget_line_date(budget_id)
         } | vals

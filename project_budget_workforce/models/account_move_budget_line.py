@@ -40,7 +40,7 @@ class AccountMoveBudgetLine(models.Model):
         if self.type != 'workforce':
             return super()._compute_debit_credit_one()
         
-        _value_workforce = self.analytic_account_id._value_workforce
+        _value_workforce = self.sudo().analytic_account_id._value_workforce
         self.debit = _value_workforce(self.qty_debit, self.budget_id)
         self.credit = _value_workforce(self.qty_credit, self.budget_id)
     

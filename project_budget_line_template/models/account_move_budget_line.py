@@ -31,7 +31,7 @@ class AccountMoveBudgetLine(models.Model):
     def _onchange_prefill(self):
         template_lines = self._get_matching_template_lines()
         for line in self:
-            line._prefill_fields(template_lines)
+            res = line._prefill_fields(template_lines)
     
     #===== Logics (search/copy) =====#
     def _get_copied_fields(self):

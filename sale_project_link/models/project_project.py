@@ -52,7 +52,7 @@ class ProjectProject(models.Model):
 
 
     #===== Compute =====#
-    @api.depends('sale_order_ids', 'sale_order_ids.amount_untaxed')
+    @api.depends('sale_order_ids', 'sale_order_ids.amount_untaxed', 'sale_order_ids.order_id.state')
     def _compute_sale_order_fields(self):
         fields = self._get_rg_sale_order_fields()
 
