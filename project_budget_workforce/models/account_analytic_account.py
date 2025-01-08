@@ -16,10 +16,20 @@ class AccountAnalyticAccount(models.Model):
             :arg budget_id: for date_from and date_to
         """
         self.ensure_one()
+
+        # cost history table ensuring unique entry per starting_date
+        analytic_cost_history = []
+        for x in self.timesheet_cost_history_ids:
+            unique_cost_history[x.starting_date] = (
+                x.starting_date,
+                x.date_to,
+                x.hourly_cost,
+            )
+
         return self._calculate_total_valuation(
             qty,
             [budget_id.date_from, budget_id.date_to],
-            [(x.starting_date, x.date_to, x.hourly_cost) for x in self.timesheet_cost_history_ids]
+            [analytic_cost_history.values()]
         )
     
     def _calculate_total_valuation(self, qty, date_range, costs_per_dates):

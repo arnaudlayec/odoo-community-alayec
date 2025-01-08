@@ -78,23 +78,18 @@ class UtilitiesDatabaseMixin(models.AbstractModel):
             } for row in rows]
 
     def _execute_db(self, db_resource, request):
-        try:
-            # Sqlite (connection, cursor)
-            if len(db_resource) == 2:
-                _, cursor = db_resource
-                cursor.execute(request)
-                rows = cursor.fetchall()
-                cols = [x[0] for x in cursor.description]
-            
-            # OCA connector
-            else:
-                # `db_resource` is a record of `base.external.dbsource`
-                result = db_resource.execute(request, metadata=True)
-                cols, rows = result['cols'], result['rows']
-        except Exception as e:
-            raise exceptions.UserError(
-                _('Issue when reading external table. Request: %s') % request
-            )
+        # Sqlite (connection, cursor)
+        if len(db_resource) == 2:
+            _, cursor = db_resource
+            cursor.execute(request)
+            rows = cursor.fetchall()
+            cols = [x[0] for x in cursor.description]
+        
+        # OCA connector
+        else:
+            # `db_resource` is a record of `base.external.dbsource`
+            result = db_resource.execute(request, metadata=True)
+            cols, rows = result['cols'], result['rows']
         
         return cols, rows
     
