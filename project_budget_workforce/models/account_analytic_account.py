@@ -18,9 +18,9 @@ class AccountAnalyticAccount(models.Model):
         self.ensure_one()
 
         # cost history table ensuring unique entry per starting_date
-        analytic_cost_history = []
+        analytic_cost_history = {}
         for x in self.timesheet_cost_history_ids:
-            unique_cost_history[x.starting_date] = (
+            analytic_cost_history[x.starting_date] = (
                 x.starting_date,
                 x.date_to,
                 x.hourly_cost,
