@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Move Tree -->
+    <record id="view_move_tree" model="ir.ui.view">
+        <field name="name">stock.move.tree.mrp_project_link</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree" />
+
+        <field name="arch" type="xml">
+            <field name="reference" position="after">
+                <field name="project_id" optional="show" />
+            </field>
+        </field>
+    </record>
+    <!-- Move Tree2 -->
+    <record id="view_move_tree_receipt_picking" model="ir.ui.view">
+        <field name="name">stock.move.tree2.mrp_project_link</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_tree_receipt_picking" />
+
+        <field name="arch" type="xml">
+            <field name="picking_id" position="after">
+                <field name="project_id" optional="show" />
+            </field>
+        </field>
+    </record>
+    <!-- Move Kanban -->
+    <record id="view_move_kandan" model="ir.ui.view">
+        <field name="name">stock.move.kanban.mrp_project_link</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_kandan" />
+
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_kanban_record_body')]" position="inside">
+                <field name="project_id" />
+            </xpath>
+        </field>
+    </record>
+    <!-- Move Form -->
+    <record id="view_move_form" model="ir.ui.view">
+        <field name="name">stock.move.form.mrp_project_link</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_form" />
+
+        <field name="arch" type="xml">
+            <field name="reference" position="after">
+                <field name="project_id" />
+            </field>
+        </field>
+    </record>
+    <!-- Move Search -->
+    <record id="view_move_search" model="ir.ui.view">
+        <field name="name">stock.move.search.mrp_project_link</field>
+        <field name="model">stock.move</field>
+        <field name="inherit_id" ref="stock.view_move_search" />
+
+        <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="project_id" />
+            </field>
+        </field>
+    </record>
+</odoo>

@@ -13,13 +13,16 @@
     'version': '16.0.1.0.1',
 
     'depends': [
-        'mrp', # Odoo CE
+        'stock', 'mrp', # Odoo CE
         'project_favorite_switch', # other
     ],
     'data': [
         # data
         'views/project_project.xml',
         'views/mrp_production.xml',
+        'views/procurement_group.xml',
         'views/stock_picking.xml',
+        'views/stock_move.xml',
+        'views/stock_move_line.xml',
     ]
 }

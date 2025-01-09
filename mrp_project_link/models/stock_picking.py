@@ -7,7 +7,7 @@ class StockPicking(models.Model):
     _inherit = ['stock.picking', 'project.default.mixin']
 
     project_id = fields.Many2one(
-        # can be set manually or computed from procurment group
+        # can be set manually or computed from procurement group
         compute='_compute_project_id',
         store=True,
         readonly=False

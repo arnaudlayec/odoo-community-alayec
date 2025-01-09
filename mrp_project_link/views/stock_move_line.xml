@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Line Kanban -->
+    <record id="view_stock_move_line_kanban" model="ir.ui.view">
+        <field name="name">stock.move.line.kanban.mrp_project_link</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_stock_move_line_kanban" />
+
+        <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="project_id" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Line Tree -->
+    <record id="view_move_line_tree" model="ir.ui.view">
+        <field name="name">stock.move.line.tree.mrp_project_link</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree" />
+
+        <field name="arch" type="xml">
+            <field name="reference" position="after">
+                <field name="project_id" optional="show" />
+            </field>
+        </field>
+    </record>
+    <!-- Line Tree (detailed) -->
+    <record id="view_move_line_tree_detailed" model="ir.ui.view">
+        <field name="name">stock.move.line.tree.detailed.mrp_project_link</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_tree_detailed" />
+
+        <field name="arch" type="xml">
+            <field name="date" position="after">
+                <field name="project_id" optional="show" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Line Form -->
+    <record id="view_move_line_form" model="ir.ui.view">
+        <field name="name">stock.move.line.form.mrp_project_link</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.view_move_line_form" />
+
+        <field name="arch" type="xml">
+            <field name="reference" position="after">
+                <field name="project_id" optional="show" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Line Search -->
+    <record id="stock_move_line_view_search" model="ir.ui.view">
+        <field name="name">stock.move.line.search.mrp_project_link</field>
+        <field name="model">stock.move.line</field>
+        <field name="inherit_id" ref="stock.stock_move_line_view_search" />
+
+        <field name="arch" type="xml">
+            <field name="product_id" position="after">
+                <field name="project_id" />
+            </field>
+        </field>
+    </record>
+</odoo>

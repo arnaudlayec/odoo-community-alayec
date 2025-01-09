@@ -1,5 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <!-- Picking Kanban -->
+    <record model="ir.ui.view" id="stock_picking_kanban">
+        <field name="name">stock.picking.kanban.mrp_project_link</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.stock_picking_kanban" />
+
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('o_kanban_record_top')]" position="after">
+                <div class="o_kanban_card_content">
+                    <field name="project_id_domain" invisible="1" />
+                    <field name="project_id" />
+                </div>
+            </xpath>
+        </field>
+    </record>
+    
+    <!-- Picking Tree -->
+    <record id="vpicktree" model="ir.ui.view">
+        <field name="name">stock.picking.tree.mrp_project_link</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.vpicktree" />
+
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="project_id_domain" invisible="1" />
+                <field name="project_id" optional="show" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Picking Form -->
     <record id="view_picking_form" model="ir.ui.view">
         <field name="name">stock.picking.form.mrp_project_link</field>
         <field name="model">stock.picking</field>
@@ -10,6 +41,19 @@
                 <field name="project_id_domain" invisible="1" />
                 <field name="project_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
             </xpath>
+        </field>
+    </record>
+
+    <!-- Picking Search -->
+    <record id="view_picking_internal_search" model="ir.ui.view">
+        <field name="name">stock.picking.internal.search.mrp_project_link</field>
+        <field name="model">stock.picking</field>
+        <field name="inherit_id" ref="stock.view_picking_internal_search" />
+
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="project_id" />
+            </field>
         </field>
     </record>
 </odoo>
