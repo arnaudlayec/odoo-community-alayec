@@ -29,7 +29,7 @@ class AccountAnalyticAccount(models.Model):
         return self._calculate_total_valuation(
             qty,
             [budget_id.date_from, budget_id.date_to],
-            [analytic_cost_history.values()]
+            analytic_cost_history.values()
         )
     
     def _calculate_total_valuation(self, qty, date_range, costs_per_dates):
