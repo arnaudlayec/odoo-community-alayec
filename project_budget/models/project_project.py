@@ -140,6 +140,8 @@ class Project(models.Model):
         budget_id = budget_id or self.budget_id
         if not budget_id:
             return {}
+        else:
+            budget_id.ensure_one()
         
         default = 'default_' if default else ''
 

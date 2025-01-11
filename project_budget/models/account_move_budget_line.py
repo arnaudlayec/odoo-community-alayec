@@ -97,13 +97,6 @@ class AccountMoveBudgetLine(models.Model):
         store=True,
     )
 
-    _sql_constraints = [(
-        'unique_aac_per_project',
-        'UNIQUE (analytic_account_id, project_id)',
-        "A budget line is already set on this project to the same analytic account."
-    )]
-
-
     #===== CRUD =====#
     def _trigger_depends(self, method, fields=[]):
         # [example] project_project.budget_line_sum
