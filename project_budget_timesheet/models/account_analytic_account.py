@@ -71,13 +71,13 @@ class AccountAnalyticAccount(models.Model):
     )
 
     #===== CRUD =====#
-    def _trigger_depends(self, method, fields=[]):
+    def _update_budget_crud(self, method, fields=[]):
         # Compute `project.allocated_hours`
         if self._should_update(method, fields, ['timesheetable']):
             remove_budget_ids = bool(method == 'unlink') and self.budget_line_ids.ids
             self.budget_line_ids.project_id._update_allocated_hours(remove_budget_ids)
         
-        return super()._trigger_depends(method, fields)
+        return super()._update_budget_crud(method, fields)
 
     @api.depends('budget_type')
     def _compute_timesheetable(self):

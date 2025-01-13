@@ -98,11 +98,11 @@ class AccountMoveBudgetLine(models.Model):
     )
 
     #===== CRUD =====#
-    def _trigger_depends(self, method, fields=[]):
+    def _update_budget_crud(self, method, fields=[]):
         # [example] project_project.budget_line_sum
         # if 'balance' in fields or method in ['create', 'unlink']:
         #     recordset.project_id._compute_budget_line_sum()
-        return super()._trigger_depends(method, fields)
+        return super()._update_budget_crud(method, fields)
     
 
     #===== Compute =====#

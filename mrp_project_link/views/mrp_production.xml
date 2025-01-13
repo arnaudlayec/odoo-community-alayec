@@ -11,7 +11,7 @@
             <!-- Add `Project` -->
             <field name="name" position="after">
                 <field name="project_id_domain" invisible="1" />
-                <field name="project_id" />
+                <field name="project_id" attrs="{'readonly': [('state', '!=', 'draft')]}" />
             </field>
         </field>
     </record>

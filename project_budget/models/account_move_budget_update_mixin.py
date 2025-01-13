@@ -10,7 +10,7 @@ class AccountMoveBudgetUpdateMixin(models.AbstractModel):
     # For `project_budget_timesheet`
     # However, it could be used to avoid heavy consumming @depends in other models
     @api.model
-    def _trigger_depends(self, method, fields=[]):
+    def _update_budget_crud(self, method, fields=[]):
         """ To overwrite
             :arg method: CRUD method ('create', 'write' or 'unlink')
             :option fields: list modified fields (for 'write')
@@ -22,13 +22,13 @@ class AccountMoveBudgetUpdateMixin(models.AbstractModel):
     
     @api.model_create_multi
     def create(self, vals_list):
-        return super().create(vals_list)._trigger_depends('create')
+        return super().create(vals_list)._update_budget_crud('create')
 
     def write(self, vals):
         res = super().write(vals)
-        self._trigger_depends('write', fields=vals.keys())
+        self._update_budget_crud('write', fields=vals.keys())
         return res
     
     def unlink(self):
-        self._trigger_depends('unlink')
+        self._update_budget_crud('unlink')
         return super().unlink()

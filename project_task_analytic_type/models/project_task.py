@@ -11,6 +11,7 @@ class Task(models.Model):
     @api.model
     def default_get(self, default_fields):
         vals = super().default_get(default_fields)
+        print('==== default_get (project_task_analytic_hr) ====')
 
         if all(x in default_fields for x in ['analytic_account_id', 'type_id']):
             vals = self._set_default_analytic_per_type(vals)
@@ -28,6 +29,11 @@ class Task(models.Model):
               any analytic account configured
         """
         super()._compute_analytic_account_id()
+        
+        # don't override default from ctx (e.g. Kanban column)
+        if self._context.get('default_analytic_account_id'):
+            return
+        
         for task in self:
             if task.is_analytic_account_id_changed or task.type_id.id:
                 task.analytic_account_id = task.type_id.analytic_account_id

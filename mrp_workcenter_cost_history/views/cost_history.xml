@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2024 Moduon Team S.L. <info@moduon.team>
+     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
+<odoo>
+
+    <record id="hr_employee_timesheet_cost_view_tree" model="ir.ui.view">
+        <field name="name">hr.employee.timesheet.cost.history.view.tree</field>
+        <field name="model">hr.employee.timesheet.cost.history</field>
+        <field name="inherit_id" ref="hr_employee_cost_history.hr_employee_timesheet_cost_view_tree" />
+        
+        <field name="arch" type="xml">
+            <field name="hourly_cost" position="before">
+                <field name="workcenter_id" />
+            </field>
+        </field>
+    </record>
+
+</odoo>

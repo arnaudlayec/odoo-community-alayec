@@ -27,13 +27,14 @@ class Task(models.Model):
     
     #===== Fields methods =====#
     @api.model
-    def default_get(self, default_fields):
+    def default_get(self, fields):
         """ By default, Task analytic follow kanban column (context) """
-        vals = super().default_get(default_fields)
-        vals['analytic_account_id'] = (
-            self._context.get('default_analytic_account_id')
-            or vals.get('analytic_account_id')
-        )
+        vals = super().default_get(fields)
+
+        column_analytic = self._context.get('default_analytic_account_id')
+        if column_analytic:
+            vals['analytic_account_id'] = column_analytic
+
         return vals
 
 

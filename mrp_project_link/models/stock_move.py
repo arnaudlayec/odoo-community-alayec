@@ -6,7 +6,7 @@ class StockMove(models.Model):
     _inherit = ['stock.move']
 
     project_id = fields.Many2one(
-        related='group_id.project_id'
+        related='picking_id.project_id'
     )
 
 class StockMoveLine(models.Model):
