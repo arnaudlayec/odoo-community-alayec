@@ -73,7 +73,7 @@ class Project(models.Model):
         """ Sum the balance of budget lines to show it in project's form smart button """
         mapped_data = self._get_mapped_budget_line()
         for project in self:
-            project.budget_line_sum = mapped_data.get(project.id)
+            project.budget_line_sum = mapped_data.get(project._origin.id)
     
     def _get_mapped_budget_line(self, field='balance', groupby=['project_id']):
         """ `field` is useful in module `project_budget_timesheet` """
