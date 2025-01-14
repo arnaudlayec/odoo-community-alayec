@@ -17,8 +17,6 @@ class Task(models.Model):
         """
         vals = super().default_get(default_fields)
 
-        print('==== default_get (project_task_analytic_hr) ====')
-
         if 'analytic_account_id' in default_fields and not self._context.get('default_analytic_account_id'):
             analytic_id = self.env.user.employee_id._get_analytic_account_id().id
             if analytic_id:

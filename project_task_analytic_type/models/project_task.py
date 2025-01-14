@@ -11,7 +11,6 @@ class Task(models.Model):
     @api.model
     def default_get(self, default_fields):
         vals = super().default_get(default_fields)
-        print('==== default_get (project_task_analytic_hr) ====')
 
         if all(x in default_fields for x in ['analytic_account_id', 'type_id']):
             vals = self._set_default_analytic_per_type(vals)

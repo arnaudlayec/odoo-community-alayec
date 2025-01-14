@@ -36,4 +36,5 @@ class StockPicking(models.Model):
     def _compute_project_id(self):
         """ Automatic project value from a MO (or a PO) via the procurement group """
         for picking in self:
-            picking.project_id = picking._default_project_id()
+            if picking.mrp_production_ids:
+                picking.project_id = picking._default_project_id()
