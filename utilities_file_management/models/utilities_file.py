@@ -54,20 +54,41 @@ class UtilitiesFileMixin(models.AbstractModel):
             _logger.info(f'[_uncompress] not archived, returning content')
             return filename, content, mimetypes.guess_type(filename)[0]
 
-    def _excel_to_vals_list(self, raw_content, b64decode=False):
+    def _excel_to_vals_list(self, raw_content, cols={}, b64decode=False):
         """ Reads Excel file or CSV and return a list of dict """
         if b64decode:
             raw_content = base64.b64decode(raw_content)
         virtual_file = io.BytesIO(raw_content)
         
+        success = False
         try:
-            return pd.read_excel(virtual_file).to_dict(orient="records")
+            data = pd.read_excel(virtual_file).to_dict(orient="records")
+            success = True
         except:
             try:
-                return pd.read_csv(virtual_file).to_dict(orient="records")
+                data = pd.read_csv(virtual_file).to_dict(orient="records")
+                success = True
             except:
                 pass
 
-        raise exceptions.ValidationError(
-            _('Given file is empty or not readable. Supported formats are .xlsx and .csv.')
-        )
+        if not success:
+            raise exceptions.ValidationError(
+                _('Given file is empty or not readable. Supported formats are .xlsx and .csv.')
+            )
+        
+        # Replace data's keys, if asked
+        if cols:
+            # natively, data list of dict where keys are xlsx cols' name
+            for vals in data:
+                values = list(vals.values())
+                
+                if len(values) != len(cols):
+                    raise exceptions.ValidationError(
+                        _('%(len)s cols were expected in the file: %(cols)s',
+                        len=len(cols),
+                        cols=cols.join(', ')
+                    ))
+                
+                vals = {k: values[i] for i, k in enumerate(cols)}
+        
+        return data
