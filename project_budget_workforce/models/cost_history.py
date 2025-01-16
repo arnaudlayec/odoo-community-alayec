@@ -68,7 +68,7 @@ class HrEmployeeTimesheetCostHistory(models.Model):
             mapped_data[field][x[field][0]] = x['starting_dates']
 
         for history in self:
-            field = self._get_field()
+            field = history._get_field()
             dates_from = mapped_data[field].get(history[field].id, []) # all `starting_date` of siblings history
             next_starting_date = [date for date in dates_from if date and date > history.starting_date]
             history.date_to = date_utils.subtract(min(next_starting_date), days=1) if next_starting_date else False
