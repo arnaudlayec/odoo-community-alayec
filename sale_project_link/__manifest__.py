@@ -20,9 +20,9 @@
         'data/ir.sequence.xml',
         # views
         'views/project_project.xml',
-        'views/sale_order.xml'
-        'views/account_move.xml'
-        'views/account_move_line.xml'
+        'views/sale_order.xml',
+        'views/account_move.xml',
+        'views/account_move_line.xml',
     ],
     'uninstall_hook': 'uninstall_hook',
 }
