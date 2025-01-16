@@ -12,7 +12,10 @@
     'category': 'Manufacturing/Manufacturing',
     'version': '16.0.1.0.0',
 
-    'depends': ['hr_employee_cost_history'],
+    'depends': [
+        'hr_employee_cost_history',
+        'mrp_account',
+    ],
     'data': [
         # wizard
         'wizard/cost_history.xml',

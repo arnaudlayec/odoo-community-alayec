@@ -6,47 +6,44 @@
         <field name="name">Work Center Cost History</field>
         <field name="res_model">hr.employee.timesheet.cost.history</field>
         <field name="view_mode">tree</field>
-        <field name="domain">['|', ('workcenter_id', '=', active_id)]</field>
+        <field name="domain">[('workcenter_id', '=', active_id)]</field>
         <field name="target">current</field>
     </record>
 
-    <record id="view_department_form" model="ir.ui.view" >
-        <field name="name">hr.department.form.cost_history</field>
-        <field name="model">hr.department</field>
-        <field name="inherit_id" ref="hr.view_department_form" />
+    <record id="mrp_workcenter_view" model="ir.ui.view" >
+        <field name="name">mrp.workcenter.form.cost_history</field>
+        <field name="model">mrp.workcenter</field>
+        <field name="inherit_id" ref="mrp.mrp_workcenter_view" />
 
         <field name="arch" type="xml">
-            <label for="costs_hour"/>
             <div id="costs_hour" position="replace">
+                <field name="currency_id" invisible="1" />
+                <field name="cost_history_ids" invisible="1" />
+
                 <div id="costs_hour">
                     <field name="costs_hour" readonly="1" class="oe_inline" widget="monetary" />
-                </div>
 
-                <!-- Same buttons than in `hr_employee_cost_history` -->
-                <field
-                    name="cost_history_ids"
-                    invisible="1"
-                    groups="hr.group_hr_user"
-                />
-                <button
-                    type="action"
-                    name="%(action_hr_employee_timesheet_cost_wizard)d"
-                    class="btn btn-link oe_inline"
-                    role="button"
-                    context="{'default_workcenter_id': id, 'default_hourly_cost': costs_hour}"
-                >
-                    <i class="fa fa-fw o_button_icon fa-arrow-right" /> Update Cost
-                </button>
-                <button
-                    type="action"
-                    name="%(action_workcenter_cost_history)d"
-                    class="btn btn-link oe_inline"
-                    role="button"
-                    context="{'default_workcenter_id': id}"
-                    attrs="{'invisible': [('cost_history_ids', '=', [])]}"
-                >
-                    <i class="fa fa-fw o_button_icon fa-history" /> Cost History
-                </button>
+                    <!-- Same buttons than in `hr_employee_cost_history` -->
+                    <button
+                        type="action"
+                        name="%(hr_employee_cost_history.action_hr_employee_timesheet_cost_wizard)d"
+                        class="btn btn-link oe_inline"
+                        role="button"
+                        context="{'default_workcenter_id': id, 'default_hourly_cost': costs_hour}"
+                    >
+                        <i class="fa fa-fw o_button_icon fa-arrow-right" /> Update Cost
+                    </button>
+                    <button
+                        type="action"
+                        name="%(action_workcenter_cost_history)d"
+                        class="btn btn-link oe_inline"
+                        role="button"
+                        context="{'default_workcenter_id': id}"
+                        attrs="{'invisible': [('cost_history_ids', '=', [])]}"
+                    >
+                        <i class="fa fa-fw o_button_icon fa-history" /> Cost History
+                    </button>
+                </div>
             </div>
         </field>
     </record>

@@ -15,38 +15,29 @@ class HrEmployeeTimesheetCost(models.TransientModel):
         required=False
     )
 
-    @api.constrains('workcenter_id', 'employee_id')
-    def _constrain_workcenter_employee(self):
-        """ Ensure either workcenter or employee is set """
-        orphans = self.filtered(lambda x: not x.workcenter.id and not x.employee_id.id)
-        if len(orphans):
-            raise exceptions.ValidationError(_(
-                'Either Employee or Work Center is required on cost history.'
-            ))
-
     def update_employee_cost(self):
         """ Overwrites to route between:
-            * employee cost update (original), or
-            * workcenter cost update (new)
+            * department cost update (new)
+            * or default to original
         """
-        if self.employee_id:
-            return super().update_employee_cost()
-        elif self.workcenter:
+        if self.workcenter_id:
             return self.update_workcenter_cost()
+        
+        return super().update_employee_cost()
     
     def update_workcenter_cost(self):
         self.ensure_one()
         
         # Log the cost in workcenter's history and eliminate/replace any next logs by this one
         domain_bad = [("starting_date", ">=", self.starting_date)]
-        bad_costs = self.workcenter.cost_history_ids.filtered_domain(domain_bad)
-        costs = self.workcenter.cost_history_ids - bad_costs
-        self.workcenter.sudo().write({
-            "costs_hour": self.hourly_cost,
+        bad_costs = self.workcenter_id.cost_history_ids.filtered_domain(domain_bad)
+        costs = self.workcenter_id.cost_history_ids - bad_costs
+        self.workcenter_id.sudo().write({
+            "costs_hour": self.hourly_cost, # (!) workcenter field is `costs_hour` but wizard's is `hourly_cost`
             "cost_history_ids": [
                 fields.Command.set(costs.ids),
                 fields.Command.create({
-                    "workcenter": self.workcenter.id,
+                    "workcenter_id": self.workcenter_id.id,
                     "currency_id": self.currency_id.id,
                     "hourly_cost": self.hourly_cost,
                     "starting_date": self.starting_date,
@@ -54,13 +45,5 @@ class HrEmployeeTimesheetCost(models.TransientModel):
             ],
         })
         
-        # Recompute timesheets for all workcenter's
-        domain = [
-            ("workcenter_id", "in", self.workcenter_id.ids),
-            ("date", ">=", self.starting_date),
-        ]
-        productivity_ids = self.env["mrp.workcenter.productivity"].search(domain)
-        productivity_ids.costs_hour = self.hourly_cost
-
-        update des timesheets
-        quid mrp_workorder._create_or_update_analytic_entry
+        # Recompute workorder analytic entry total
+        self.workcenter_id.workorder_ids._create_or_update_analytic_entry()

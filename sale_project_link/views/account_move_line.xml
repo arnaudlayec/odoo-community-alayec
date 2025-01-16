@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+
+    <!-- Account Move line tree -->
+    <record id="view_move_line_tree" model="ir.ui.view">
+        <field name="name">account.move.line.tree.project_link</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_move_line_tree" />
+
+        <field name="arch" type="xml">
+            <!-- Add Project -->
+            <field name="ref" position="after">
+                <field name="project_id" optional="hide" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Account Move line Search -->
+    <record id="view_account_move_line_filter" model="ir.ui.view">
+        <field name="name">account.move.line.search.project_link</field>
+        <field name="model">account.move.line</field>
+        <field name="inherit_id" ref="account.view_account_move_line_filter" />
+
+        <field name="arch" type="xml">
+            <!-- Add Project to searchable fields -->
+            <field name="ref" position="after">
+                <field name="project_id" />
+            </field>
+        </field>
+    </record>
+</odoo>

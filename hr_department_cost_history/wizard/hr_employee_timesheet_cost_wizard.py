@@ -15,24 +15,15 @@ class HrEmployeeTimesheetCost(models.TransientModel):
         required=False
     )
 
-    @api.constrains('department_id', 'employee_id')
-    def _constrain_department_employee(self):
-        """ Ensure either department or employee is set """
-        orphans = self.filtered(lambda x: not x.department_id.id and not x.employee_id.id)
-        if len(orphans):
-            raise exceptions.ValidationError(_(
-                'Either Employee or Department is required on cost history.'
-            ))
-
     def update_employee_cost(self):
         """ Overwrites to route between:
-            * employee cost update (original), or
             * department cost update (new)
+            * or default to original
         """
-        if self.employee_id.id:
-            return super().update_employee_cost()
-        elif self.department_id.id:
+        if self.department_id.id:
             return self.update_department_cost()
+        
+        return super().update_employee_cost()
     
     def update_department_cost(self):
         self.ensure_one()

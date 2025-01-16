@@ -25,7 +25,7 @@
         
         <field name="arch" type="xml">
             <field name="department_id" position="before">
-                <button name="button_open_department_or_employee"
+                <button name="button_open_details"
                     type="object"
                     string="Open"
                     icon="fa-bars"

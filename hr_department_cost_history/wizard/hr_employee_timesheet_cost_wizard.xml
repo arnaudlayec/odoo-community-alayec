@@ -2,7 +2,7 @@
 <odoo>
 
     <record id="hr_employee_timesheet_cost_wizard_view_form" model="ir.ui.view">
-        <field name="name">hr_employee_timesheet_cost_wizard.view.form</field>
+        <field name="name">hr_employee_timesheet_cost_wizard.view.form.department</field>
         <field name="model">hr.employee.timesheet.cost.wizard</field>
         <field name="inherit_id" ref="hr_employee_cost_history.hr_employee_timesheet_cost_wizard_view_form" />
 

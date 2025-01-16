@@ -3,3 +3,4 @@
 from . import cost_history
 from . import mrp_workcenter
 from . import mrp_productivity
+from . import mrp_workorder

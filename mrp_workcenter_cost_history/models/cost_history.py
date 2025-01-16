@@ -7,8 +7,8 @@ class HrEmployeeTimesheetCostHistory(models.Model):
     _order = "starting_date DESC"
 
     workcenter_id = fields.Many2one(
-        comodel_name="mrp.workcenter",
         string='Workcenter',
+        comodel_name="mrp.workcenter",
         ondelete='cascade',
     )
     employee_id = fields.Many2one(

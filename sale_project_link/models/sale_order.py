@@ -21,7 +21,7 @@ class SaleOrder(models.Model):
         return super().create(vals_list)
 
     def _sale_project_modify_vals_list(self, vals_list):
-        # Perf optim (browse): get all project ids at once
+        # Perf optim: get all project ids at once
         project_ids_ = [vals.get('project_id') for vals in vals_list if vals.get('project_id')]
         mapped_project_ids = {x.id: x for x in self.env['project.project'].browse(project_ids_)}
 
@@ -65,12 +65,29 @@ class SaleOrder(models.Model):
         """ Can be overwritten """
         return ['partner_id', 'analytic_account_id']
     
-    #===== Onchange =====#
+
+    #===== Onchange (vals & line analytic) =====#
     @api.onchange('project_id')
     def _onchange_project_id(self):
-        """ Auto-populates SO fields from project's ones """
+        """ Auto-populates SO fields from project's ones, and lines analytic """
+        project_analytics = self.env.company.analytic_plan_id.account_ids
+
         for sale_order in self:
+            # SO fields
             vals = sale_order._get_vals_from_project()
             if vals:
                 sale_order.write(vals)
+            
+            # SO lines analytics
+            sale_order.order_line._replace_analytic(
+                replaced_ids=project_analytics._origin.ids,
+                added_id=sale_order.project_id.analytic_account_id._origin.id
+            )
+
+
+    #===== Invoice =====#
+    def _prepare_invoice(self):
+        return super()._prepare_invoice() | {
+            'project_id': self.project_id.id
+        }
     
