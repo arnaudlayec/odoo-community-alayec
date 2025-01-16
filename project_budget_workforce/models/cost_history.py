@@ -51,7 +51,7 @@ class HrEmployeeTimesheetCostHistory(models.Model):
         if not self.ids: # early quit for perf., if already finished
             return
         
-        # Get `starting_date`, per employee or department
+        # Get `starting_date`, per employee, department or workcenter
         rg_result = self.sudo().read_group(
             domain=['|',
                 ('employee_id', 'in', self.employee_id.ids),

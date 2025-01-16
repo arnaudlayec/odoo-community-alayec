@@ -10,7 +10,7 @@
         
         <field name="arch" type="xml">
             <field name="hourly_cost" position="before">
-                <field name="workcenter_id" />
+                <field name="workcenter_id" optional="show" />
             </field>
         </field>
     </record>
