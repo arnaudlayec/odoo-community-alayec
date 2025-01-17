@@ -90,7 +90,7 @@ class MrpWorkOrder(models.Model):
             
             wo.gain = gain
             wo.performance = perf
-            wo.progress_duration = duration / wo.duration_expected * 100
+            wo.progress_duration = wo.duration_expected  and duration / wo.duration_expected * 100
 
     @api.depends('time_ids', 'time_ids.qty_production')
     def _compute_qty_produced(self):

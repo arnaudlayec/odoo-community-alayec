@@ -13,7 +13,7 @@
                     'required':  [('productivity_tracking', '=', 'unit')],
                     'invisible': [('productivity_tracking', '=', 'global')]
                 }"/>
-                <field name="product_uom_id" attrs="{
+                <field name="product_uom_id" nolabel="1" attrs="{
                     'required':  [('productivity_tracking', '=', 'unit')],
                     'invisible': [('productivity_tracking', '=', 'global')]
                 }"/>
