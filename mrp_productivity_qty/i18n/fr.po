@@ -1,0 +1,173 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* mrp_productivity_qty
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-17 11:00+0000\n"
+"PO-Revision-Date: 2025-01-17 12:03+0100\n"
+"Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.5\n"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+msgid "(h:min)"
+msgstr "(h:min)"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+msgid ""
+"(h:min)\n"
+"                            per"
+msgstr ""
+"(h:min)\n"
+"                            par"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+msgid ""
+"<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" "
+"title=\"Arrow\"/>"
+msgstr ""
+"<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Icon de flèche\" "
+"title=\"Flèche\"/>"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,help:mrp_productivity_qty.field_mrp_workcenter__product_uom_id
+msgid "Default unit of Work Order"
+msgstr "Unité par défaut de l'ordre de travail"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__duration
+msgid "Duration"
+msgstr "Durée"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__date_end
+msgid "End Date"
+msgstr "Date de fin"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__gain
+msgid "Gain"
+msgstr "Gain"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields.selection,name:mrp_productivity_qty.selection__mrp_workcenter__productivity_tracking__global
+#: model:ir.model.fields.selection,name:mrp_productivity_qty.selection__mrp_workorder__productivity_tracking__global
+msgid "Global"
+msgstr "Global"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__performance
+msgid "Performance (%)"
+msgstr "Performance (%)"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+msgid "Planned Date"
+msgstr "Date prévue"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__time_ids
+msgid "Productivity Times"
+msgstr "Temps de productivité"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter__productivity_tracking
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__productivity_tracking
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__productivity_tracking
+msgid "Productivity Tracking"
+msgstr "Suivi de la productivité"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__progress_duration
+msgid "Progress (as per spent time)"
+msgstr "Progrès (selon les temps saisis)"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+msgid "Progress (qty)"
+msgstr "Progrès (qté)"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields.selection,name:mrp_productivity_qty.selection__mrp_workcenter__productivity_tracking__unit
+#: model:ir.model.fields.selection,name:mrp_productivity_qty.selection__mrp_workorder__productivity_tracking__unit
+msgid "Quantitative"
+msgstr "Quantitatif"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__qty_production
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__qty_produced
+msgid "Quantity Produced"
+msgstr "Quantité réalisée"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__qty_production
+msgid "Quantity to Produce"
+msgstr "Quantité à produire"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__duration
+msgid "Real Duration"
+msgstr "Durée réelle"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+msgid "Remaining quantity"
+msgstr "Quantité restante"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+msgid "Spent time"
+msgstr "Temps passé"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,help:mrp_productivity_qty.field_mrp_workorder__qty_produced
+msgid "The number of products already handled by this work order"
+msgstr "Le nombre de produits déjà pris en charge par cet ordre de travail"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter__product_uom_id
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__product_uom_id
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__product_uom_id
+msgid "Unit of Measure"
+msgstr "Unité de mesure"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__unit_time
+msgid "Unit time"
+msgstr "Temps unitaire"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__unit_time_avg
+msgid "Unit time (planned)"
+msgstr "Temps unitaire (prévu)"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__unit_time_real
+msgid "Unit time (real)"
+msgstr "Temps unitaire (réel)"
+
+#. module: mrp_productivity_qty
+#: model:ir.model,name:mrp_productivity_qty.model_mrp_workcenter
+msgid "Work Center"
+msgstr "Poste de travail"
+
+#. module: mrp_productivity_qty
+#: model:ir.model,name:mrp_productivity_qty.model_mrp_workorder
+msgid "Work Order"
+msgstr "Ordre de travail"
+
+#. module: mrp_productivity_qty
+#: model:ir.model,name:mrp_productivity_qty.model_mrp_workcenter_productivity
+msgid "Workcenter Productivity Log"
+msgstr "Journal de productivité du poste de travail"
