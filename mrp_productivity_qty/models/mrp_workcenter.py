@@ -8,8 +8,9 @@ class MrpWorkCenter(models.Model):
     productivity_tracking = fields.Selection([
         ('global', "Global"),
         ('unit', "Quantitative")
-    ], string="Productivity Tracking", default='global', required=True)
-    tracking_uom_id = fields.Many2one(
+    ], string="Productivity Tracking", default='global')
+    product_uom_id = fields.Many2one(
         comodel_name='uom.uom',
-        string='Unit of Measure'
+        string='Unit of Measure',
+        help='Default unit of Work Order'
     )

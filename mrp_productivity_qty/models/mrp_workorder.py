@@ -5,14 +5,19 @@ from odoo import models, fields, api, _
 class MrpWorkOrder(models.Model):
     _inherit = ["mrp.workorder"]
 
+    #===== Fields =====#
     # user-defined
     productivity_tracking = fields.Selection([
-        ('global', "Global"),
-        ('unit', "Quantitative")
-    ], string="Productivity Tracking")
-    tracking_uom_id = fields.Many2one(
-        comodel_name='uom.uom',
-        string='Unit of Measure'
+            ('global', "Global"),
+            ('unit', "Quantitative")
+        ], string="Productivity Tracking",
+        default=lambda self: self.workcenter_id.productivity_tracking
+    )
+    product_uom_id = fields.Many2one(
+        # native re-used field
+        readonly=False,
+        required=False,
+        default=lambda self: self.workcenter_id.product_uom_id.id
     )
     qty_production = fields.Float(
         string="Quantity to Produce",
@@ -22,6 +27,13 @@ class MrpWorkOrder(models.Model):
     )
 
     # computed
+    duration = fields.Float(
+        readonly=True
+    )
+    progress_duration = fields.Float(
+        compute='_compute_performance',
+        string='Progress (as per spent time)'
+    )
     time_ids = fields.One2many(
         comodel_name='mrp.workcenter.productivity',
         inverse_name='workorder_id',
@@ -32,8 +44,21 @@ class MrpWorkOrder(models.Model):
         compute="_compute_qty_produced",
         store=True
     )
-    performance = fields.Integer(
-        compute='_compute_performance'
+    unit_time_avg = fields.Float(
+        compute='_compute_performance',
+        string='Unit time (planned)',
+    )
+    unit_time_real = fields.Float(
+        compute='unit_time_real',
+        string='Unit time (real)',
+    )
+    performance = fields.Float(
+        compute='_compute_performance',
+        string='Performance (%)',
+    )
+    gain = fields.Float(
+        compute='_compute_performance',
+        string='Gain',
     )
 
     #===== Onchange (default) =====#
@@ -42,17 +67,30 @@ class MrpWorkOrder(models.Model):
         for wo in self:
             if wo.workcenter_id:
                 wo.productivity_tracking = wo.workcenter_id.productivity_tracking
-                wo.tracking_uom_id = wo.workcenter_id.tracking_uom_id
+                wo.product_uom_id = wo.workcenter_id.product_uom_id
 
     #===== performance & qty_produced (compute & button) =====#
-    @api.depends('qty_production', 'qty_produced', 'duration_expected', 'duration')
+    @api.depends(
+        'qty_production', 'duration_expected',
+        'time_ids', 'time_ids.duration', 'time_ids.qty_production'
+    )
     def _compute_performance(self):
         for wo in self:
-            unit_time_avg = wo.duration_expected and wo.qty_production / wo.duration_expected
-            unit_time_real = wo.qty_produced and wo.duration / wo.qty_produced
+            # use `sum` so it's real-time
+            duration = sum(wo.time_ids.mapped('duration'))
+            qty_produced = sum(wo.time_ids.mapped('qty_production'))
 
-            if unit_time_avg and unit_time_real:
-                wo.performance = -1 * (unit_time_real - unit_time_avg) / unit_time_avg * 100
+            wo.unit_time_avg = wo.duration_expected and wo.duration_expected / wo.qty_production
+            wo.unit_time_real = qty_produced and duration / qty_produced
+
+            perf, gain = 0, 0
+            if wo.unit_time_avg and wo.unit_time_real:
+                perf = -1 * (wo.unit_time_real - wo.unit_time_avg) / wo.unit_time_avg * 100
+                gain = -1 * (wo.unit_time_real - wo.unit_time_avg) * qty_produced
+            
+            wo.gain = gain
+            wo.performance = perf
+            wo.progress_duration = duration / wo.duration_expected * 100
 
     @api.depends('time_ids', 'time_ids.qty_production')
     def _compute_qty_produced(self):

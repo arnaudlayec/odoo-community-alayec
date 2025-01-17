@@ -1,16 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="view_mrp_workcenter_productivity_tree_inherit" model="ir.ui.view">
-        <field name="name">mrp.workcenter.productivity.tree.inherit</field>
+    <!-- Productivity Tree view -->
+    <record id="oee_form_view" model="ir.ui.view">
+        <field name="name">mrp.workcenter.productivity.tree.productivity_qty</field>
         <field name="model">mrp.workcenter.productivity</field>
-        <field name="inherit_id" ref="mrp.mrp_workcenter_productivity_tree"/>
+        <field name="inherit_id" ref="mrp.oee_form_view"/>
         
         <field name="arch" type="xml">
             <field name="duration" position="attributes">
                 <attribute name="widget">float_time</attribute>
             </field>
             <field name="date_start" position="attributes">
-                <attribute name="widget">date</attribute>
+                <attribute name="invisible">1</attribute>
+                <!-- <attribute name="widget">date</attribute> -->
             </field>
             <field name="date_end" position="attributes">
                 <attribute name="invisible">1</attribute>
@@ -24,9 +26,29 @@
                     'required': [('productivity_tracking', '=', 'unit')],
                     'column_invisible': [('productivity_tracking', '=', 'global')],
                 }" />
-                <field name="tracking_uom_id" attrs="{
+                <field name="product_uom_id" attrs="{
                     'column_invisible': [('productivity_tracking', '=', 'global')]}
                 " />
+            </field>
+
+            <!-- Add `Description` -->
+            <field name="loss_id" position="before">
+                <field name="description" widget="char" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Productivity Form view -->
+    <record id="oee_form_view" model="ir.ui.view">
+        <field name="name">mrp.workcenter.productivity.form.productivity_qty</field>
+        <field name="model">mrp.workcenter.productivity</field>
+        <field name="inherit_id" ref="mrp.oee_form_view"/>
+
+        <field name="arch" type="xml">
+            <field name="duration" position="after">
+                <field name="productivity_tracking" />
+                <field name="qty_production" />
+                <field name="product_uom_id" />
             </field>
         </field>
     </record>
