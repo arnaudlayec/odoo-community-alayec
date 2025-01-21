@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Productivity Tree -->
+    <record id="oee_tree_view" model="ir.ui.view">
+        <field name="name">mrp.workcenter.productivity.tree.attendance</field>
+        <field name="model">mrp.workcenter.productivity</field>
+        <field name="inherit_id" ref="mrp.oee_tree_view" />
+
+        <field name="arch" type="xml">
+            <!-- dates & duration -->
+            <field name="date_end" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="duration" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="duration" position="after">
+                <field name="duration_hours" optional="show" widget="float_time" sum="1" />
+            </field>
+
+            <!-- production_id, workcenter_id & workorder_id -->
+            <field name="workcenter_id" position="before">
+                <field name="possible_workorder_ids" invisible="1" />
+                <field name="production_id" optional="hide" options="{'no_create_edit': 1, 'no_open': 1}" />
+                <field name="workorder_id" optional="show" options="{'no_create_edit': 1, 'no_open': 1}" />
+            </field>
+            <field name="workcenter_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+                <attribute name="options">{'no_create_edit': 1, 'no_open': 1}</attribute>
+            </field>
+
+            <!-- user_id -->
+            <field name="date_end" position="after">
+                <!-- <field name="duration" position="move" /> -->
+                <field name="user_id" position="move" />
+            </field>
+            <field name="user_id" position="attributes">
+                <attribute name="groups">mrp.group_mrp_user</attribute>
+                <attribute name="optional">show</attribute>
+                <attribute name="options">{'no_create_edit': 1, 'no_open': 1}</attribute>
+            </field>
+
+            <!-- loss_id & description -->
+            <field name="loss_id" position="attributes">
+                <attribute name="optional">hide</attribute>
+                <attribute name="options">{'no_create_edit': 1, 'no_open': 1}</attribute>
+            </field>
+            <field name="loss_id" position="after">
+                <field name="description" widget="char" optional="hide" />
+            </field>
+
+            <!-- company -->
+            <field name="company_id" position="attributes">
+                <attribute name="groups" />
+                <attribute name="invisible">1</attribute>
+            </field>
+        </field>
+    </record>
+    <!-- Editable -->
+    <record id="oee_tree_view_editable" model="ir.ui.view">
+        <field name="name">mrp.workcenter.productivity.tree.attendance.editable</field>
+        <field name="model">mrp.workcenter.productivity</field>
+        <field name="inherit_id" ref="oee_tree_view" />
+        <field name="mode">primary</field>
+
+        <field name="arch" type="xml">
+            <tree position="attributes">
+                <attribute name="editable">top</attribute>
+                <attribute name="create">1</attribute>
+            </tree>
+        </field>
+    </record>
+
+
+    <!-- Productivity Form -->
+    <record id="oee_form_view" model="ir.ui.view">
+        <field name="name">mrp.workcenter.productivity.form</field>
+        <field name="model">mrp.workcenter.productivity</field>
+        <field name="inherit_id" ref="mrp.oee_form_view" />
+
+        <field name="arch" type="xml">
+            <!-- Invisible fields -->
+            <field name="production_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="workcenter_id" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="workorder_id" position="attributes">
+                <!-- re-inserted in the title -->
+                <attribute name="invisible">1</attribute>
+            </field>
+            <xpath expr="(//field[@name='company_id'])[2]" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+            <field name="duration" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <form position="inside">
+                <field name="user_id" invisible="1" />
+                <field name="possible_workorder_ids" invisible="1" />
+                <field name="mrp_attendance" invisible="1" />
+            </form>
+            
+            <!-- Title: workorder & user (for `group_mrp_user`) -->
+            <group position="attributes">
+                <attribute name="name">main</attribute>
+                <attribute name="attrs">{'invisible': ['&amp;', ('mrp_attendance', '=', True), ('workorder_id', '=', False)]}</attribute>
+            </group>
+            <group position="before">
+                <div colspan="2" class="fs-4 fw-bold alert alert-warning" role="alert" invisible="not context.get('mrp_attendance')">
+                    Total time today: <field name="hours_today" class="oe_inline" widget="float_time" /> (h:min)
+                </div>
+
+                <div class="oe_title">
+                    <label for="workorder_id" />
+                    <h1 class="mb-3" invisible="context.get('default_workorder_id')">
+                        <field name="workorder_id" class="w-100" placeholder="Workorder" options="{'no_create_edit': 1, 'no_open': 1}"
+                            attrs="{'required': [('mrp_attendance', '=', True)]}"
+                        />
+                    </h1>
+                    <h1 invisible="not context.get('default_workorder_id')">
+                        <field name="workorder_id" readonly="1" options="{'no_open': 1}" />
+                    </h1>
+                    <group name="head">
+                        <field name="production_id" readonly="1" options="{'no_open': 1}" invisible="context.get('default_workorder_id')" />
+                        <field name="user_id" class="w-100" placeholder="User" options="{'no_create_edit': 1, 'no_open': 1}"
+                            attrs="{'required': [('mrp_attendance', '=', True)]}"
+                            groups="mrp.group_mrp_user,hr_attendance.group_hr_attendance_user"
+                        />
+                    </group>
+                </div>
+
+                <group string="New time on this Workorder" invisible="not context.get('mrp_attendance')" />
+            </group>
+            
+            <!-- date_end: required to avoid conflict with opened productivity record -->
+            <field name="date_end" position="attributes">
+                <attribute name="attrs">{'required': [('mrp_attendance', '=', True)]}</attribute>
+            </field>
+            <!-- Duration & description -->
+            <field name="duration" position="after">
+                <label for="duration_hours" />
+                <div>
+                    <field name="duration_hours" widget="float_time" class="oe_inline me-2" />
+                    (h:min)
+                </div>
+            </field>
+            <field name="loss_id" position="after">
+                <field name="description" position="move" />
+            </field>
+
+            <!-- Inverse 2 groups: duration *THEN* loss & description -->
+            <xpath expr="(//group/group)[1]" position="before">
+                <xpath expr="(//group/group)[2]" position="move" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Productivity Pivot -->
+    <record id="oee_pivot_view" model="ir.ui.view">
+        <field name="name">mrp.workcenter.productivity.pivot.attendance</field>
+        <field name="model">mrp.workcenter.productivity</field>
+        <field name="inherit_id" ref="mrp.oee_pivot_view" />
+
+        <field name="arch" type="xml">
+            <!-- Date: in col instead of row -->
+            <field name="date_start" position="attributes">
+                <attribute name="type">col</attribute>
+            </field>
+            <!-- Row: user_id -->
+            <field name="loss_type" position="replace">
+                <field name="user_id" type="row" />
+            </field>
+            <!-- Measure: hours instead of minutes -->
+            <field name="duration" position="replace">
+                <field name="duration_hours" widget="float_time" string="Duration (h:min)" type="measure" />
+            </field>
+        </field>
+    </record>
+
+    <!-- Productivity: Search -->
+    <record id="oee_search_view" model="ir.ui.view">
+        <field name="name">mrp.workcenter.productivity.search.attendance</field>
+        <field name="model">mrp.workcenter.productivity</field>
+        <field name="inherit_id" ref="mrp.oee_search_view" />
+
+        <field name="arch" type="xml">
+            <field name="workcenter_id" position="before">
+                <field name="user_id" />
+                <field name="production_id" />
+            </field>
+            
+            <filter name="availability" position="before">
+                <filter name="today" string="Today" domain="[('date', '=', context_today().strftime('%Y-%m-%d'))]"/>
+                <filter name="yesterday" string="Yesterday" domain="[('date', '=', (context_today() - relativedelta(days=1)).strftime('%Y-%m-%d'))]"/>
+                <filter name="this_week" string="This Week" domain="[
+                    ('date', '>=', (datetime.datetime.combine(context_today() + relativedelta(weeks=-1,days=1,weekday=0), datetime.time(0,0,0)).to_utc()).strftime('%Y-%m-%d %H:%M:%S')),
+                    ('date', '&lt;', (datetime.datetime.combine(context_today() + relativedelta(days=1,weekday=0), datetime.time(0,0,0)).to_utc()).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+                <filter name="last_week" string="Last Week" domain="[
+                    ('date', '>=', (datetime.datetime.combine(context_today() + relativedelta(weeks=-2,days=1,weekday=0), datetime.time(0,0,0)).to_utc()).strftime('%Y-%m-%d %H:%M:%S')),
+                    ('date', '&lt;', (datetime.datetime.combine(context_today() + relativedelta(weeks=-1,days=1,weekday=0), datetime.time(0,0,0)).to_utc()).strftime('%Y-%m-%d %H:%M:%S'))]"/>
+                <separator />
+            </filter>
+
+            <filter name="workcenter_group" position="before">
+                <filter string="Manufacturing Order" name="mo_group" context="{'group_by': 'production_id'}" />
+            </filter>
+            <filter name="workcenter_group" position="after">
+                <filter string="Workorder" name="workorder_group" context="{'group_by': 'workorder_id'}" />
+                <filter string="Date" name="date_group" context="{'group_by': 'date:day'}" />
+            </filter>
+
+            <filter name="user" position="replace">
+                <filter string="User" name="group_user_id" context="{'group_by': 'user_id'}" />
+            </filter>
+
+            <search position="inside">
+                <searchpanel>
+                    <field name="workcenter_id" />
+                    <field name="production_id" />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+</odoo>

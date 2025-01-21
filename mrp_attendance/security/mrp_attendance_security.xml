@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- New group `MRP/Manufacturing worker`... -->
+    <record id="group_hr_attendance_mrp" model="res.groups">
+        <field name="name">Manufacturing worker</field>
+        <field name="category_id" ref="base.module_category_human_resources_attendances"/>
+        <field name="comment">
+            The user will gain access to the human resources attendance menu, enabling him to manage his own attendance.
+            It will only see other Manufacturing Workers in the list of Employee in Attendance kiosk mode.
+        </field>
+    </record>
+    <!-- ...added to `Attendance User`... -->
+    <record id="hr_attendance.group_hr_attendance" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_hr_attendance_mrp'))]"/>
+    </record>
+    <!-- ...only seeing Employee with `manufacturing_worker`, so hr.employee.public is filtered -->
+    <record id="rule_mrp_attendance_manufacturing_worker" model="ir.rule">
+        <field name="name">[MRP Attendance] Manufacturing Worker only sees other Manufacturing Workers in Attendance app</field>
+        <field name="model_id" ref="hr.model_hr_employee_public"/>
+        <field name="groups" eval="[(4, ref('group_hr_attendance_mrp'))]" />
+        <field name="domain_force">[('manufacturing_worker', '=', True)]</field>
+    </record>
+    <record id="rule_mrp_attendance_user" model="ir.rule">
+        <field name="name">[MRP Attendance] Native Attendance User sees all Employees</field>
+        <field name="model_id" ref="hr.model_hr_employee_public"/>
+        <field name="groups" eval="[(4, ref('hr_attendance.group_hr_attendance'))]" />
+        <field name="domain_force">[(1, '=', 1)]</field>
+    </record>
+</odoo>

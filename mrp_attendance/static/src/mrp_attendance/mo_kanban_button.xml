@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="mrp_attendance_production_kanban.KanbanButtons" t-inherit="web.KanbanView.Buttons">
+        <xpath expr="//div[hasclass('o_cp_buttons')]" position="inside">
+            <t t-if="props.showButtons">
+                <button type="button" class="btn btn-primary mx-1" t-on-click.prevent="actionTimesOfToday">
+                    <span class="fa fa-clock-o" />
+                    Times of today
+                </button>
+
+                <button type="button" class="btn btn-warning mx-1 text-uppercase" t-on-click.prevent="openSignOff">
+                    <span class="fa fa-power-off" />
+                    Sign off
+                </button>
+            </t>
+        </xpath>
+    </t>
+
+</templates>

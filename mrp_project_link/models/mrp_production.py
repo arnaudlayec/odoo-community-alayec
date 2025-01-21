@@ -9,3 +9,4 @@ class MrpProduction(models.Model):
     project_id = fields.Many2one(
         required=False # required in the view only, not ORM
     )
+    

@@ -11,6 +11,7 @@ class MrpWorkOrder(models.Model):
             ('global', "Global"),
             ('unit', "Quantitative")
         ], string="Productivity Tracking",
+        required=True,
         default=lambda self: self.workcenter_id.productivity_tracking
     )
     product_uom_id = fields.Many2one(
@@ -27,13 +28,7 @@ class MrpWorkOrder(models.Model):
     )
 
     # computed
-    duration = fields.Float(
-        readonly=True
-    )
-    progress_duration = fields.Float(
-        compute='_compute_performance',
-        string='Progress (as per spent time)'
-    )
+    duration = fields.Float(readonly=True)
     time_ids = fields.One2many(
         comodel_name='mrp.workcenter.productivity',
         inverse_name='workorder_id',
@@ -44,22 +39,15 @@ class MrpWorkOrder(models.Model):
         compute="_compute_qty_produced",
         store=True
     )
-    unit_time_avg = fields.Float(
-        compute='_compute_performance',
-        string='Unit time (planned)',
+    progress_qty = fields.Float(
+        string="Progress (qty)",
+        compute="_compute_qty_produced",
+        store=True
     )
-    unit_time_real = fields.Float(
-        compute='unit_time_real',
-        string='Unit time (real)',
-    )
-    performance = fields.Float(
-        compute='_compute_performance',
-        string='Performance (%)',
-    )
-    gain = fields.Float(
-        compute='_compute_performance',
-        string='Gain',
-    )
+    unit_time_avg = fields.Float(string='Planned unit time', compute='_compute_performance') # in hours !
+    unit_time_real = fields.Float(string='Realized unit time', compute='unit_time_real') # in hours !
+    performance = fields.Float(string='Performance (%)', compute='_compute_performance')
+    gain = fields.Float(string='Gain', compute='_compute_performance')
 
     #===== Onchange (default) =====#
     @api.onchange('workcenter_id')
@@ -80,17 +68,27 @@ class MrpWorkOrder(models.Model):
             duration = sum(wo.time_ids.mapped('duration'))
             qty_produced = sum(wo.time_ids.mapped('qty_production'))
 
-            wo.unit_time_avg = wo.duration_expected and wo.duration_expected / wo.qty_production
-            wo.unit_time_real = qty_produced and duration / qty_produced
+            wo.unit_time_avg = wo.duration_expected and wo.duration_expected / wo.qty_production / 60
+            wo.unit_time_real, wo.performance, wo.gain = wo._compute_metrics(
+                wo.unit_time_avg, duration, qty_produced
+            )
 
-            perf, gain = 0, 0
-            if wo.unit_time_avg and wo.unit_time_real:
-                perf = -1 * (wo.unit_time_real - wo.unit_time_avg) / wo.unit_time_avg * 100
-                gain = -1 * (wo.unit_time_real - wo.unit_time_avg) * qty_produced
-            
-            wo.gain = gain
-            wo.performance = perf
-            wo.progress_duration = wo.duration_expected  and duration / wo.duration_expected * 100
+    @api.model
+    def _compute_metrics(self, unit_time_avg, duration, qty_produced):
+        """ :arg unit_time_avg: h/unit
+            :arg duration:      in min
+            :arg qty_procuded:  /
+            :return: unit_time_real (h/unit), performance, gain (h)
+        """
+        unit_time_real = qty_produced and duration / qty_produced / 60 or 0
+        performance = 0
+        gain = 0
+
+        if unit_time_avg and unit_time_real:
+            performance = -1 * (unit_time_real - unit_time_avg) / unit_time_avg * 100
+            gain = -1 * (unit_time_real - unit_time_avg) * qty_produced
+
+        return unit_time_real, performance, gain
 
     @api.depends('time_ids', 'time_ids.qty_production')
     def _compute_qty_produced(self):
@@ -103,6 +101,7 @@ class MrpWorkOrder(models.Model):
 
         for wo in self:
             wo.qty_produced = mapped_data.get(wo.id, 0.0)
+            wo.progress_qty = wo.qty_production and wo.qty_produced / wo.qty_production * 100
 
     def button_finish(self):
         """ Neutralize change on `qty_produced` """

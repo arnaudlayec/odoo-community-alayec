@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Workorder Form -->
+    <record id="mrp_production_workorder_form_view_inherit" model="ir.ui.view">
+        <field name="name">mrp.production.work.order.form.productivity_qty</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
+
+        <field name="arch" type="xml">
+            <!-- Replace `duration` by `duration_hours` -->
+            <xpath expr="//field[@name='time_ids']//field[@name='duration']" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </xpath>
+            <xpath expr="//field[@name='time_ids']//field[@name='duration']" position="after">
+                <field name="duration_hours" widget="float_time" optional="show" sum="1" />
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Workorder Tree -->
+    <record id="mrp_production_workorder_tree_editable_view" model="ir.ui.view">
+        <field name="name">mrp.production.work.order.tree.editable</field>
+        <field name="model">mrp.workorder</field>
+        <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_editable_view"/>
+
+        <field name="arch" type="xml">
+            <!-- Replace `duration` by `duration_hours` -->
+            <field name="duration" position="attributes">
+                <attribute name="readonly">1</attribute>
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="duration_expected" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="duration_expected" position="before">
+                <field name="duration_expected_hours" widget="float_time" sum="Expected duration (h)" />
+                <field name="duration_hours" widget="float_time" sum="Real duration (h)"
+                    readonly="1"
+                    attrs="{'invisible': [('production_state','=', 'draft')], 'readonly': [('is_user_working', '=', True)]}"
+                />
+            </field>
+        </field>
+    </record>
+</odoo>

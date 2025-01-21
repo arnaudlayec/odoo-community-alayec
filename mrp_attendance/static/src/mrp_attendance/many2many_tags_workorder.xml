@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="mrp_attendance.Many2ManyTagsFieldWorkOrder" owl="1">
+        <div class="o_field_tags d-inline-flex flex-wrap">
+
+            <t t-foreach="tags" t-as="tag" t-key="tag.id or tag_index">
+                <div class="btn btn-primary m-1 px-2 py-1" t-on-click="(ev) => tag.onClick(ev)" t-esc="tag.text" />
+            </t>
+
+        </div>
+    </t>
+
+</templates>

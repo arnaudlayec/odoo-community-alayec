@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Employee Form (configuration) -->
+    <record id="view_employee_form" model="ir.ui.view">
+        <field name="name">hr.employee.form.mrp_attendance</field>
+        <field name="model">hr.employee</field>
+        <field name="inherit_id" ref="hr.view_employee_form" />
+
+        <field name="arch" type="xml">
+            <group name="identification_group" position="inside">
+                <!-- Computed readonly: only for info (True if user belongs to group `group_hr_attendance_mrp`) -->
+                <field name="manufacturing_worker" widget="boolean_toggle" />
+            </group>
+        </field>
+    </record>
+</odoo>

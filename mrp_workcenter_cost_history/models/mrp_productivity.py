@@ -26,7 +26,7 @@ class MrpWorkcenterProductivity(models.Model):
             workcenter_costs[x.workcenter_id.id][x.starting_date] = x.hourly_cost
 
         for productivity in self:
-            productivity.cost = self._calculate_cost(workcenter_costs)
+            productivity.cost = productivity._calculate_cost(workcenter_costs)
 
     def _calculate_cost(self, workcenter_costs):
         """ Calculate the cost for the productivity period (`date_start` to `date_end`)

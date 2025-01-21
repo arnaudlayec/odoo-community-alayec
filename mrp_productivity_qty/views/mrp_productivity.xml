@@ -1,39 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <!-- Productivity Tree view -->
-    <record id="oee_form_view" model="ir.ui.view">
+    <record id="oee_tree_view" model="ir.ui.view">
         <field name="name">mrp.workcenter.productivity.tree.productivity_qty</field>
         <field name="model">mrp.workcenter.productivity</field>
-        <field name="inherit_id" ref="mrp.oee_form_view"/>
+        <field name="inherit_id" ref="mrp.oee_tree_view"/>
         
         <field name="arch" type="xml">
             <field name="duration" position="attributes">
                 <attribute name="widget">float_time</attribute>
             </field>
             <field name="date_start" position="attributes">
-                <attribute name="invisible">1</attribute>
-                <!-- <attribute name="widget">date</attribute> -->
+                <attribute name="optional">1</attribute>
             </field>
             <field name="date_end" position="attributes">
-                <attribute name="invisible">1</attribute>
+                <attribute name="optional">1</attribute>
             </field>
             
-            <!-- Add Quantity -->
+            <!-- Add Quantity & Gain -->
             <field name="duration" position="after">
                 <field name="productivity_tracking" invisible="1" />
 
-                <field name="qty_production" attrs="{
-                    'required': [('productivity_tracking', '=', 'unit')],
+                <field name="qty_production" sum="1" attrs="{
                     'column_invisible': [('productivity_tracking', '=', 'global')],
                 }" />
-                <field name="product_uom_id" attrs="{
-                    'column_invisible': [('productivity_tracking', '=', 'global')]}
-                " />
-            </field>
-
-            <!-- Add `Description` -->
-            <field name="loss_id" position="before">
-                <field name="description" widget="char" />
+                <field name="product_uom_id" nolabel="1" options="{'no_open': 1}" attrs="{
+                    'column_invisible': [('productivity_tracking', '=', 'global')]
+                }" />
+                <field name="unit_time" optional="show" widget="float_time" />
             </field>
         </field>
     </record>
@@ -45,11 +39,94 @@
         <field name="inherit_id" ref="mrp.oee_form_view"/>
 
         <field name="arch" type="xml">
-            <field name="duration" position="after">
-                <field name="productivity_tracking" />
-                <field name="qty_production" />
-                <field name="product_uom_id" />
+            <!-- Hide date_end: date_start + duration -->
+            <field name="date_end" position="attributes">
+                <attribute name="invisible">1</attribute>
             </field>
+            
+            <!-- Add qty next to duration -->
+            <field name="duration" position="after">
+                <field name="productivity_tracking" invisible="1" />
+
+                <label for="qty_production" attrs="{'invisible': [('productivity_tracking', '=', 'global')]}" />
+                <div attrs="{'invisible': [('productivity_tracking', '=', 'global')]}">
+                    <field name="qty_production" class="oe_inline" attrs="{
+                        'invisible': [('productivity_tracking', '=', 'global')],
+                    }" />
+                    <field name="product_uom_id" class="oe_inline ms-2" options="{'no_open': 1}"
+                        attrs="{'invisible': [('productivity_tracking', '=', 'global')]}" />
+                </div>
+            </field>
+
+            <!-- Recall same wo's perf KPIs -->
+            <xpath expr="//group[not(@name)]" position="before">
+                <group name="wo_kpi" string="Workorder indicators" />
+
+                <p name="progress" class="mb-0" attrs="{'invisible': [('productivity_tracking', '=', 'global')]}">
+                    Produced quantities:
+                    <strong>
+                        <field name="wo_qty_produced" class="oe_inline" />
+                        /
+                        <field name="wo_qty_production" class="oe_inline" readonly="1" />
+                        <field name="product_uom_id" class="oe_inline ms-1" readonly="1" options="{'no_open': 1}" />
+                        (<field name="wo_progress_qty" class="oe_inline" readonly="1" digits="[42,0]" /> %),
+                    </strong>
+                    so
+                    <strong><field name="wo_qty_remaining" class="oe_inline" /></strong>
+                    remaining.
+                </p>
+
+                <p name="unit_time" class="mb-0" attrs="{'invisible': [('productivity_tracking', '=', 'global')]}">
+                    For a planned unit time of
+                    <strong>
+                        <field name="wo_unit_time_avg" widget="float_time" class="oe_inline" /> (h:min)
+                        per <field name="product_uom_id" class="oe_inline" readonly="1" options="{'no_open': 1}" />,
+                    </strong>
+
+                    the realized unit time is
+                    <strong>
+                        <field name="wo_unit_time_real" widget="float_time" class="oe_inline"
+                            decoration-success="wo_performance &gt; 0"
+                            decoration-danger="wo_performance &lt; 0"
+                        /> (h:min).
+                    </strong>
+                </p>
+
+                <!-- Gain & perf -->
+                <p name="gain" attrs="{'invisible': ['|',
+                    ('wo_gain', '=', 0),
+                    ('productivity_tracking', '=', 'global')]}
+                ">
+                    The
+                    <span attrs="{'invisible': [('wo_gain', '&lt;', 0)]}">gain</span>
+                    <span attrs="{'invisible': [('wo_gain', '&gt;', 0)]}">loss</span>
+                    is of
+                    <strong>
+                        <field name="wo_gain" digits="[42,0]" widget="float_time" class="oe_inline"
+                            decoration-success="wo_gain &gt; 0"
+                            decoration-danger="wo_gain &lt; 0"
+                        /> (h:min)
+                    </strong>
+
+                    meaning a performance of
+                    <strong>
+                        <field name="wo_performance" class="oe_inline"
+                            digits="[42,0]"
+                            decoration-success="wo_performance &gt; 0"
+                            decoration-danger="wo_performance &lt; 0"
+                        />%.
+                    </strong>
+                </p>
+
+                <!-- Current/Expected Time (global follow-up) -->
+                <p name="gain" attrs="{'invisible': [('productivity_tracking', '!=', 'global')]}"
+                    decoration-danger="wo_duration &gt; wo_duration_expected"
+                >
+                    <strong><field name="wo_duration" class="oe_inline" />min</strong> done over
+                    <strong><field name="wo_duration_expected" class="oe_inline" />min</strong> planned
+                    <strong>(<field name="wo_progress" class="oe_inline" />%)</strong>.
+                </p>
+            </xpath>
         </field>
     </record>
 </odoo>

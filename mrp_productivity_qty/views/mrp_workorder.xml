@@ -8,15 +8,29 @@
 
         <field name="arch" type="xml">
             <field name="qty_remaining" position="before">
-                <field name="productivity_tracking"/>
-                <field name="qty_production" attrs="{
+                <field name="productivity_tracking" />
+                <field name="qty_production" sum="1" attrs="{
                     'required':  [('productivity_tracking', '=', 'unit')],
                     'invisible': [('productivity_tracking', '=', 'global')]
                 }"/>
-                <field name="product_uom_id" nolabel="1" attrs="{
+                <field name="product_uom_id" options="{'no_open': 1}" attrs="{
                     'required':  [('productivity_tracking', '=', 'unit')],
                     'invisible': [('productivity_tracking', '=', 'global')]
                 }"/>
+            </field>
+
+            <!-- Hide `qty_remaining` and `qty_produced` if trackign is `global` -->
+            <field name="qty_remaining" position="attributes">
+                <attribute name="attrs">{
+                    'column_invisible': [('parent.state', '=', 'done')],
+                    'invisible': [('productivity_tracking', '=', 'global')]
+                }</attribute>
+            </field>
+            <field name="qty_produced" position="attributes">
+                <attribute name="attrs">{
+                    'column_invisible': [('parent.state', '=', 'done')],
+                    'invisible': [('productivity_tracking', '=', 'global')]
+                }</attribute>
             </field>
 
             <field name="date_planned_start" position="attributes">
@@ -53,30 +67,37 @@
 
         <field name="arch" type="xml">
             <group position="replace">
+                <field name="productivity_tracking" invisible="1" />
+
                 <div class="oe_title">
                     <h1><field name="production_id" /></h1>
                 </div>
                 
-                <group name="main">
+                <!-- KPIs for qty tracking -->
+                <group name="kpi_qty" attrs="{'invisible': [('productivity_tracking', '=', 'global')]}">
                     <group name="left">
+                        <!-- Quantity: produced / total (% progress_qty) -->
+                        <label for="qty_produced" string="Progress (qties)" />
+                        <div class="d-flex flex-row align-items-start">
+                            <field name="progress_qty" widget="progressbar" class="oe_inline me-2" />
+                            (
+                                <field name="qty_produced" class="oe_inline pe-1" />
+                                /
+                                <field name="qty_production" class="oe_inline ps-1" readonly="1" />
+                            )
+                        </div>
+
                         <field name="qty_remaining" string="Remaining quantity" />
 
                         <label for="unit_time_avg" />
                         <div>
                             <field name="unit_time_avg" widget="float_time" class="oe_inline" /> (h:min)
-                            per <field name="product_uom_id" class="oe_inline" readonly="1" />
+                            per <field name="product_uom_id" class="oe_inline" readonly="1" options="{'no_open': 1}" />
                         </div>
-
-                        <label for="unit_time_real" />
-                        <div>
-                            <field name="unit_time_real" widget="float_time" class="oe_inline"
-                                decoration-bf="performance != 0"
-                                decoration-success="performance &gt; 0"
-                                decoration-danger="performance &lt; 0"
-                            /> (h:min)
-                            per <field name="product_uom_id" class="oe_inline" readonly="1" />
-                        </div>
-
+                    </group>
+                
+                    <group name="right">
+                        <!-- Gain -->
                         <label for="gain" />
                         <div>
                             <field name="gain" digits="[42,0]" widget="float_time" class="oe_inline"
@@ -85,9 +106,7 @@
                                 decoration-danger="gain &lt; 0"
                             /> (h:min)
                         </div>
-                    </group>
-                
-                    <group name="right">
+
                         <!-- Performance -->
                         <label for="performance" />
                         <div>
@@ -99,35 +118,37 @@
                             /> %
                         </div>
 
-                        <!-- Quantity: produced / total (% progress) -->
-                        <label for="qty_produced" string="Progress (qty)" />
-                        <div class="d-flex flex-row align-items-start">
-                            <field name="progress" widget="progressbar" class="oe_inline me-2" />
-                            (
-                                <field name="qty_produced" class="oe_inline pe-1" />
-                                /
-                                <field name="qty_production" class="oe_inline ps-1" readonly="1" />
-                            )
-                        </div>
-
-                        <!-- Time: done / planned (% performance) -->
-                        <label for="duration" string="Spent time" />
-                        <div class="d-flex flex-row align-items-start">
-                            <field name="progress_duration" widget="progressbar" class="oe_inline me-2" />
-                            (
-                                <field name="duration" class="oe_inline pe-1" widget="float_time" />
-                                /
-                                <field name="duration_expected" class="oe_inline ps-1" widget="float_time" readonly="1" />
-                            )
-                        </div>
-                        
-                        <label for="date_planned_start" string="Planned Date"/>
-                        <div name="dates" class="o_row">
-                            <field name="date_planned_start" widget="daterange" options='{"related_end_date": "date_planned_finished", "show_time": false}'/>
-                            <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
-                            <field name="date_planned_finished" widget="daterange" options='{"related_start_date": "date_planned_start", "show_time": false}'/>
+                        <label for="unit_time_real" />
+                        <div>
+                            <field name="unit_time_real" widget="float_time" class="oe_inline"
+                                decoration-bf="performance != 0"
+                                decoration-success="performance &gt; 0"
+                                decoration-danger="performance &lt; 0"
+                            /> (h:min)
+                            per <field name="product_uom_id" class="oe_inline" readonly="1" options="{'no_open': 1}" />
                         </div>
                     </group>
+                </group>
+
+                <!-- KPIs for global tracking -->
+                <group name="kpi_global" attrs="{'invisible': [('productivity_tracking', '!=', 'global')]}">
+                    <label for="progress" />
+                    <div class="d-flex flex-row align-items-start">
+                        <field name="progress" widget="progressbar" class="oe_inline me-2" />
+                        <span decoration-danger="duration &gt; duration_expected">
+                            (<field name="duration" class="oe_inline pe-1" />min / 
+                            <field name="duration_expected" class="oe_inline pe-1" readonly="1" />min)
+                        </span>
+                    </div>
+                </group>
+
+                <group name="dates" class="w-50">
+                    <label for="date_planned_start" string="Planned Date"/>
+                    <div name="dates" class="o_row">
+                        <field name="date_planned_start" widget="daterange" options='{"related_end_date": "date_planned_finished", "show_time": false}'/>
+                        <i class="fa fa-long-arrow-right mx-2" aria-label="Arrow icon" title="Arrow"/>
+                        <field name="date_planned_finished" widget="daterange" options='{"related_start_date": "date_planned_start", "show_time": false}'/>
+                    </div>
                 </group>
             </group>
 
@@ -147,17 +168,23 @@
             <xpath expr="//field[@name='time_ids']//field[@name='duration']" position="after">
                 <field name="productivity_tracking" invisible="1" />
 
-                <field name="qty_production" attrs="{
+                <field name="qty_production" sum="1" attrs="{
                     'required': [('productivity_tracking', '=', 'unit')],
                     'column_invisible': [('productivity_tracking', '=', 'global')],
                 }" />
-                <field name="product_uom_id" nolabel="1"
+                <field name="product_uom_id" nolabel="1" options="{'no_open': 1}"
                     attrs="{'column_invisible': [('productivity_tracking', '=', 'global')]}"
                 />
                 <field name="unit_time" widget="float_time"
                     decoration-success="unit_time &lt; parent.unit_time_avg"
                     decoration-danger="unit_time &gt; parent.unit_time_avg"
                     attrs="{'column_invisible': [('productivity_tracking', '=', 'global')]}"
+                />
+                <field name="gain" sum="1" optional="show"
+                    widget="float_time"
+                    decoration-bf="gain != 0"
+                    decoration-success="gain &gt; 0"
+                    decoration-danger="gain &lt; 0"
                 />
             </xpath>
 

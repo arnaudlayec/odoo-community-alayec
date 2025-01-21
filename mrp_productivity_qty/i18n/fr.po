@@ -149,13 +149,13 @@ msgstr "Temps unitaire"
 
 #. module: mrp_productivity_qty
 #: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__unit_time_avg
-msgid "Unit time (planned)"
-msgstr "Temps unitaire (prévu)"
+msgid "Planned unit time"
+msgstr "Temps prévu unitaire"
 
 #. module: mrp_productivity_qty
 #: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__unit_time_real
-msgid "Unit time (real)"
-msgstr "Temps unitaire (réel)"
+msgid "Real unit time"
+msgstr "Temps réalisé unitaire"
 
 #. module: mrp_productivity_qty
 #: model:ir.model,name:mrp_productivity_qty.model_mrp_workcenter

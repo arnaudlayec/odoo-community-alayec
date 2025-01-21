@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <!-- Workcenter Form -->
+    <record id="mrp_attendance_user_times_today" model="ir.ui.view">
+        <field name="name">res.users.mrp_attendance</field>
+        <field name="model">res.users</field>
+        <field name="priority">999</field>
+
+        <field name="arch" type="xml">
+            <form>
+                <field name="mrp_time_ids_today" options="{'create': 0}" />
+            </form>
+        </field>
+    </record>
+</odoo>

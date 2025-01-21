@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="mrp_attendence_productivity_tree" model="ir.actions.act_window">
+        <field name="name">Times details</field>
+        <field name="res_model">mrp.workcenter.productivity</field>
+        <field name="view_mode">tree,form</field>
+        <field name="view_id" ref="oee_tree_view_editable" /> <!-- editable tree here -->
+        <field name="context">{
+            'search_default_this_week': 1,
+            'search_default_group_user_id': 1,
+        }</field>
+    </record>
+    <record id="mrp_attendence_productivity_report" model="ir.actions.act_window">
+        <field name="name">Reporting</field>
+        <field name="res_model">mrp.workcenter.productivity</field>
+        <field name="view_mode">pivot,graph,tree,form</field>
+        <field name="context">{
+            'search_default_this_week': 1,
+            'search_default_group_user_id': 1,
+        }</field>
+    </record>
+    <menuitem id="menu_mrp_attendance_root" parent="mrp.menu_mrp_root" sequence="13" name="Times">
+        <menuitem id="menu_mrp_attendance_report" action="mrp_attendence_productivity_report" />
+        <menuitem id="menu_mrp_attendance_tree" action="mrp_attendence_productivity_tree" />
+        <menuitem id="menu_mrp_attendance_kiosk" action="hr_attendance.hr_attendance_action_kiosk_mode" name="Kiosk mode" />
+    </menuitem>
+
+    <!-- Tree -->
+    <!-- <menuitem id="menu_hr_attendance_view_attendances_child" parent="hr_attendance.menu_hr_attendance_view_attendances" action="hr_attendance.hr_attendance_action" />
+    <menuitem id="menu_mrp_attendance_mrp" parent="hr_attendance.menu_hr_attendance_view_attendances" action="mrp_attendence_productivity" /> -->
+    <!-- Menu entry *Attendance/Reporting* -->
+    <!-- <menuitem id="menu_hr_attendance_view_attendances_child" parent="hr_attendance.menu_hr_attendance_view_attendances" action="hr_attendance.hr_attendance_action" />
+    <menuitem id="menu_mrp_attendance_mrp" parent="hr_attendance.menu_hr_attendance_view_attendances" action="mrp_attendence_productivity" /> -->
+
+    <!-- Manufacturing Orders Kanban view dedicated to Manufacturing Times:
+        users selected MO card or WO button to access the times' wizard
+    -->
+    <record id="mrp_production_kanban_view_attendance" model="ir.ui.view">
+        <field name="name">mrp.production.kanban.attendance</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_kanban_view" />
+        <field name="mode">primary</field>
+        <field name="priority">99</field>
+
+        <field name="arch" type="xml">
+            <kanban position="attributes">
+                <attribute name="create">0</attribute>
+                <attribute name="edit">0</attribute>
+                <attribute name="delete">0</attribute>
+                <attribute name="records_draggable">0</attribute>
+                <!-- <attribute name="action">action_open_productivity_attendance</attribute> -->
+                <!-- <attribute name="type">object</attribute> -->
+                <attribute name="js_class">mrp_attendance_production_kanban</attribute>
+                <attribute name="class">o_kanban_mobile</attribute>
+            </kanban>
+
+            <!-- Card color is `green` (color_10) if user already logged time -->
+            <templates position="before">
+                <field name="workorder_ids" />
+                <field name="user_logged_timed" />
+            </templates>
+            <xpath expr="//t[@t-name='kanban-box']/div" position="attributes">
+                <attribute name="t-attf-class">{{record.user_logged_timed.raw_value === true ? 'oe_kanban_color_10' : ''}} oe_kanban_card</attribute>
+            </xpath>
+
+
+            <!-- Add button to each WorkOrder in Production card -->
+            <xpath expr="//div[hasclass('o_kanban_record_top')]" position="after">
+                <div class="o_kanban_record_body">
+                    <field name="workorder_ids" widget="many2many_tags_workorder" />
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <!-- Dedicated MO search view for attendance -->
+    <record id="view_mrp_production_filter_attendance" model="ir.ui.view">
+        <field name="name">mrp.production.select.attendance</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.view_mrp_production_filter" />
+        <field name="mode">primary</field>
+        <field name="priority">99</field>
+
+        <field name="arch" type="xml">
+            <filter name="todo" position="before">
+                <filter string="Where I already logged time"
+                    name="user_logged_timed"
+                    domain="[('user_logged_timed', '=', True)]"
+                />
+                <separator />
+            </filter>
+
+            <search position="inside">
+                <searchpanel>
+                    <field name="workcenter_ids" icon="fa-industry" select="multi" />
+                </searchpanel>
+            </search>
+        </field>
+    </record>
+</odoo>

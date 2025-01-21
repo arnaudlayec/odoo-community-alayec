@@ -2,5 +2,7 @@
 
 from . import project_project
 from . import mrp_production
+from . import mrp_workorder
+from . import mrp_productivity
 from . import stock_picking
 from . import stock_move
