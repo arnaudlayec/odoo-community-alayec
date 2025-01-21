@@ -68,7 +68,7 @@ class MrpWorkOrder(models.Model):
             duration = sum(wo.time_ids.mapped('duration'))
             qty_produced = sum(wo.time_ids.mapped('qty_production'))
 
-            wo.unit_time_avg = wo.duration_expected and wo.duration_expected / wo.qty_production / 60
+            wo.unit_time_avg = wo.qty_production and wo.duration_expected / wo.qty_production / 60
             wo.unit_time_real, wo.performance, wo.gain = wo._compute_metrics(
                 wo.unit_time_avg, duration, qty_produced
             )

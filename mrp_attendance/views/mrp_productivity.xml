@@ -126,7 +126,7 @@
                         <field name="production_id" readonly="1" options="{'no_open': 1}" invisible="context.get('default_workorder_id')" />
                         <field name="user_id" class="w-100" placeholder="User" options="{'no_create_edit': 1, 'no_open': 1}"
                             attrs="{'required': [('mrp_attendance', '=', True)]}"
-                            groups="mrp.group_mrp_user,hr_attendance.group_hr_attendance_user"
+                            groups="mrp.group_mrp_user"
                         />
                     </group>
                 </div>
