@@ -239,7 +239,7 @@ msgstr "Poste de travail"
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
 msgid "Workorder indicators"
-msgstr "Statistiques de l'Ordre de Travail"
+msgstr "Ordre de Travail - Statistiques de suivi"
 
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
@@ -274,7 +274,7 @@ msgstr "planifié"
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
 msgid "remaining."
-msgstr "restant(e)."
+msgstr "restant(es)."
 
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view

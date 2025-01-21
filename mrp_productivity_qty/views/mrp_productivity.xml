@@ -60,7 +60,9 @@
 
             <!-- Recall same wo's perf KPIs -->
             <xpath expr="//group[not(@name)]" position="before">
-                <group name="wo_kpi" string="Workorder indicators" />
+                <div class="o_horizontal_separator mt-4 mb-3 text-uppercase fw-bolder small">
+                    Workorder indicators
+                </div>
 
                 <p name="progress" class="mb-0" attrs="{'invisible': [('productivity_tracking', '=', 'global')]}">
                     Produced quantities:
@@ -68,9 +70,9 @@
                         <field name="wo_qty_produced" class="oe_inline" />
                         /
                         <field name="wo_qty_production" class="oe_inline" readonly="1" />
-                        <field name="product_uom_id" class="oe_inline ms-1" readonly="1" options="{'no_open': 1}" />
-                        (<field name="wo_progress_qty" class="oe_inline" readonly="1" digits="[42,0]" /> %),
                     </strong>
+                    <field name="product_uom_id" class="oe_inline mx-1" readonly="1" options="{'no_open': 1}" />
+                    <strong>(<field name="wo_progress_qty" class="oe_inline" readonly="1" digits="[42,0]" /> %)</strong>,
                     so
                     <strong><field name="wo_qty_remaining" class="oe_inline" /></strong>
                     remaining.
@@ -101,11 +103,8 @@
                     <span attrs="{'invisible': [('wo_gain', '&lt;', 0)]}">gain</span>
                     <span attrs="{'invisible': [('wo_gain', '&gt;', 0)]}">loss</span>
                     is of
-                    <strong>
-                        <field name="wo_gain" digits="[42,0]" widget="float_time" class="oe_inline"
-                            decoration-success="wo_gain &gt; 0"
-                            decoration-danger="wo_gain &lt; 0"
-                        /> (h:min)
+                    <strong decoration-success="wo_gain &gt; 0" decoration-danger="wo_gain &lt; 0">
+                        <field name="wo_gain" digits="[42,0]" widget="float_time" class="oe_inline" /> (h:min)
                     </strong>
 
                     meaning a performance of

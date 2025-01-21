@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
-    <record id="mrp_attendence_productivity_tree" model="ir.actions.act_window">
+    <!-- Add menu-item to *Presence* actions from *Manufacturing* app -->
+    <record id="action_mrp_attendence_productivity_tree" model="ir.actions.act_window">
         <field name="name">Times details</field>
         <field name="res_model">mrp.workcenter.productivity</field>
         <field name="view_mode">tree,form</field>
@@ -10,7 +11,7 @@
             'search_default_group_user_id': 1,
         }</field>
     </record>
-    <record id="mrp_attendence_productivity_report" model="ir.actions.act_window">
+    <record id="action_mrp_attendence_productivity_report" model="ir.actions.act_window">
         <field name="name">Reporting</field>
         <field name="res_model">mrp.workcenter.productivity</field>
         <field name="view_mode">pivot,graph,tree,form</field>
@@ -20,17 +21,18 @@
         }</field>
     </record>
     <menuitem id="menu_mrp_attendance_root" parent="mrp.menu_mrp_root" sequence="13" name="Times">
-        <menuitem id="menu_mrp_attendance_report" action="mrp_attendence_productivity_report" />
-        <menuitem id="menu_mrp_attendance_tree" action="mrp_attendence_productivity_tree" />
+        <menuitem id="menu_mrp_attendance_report" action="action_mrp_attendence_productivity_report" />
+        <menuitem id="menu_mrp_attendance_tree" action="action_mrp_attendence_productivity_tree" />
         <menuitem id="menu_mrp_attendance_kiosk" action="hr_attendance.hr_attendance_action_kiosk_mode" name="Kiosk mode" />
     </menuitem>
 
-    <!-- Tree -->
-    <!-- <menuitem id="menu_hr_attendance_view_attendances_child" parent="hr_attendance.menu_hr_attendance_view_attendances" action="hr_attendance.hr_attendance_action" />
-    <menuitem id="menu_mrp_attendance_mrp" parent="hr_attendance.menu_hr_attendance_view_attendances" action="mrp_attendence_productivity" /> -->
-    <!-- Menu entry *Attendance/Reporting* -->
-    <!-- <menuitem id="menu_hr_attendance_view_attendances_child" parent="hr_attendance.menu_hr_attendance_view_attendances" action="hr_attendance.hr_attendance_action" />
-    <menuitem id="menu_mrp_attendance_mrp" parent="hr_attendance.menu_hr_attendance_view_attendances" action="mrp_attendence_productivity" /> -->
+    <!-- Add Loss in Configuration -->
+    <record id="action_mrp_attendence_config_loss" model="ir.actions.act_window">
+        <field name="name">Loss reasons</field>
+        <field name="res_model">mrp.workcenter.productivity.loss</field>
+        <field name="view_mode">tree,kanban,form</field>
+    </record>
+    <menuitem id="menu_mrp_attendance_config_loss" parent="mrp.menu_mrp_configuration" action="action_mrp_attendence_config_loss" />
 
     <!-- Manufacturing Orders Kanban view dedicated to Manufacturing Times:
         users selected MO card or WO button to access the times' wizard

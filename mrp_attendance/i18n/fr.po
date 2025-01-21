@@ -162,8 +162,8 @@ msgstr "Nom affiché dans la vue des temps de fabrication"
 
 #. module: mrp_attendance
 #: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_form_view
-msgid "New time on this Workorder"
-msgstr "Nouveau temps sur cet Ordre de travail"
+msgid "New time"
+msgstr "Nouveau temps"
 
 #. module: mrp_attendance
 #: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__possible_workorder_ids
