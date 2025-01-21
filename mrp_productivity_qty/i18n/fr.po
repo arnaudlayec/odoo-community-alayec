@@ -89,11 +89,6 @@ msgid "Productivity Tracking"
 msgstr "Suivi de la productivité"
 
 #. module: mrp_productivity_qty
-#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__progress_duration
-msgid "Progress (as per spent time)"
-msgstr "Progrès (selon les temps saisis)"
-
-#. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
 msgid "Progress (qty)"
 msgstr "Progrès (qté)"

@@ -32,6 +32,6 @@ export class Many2ManyTagsFieldWorkOrder extends Many2ManyTagsField {
     }
 }
 
-Many2ManyTagsField.template = "mrp_attendance.Many2ManyTagsFieldWorkOrder";
+Many2ManyTagsFieldWorkOrder.template = "mrp_attendance.Many2ManyTagsFieldWorkOrder";
 
 registry.category("fields").add("many2many_tags_workorder", Many2ManyTagsFieldWorkOrder);
