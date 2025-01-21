@@ -6,21 +6,22 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-17 11:00+0000\n"
-"PO-Revision-Date: 2025-01-17 12:03+0100\n"
-"Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
+"POT-Creation-Date: 2025-01-21 09:33+0000\n"
+"PO-Revision-Date: 2025-01-21 10:56+0100\n"
+"Last-Translator: \n"
 "Language-Team: \n"
-"Language: fr\n"
+"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.5\n"
 
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
 msgid "(h:min)"
-msgstr "(h:min)"
+msgstr ""
 
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
@@ -30,6 +31,20 @@ msgid ""
 msgstr ""
 "(h:min)\n"
 "                            par"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid ""
+"(h:min)\n"
+"                        per"
+msgstr ""
+"(h:min)\n"
+"                        par"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "(h:min)."
+msgstr ""
 
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
@@ -46,30 +61,32 @@ msgid "Default unit of Work Order"
 msgstr "Unité par défaut de l'ordre de travail"
 
 #. module: mrp_productivity_qty
-#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__duration
-msgid "Duration"
-msgstr "Durée"
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_duration_expected
+msgid "Expected Duration"
+msgstr "Durée prévue"
 
 #. module: mrp_productivity_qty
-#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__date_end
-msgid "End Date"
-msgstr "Date de fin"
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "For a planned unit time of"
+msgstr "Pour un temps unitaire prévu de"
 
 #. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__gain
 #: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__gain
 msgid "Gain"
-msgstr "Gain"
+msgstr ""
 
 #. module: mrp_productivity_qty
 #: model:ir.model.fields.selection,name:mrp_productivity_qty.selection__mrp_workcenter__productivity_tracking__global
 #: model:ir.model.fields.selection,name:mrp_productivity_qty.selection__mrp_workorder__productivity_tracking__global
 msgid "Global"
-msgstr "Global"
+msgstr ""
 
 #. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__performance
 #: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__performance
 msgid "Performance (%)"
-msgstr "Performance (%)"
+msgstr ""
 
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
@@ -77,9 +94,20 @@ msgid "Planned Date"
 msgstr "Date prévue"
 
 #. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_unit_time_avg
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__unit_time_avg
+msgid "Planned unit time"
+msgstr "Temps prévu unitaire"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "Produced quantities:"
+msgstr "Quantités produites :"
+
+#. module: mrp_productivity_qty
 #: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__time_ids
 msgid "Productivity Times"
-msgstr "Temps de productivité"
+msgstr "Heure"
 
 #. module: mrp_productivity_qty
 #: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter__productivity_tracking
@@ -90,8 +118,13 @@ msgstr "Suivi de la productivité"
 
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+msgid "Progress (qties)"
+msgstr "Avancement (qtées)"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__progress_qty
 msgid "Progress (qty)"
-msgstr "Progrès (qté)"
+msgstr "Avancement (qtée)"
 
 #. module: mrp_productivity_qty
 #: model:ir.model.fields.selection,name:mrp_productivity_qty.selection__mrp_workcenter__productivity_tracking__unit
@@ -106,6 +139,7 @@ msgid "Quantity Produced"
 msgstr "Quantité réalisée"
 
 #. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_qty_production
 #: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__qty_production
 msgid "Quantity to Produce"
 msgstr "Quantité à produire"
@@ -116,19 +150,74 @@ msgid "Real Duration"
 msgstr "Durée réelle"
 
 #. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_unit_time_real
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__unit_time_real
+msgid "Realized unit time"
+msgstr "Temps unitaire réalisé"
+
+#. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
 msgid "Remaining quantity"
 msgstr "Quantité restante"
 
 #. module: mrp_productivity_qty
-#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
-msgid "Spent time"
-msgstr "Temps passé"
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_qty_remaining
+msgid "Remaining to produce"
+msgstr "Restant à produire"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid ""
+"The\n"
+"                    <span attrs=\"{'invisible': [('wo_gain', '&lt;', "
+"0)]}\">gain</span>\n"
+"                    <span attrs=\"{'invisible': [('wo_gain', '&gt;', "
+"0)]}\">loss</span>\n"
+"                    is of"
+msgstr ""
+"<span attrs=\"{'invisible': [('wo_gain', '&lt;', 0)]}\">Le gain</span>\n"
+"<span attrs=\"{'invisible': [('wo_gain', '&gt;', 0)]}\">La perte</span>\n"
+"est de"
 
 #. module: mrp_productivity_qty
 #: model:ir.model.fields,help:mrp_productivity_qty.field_mrp_workorder__qty_produced
 msgid "The number of products already handled by this work order"
 msgstr "Le nombre de produits déjà pris en charge par cet ordre de travail"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_duration
+msgid "Total Duration done"
+msgstr "Temps total fait"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_gain
+msgid "Total Gain"
+msgstr "Gain total"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_performance
+msgid "Total Performance (%)"
+msgstr "Performance totale (%)"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_qty_produced
+msgid "Total Produced Quantity"
+msgstr "Total quantité produite"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_progress_qty
+msgid "Total Progress Done (%)"
+msgstr "Avancement total (%)"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_progress
+msgid "Total Progress Time (%)"
+msgstr "Avancement total en temps (%)"
+
+#. module: mrp_productivity_qty
+#: model:ir.model.fields,help:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_unit_time_real
+msgid "Total on the workorder, including current time"
+msgstr "Total de l'Ordre de Travail, avec le temps actuel"
 
 #. module: mrp_productivity_qty
 #: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter__product_uom_id
@@ -143,26 +232,56 @@ msgid "Unit time"
 msgstr "Temps unitaire"
 
 #. module: mrp_productivity_qty
-#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__unit_time_avg
-msgid "Planned unit time"
-msgstr "Temps prévu unitaire"
-
-#. module: mrp_productivity_qty
-#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workorder__unit_time_real
-msgid "Real unit time"
-msgstr "Temps réalisé unitaire"
-
-#. module: mrp_productivity_qty
 #: model:ir.model,name:mrp_productivity_qty.model_mrp_workcenter
 msgid "Work Center"
 msgstr "Poste de travail"
 
 #. module: mrp_productivity_qty
-#: model:ir.model,name:mrp_productivity_qty.model_mrp_workorder
-msgid "Work Order"
-msgstr "Ordre de travail"
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "Workorder indicators"
+msgstr "Statistiques de l'Ordre de Travail"
 
 #. module: mrp_productivity_qty
-#: model:ir.model,name:mrp_productivity_qty.model_mrp_workcenter_productivity
-msgid "Workcenter Productivity Log"
-msgstr "Journal de productivité du poste de travail"
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "done over"
+msgstr "fait sur"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "meaning a performance of"
+msgstr "soit une performance de"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "min"
+msgstr ""
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+msgid "min /"
+msgstr ""
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
+msgid "min)"
+msgstr ""
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "planned"
+msgstr "planifié"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "remaining."
+msgstr "restant(e)."
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "so"
+msgstr "soit"
+
+#. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid "the realized unit time is"
+msgstr "le temps moyen réalisé est"

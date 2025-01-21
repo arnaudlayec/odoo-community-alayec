@@ -1,0 +1,287 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* mrp_attendance
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-01-21 09:33+0000\n"
+"PO-Revision-Date: 2025-01-21 10:51+0100\n"
+"Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: \n"
+"X-Generator: Poedit 3.5\n"
+
+#. module: mrp_attendance
+#: model:res.groups,comment:mrp_attendance.group_hr_attendance_mrp
+msgid ""
+"\n"
+"            The user will gain access to the human resources attendance "
+"menu, enabling him to manage his own attendance.\n"
+"            It will only see other Manufacturing Workers in the list of "
+"Employee in Attendance kiosk mode.\n"
+"        "
+msgstr ""
+"\n"
+"            L'utilisateur aura accès au menu de gestion des ressources "
+"humaines, ce qui lui permettra de gérer ses propres présences.\n"
+"            Il ne verra que les autres ouvriers de fabrication dans la "
+"liste des employés en mode kiosque de présence.\n"
+"        "
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_form_view
+msgid "(h:min)"
+msgstr "(h:min)"
+
+#. module: mrp_attendance
+#: model:ir.model,name:mrp_attendance.model_hr_employee_base
+msgid "Basic Employee"
+msgstr "Employé de base"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__date
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_search_view
+msgid "Date"
+msgstr "Date"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__duration_hours
+msgid "Duration (h)"
+msgstr "Durée (h)"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_pivot_view
+msgid "Duration (h:min)"
+msgstr "Durée (h:min)"
+
+#. module: mrp_attendance
+#: model:ir.model,name:mrp_attendance.model_hr_employee
+msgid "Employee"
+msgstr "Employé"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__date_end
+msgid "End Date"
+msgstr "Date de fin"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workorder__duration_expected_hours
+msgid "Expected Duration (h)"
+msgstr "Durée prévue (h)"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.mrp_production_workorder_tree_editable_view
+msgid "Expected duration (h)"
+msgstr "Durée prévue (h)"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__hours_today
+msgid "Hours Today"
+msgstr "Heures aujourd'hui"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,help:mrp_attendance.field_hr_employee__manufacturing_worker
+#: model:ir.model.fields,help:mrp_attendance.field_hr_employee_base__manufacturing_worker
+#: model:ir.model.fields,help:mrp_attendance.field_hr_employee_public__manufacturing_worker
+msgid ""
+"If activated, this Employee only sees other Manufacturing Workers from the "
+"Presence app  (in Kiosk display) and she/he is redirected to the "
+"Manufacturing app to log its productivity times instead of Check IN / Check "
+"OUT attendance buttons."
+msgstr ""
+"Si activé, cet employé ne verra que le personnel d'atelier depuis "
+"l'application Présence (en mode Kiosque). Il sera redirigé vers les Ordres "
+"de Fabrication pour saisir ses temps au lieu des boutons de présence "
+"Arrivée / Départ."
+
+#. module: mrp_attendance
+#: model:ir.ui.menu,name:mrp_attendance.menu_mrp_attendance_kiosk
+msgid "Kiosk mode"
+msgstr "Mode kiosque"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_search_view
+msgid "Last Week"
+msgstr "La semaine dernière"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__production_id
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_search_view
+msgid "Manufacturing Order"
+msgstr "Ordre de Fabrication"
+
+#. module: mrp_attendance
+#. odoo-python
+#: code:addons/mrp_attendance/models/hr_employee_base.py:0
+#, python-format
+msgid "Manufacturing Orders"
+msgstr "Ordres de Fabrication"
+
+#. module: mrp_attendance
+#. odoo-javascript
+#. odoo-python
+#: code:addons/mrp_attendance/models/mrp_workorder.py:0
+#: code:addons/mrp_attendance/static/src/mrp_attendance/mo_kanban_button.js:0
+#: model:ir.model.fields,field_description:mrp_attendance.field_res_users__mrp_time_ids
+#, python-format
+msgid "Manufacturing Times"
+msgstr "Temps de Fabrication"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_hr_employee__manufacturing_worker
+#: model:ir.model.fields,field_description:mrp_attendance.field_hr_employee_base__manufacturing_worker
+#: model:ir.model.fields,field_description:mrp_attendance.field_hr_employee_public__manufacturing_worker
+msgid "Manufacturing Worker"
+msgstr "Personnel d'atelier"
+
+#. module: mrp_attendance
+#: model:res.groups,name:mrp_attendance.group_hr_attendance_mrp
+msgid "Manufacturing worker"
+msgstr "Personnel d'atelier"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__mrp_attendance
+msgid "Mrp Attendance"
+msgstr "Présences d'atelier"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_res_users__mrp_hours_today
+msgid "Mrp Hours Today"
+msgstr "Heures de fabrication aujourd'hui"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,help:mrp_attendance.field_mrp_workorder__name
+msgid "Name displayed in Manufacturing Times view"
+msgstr "Nom affiché dans la vue des temps de fabrication"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_form_view
+msgid "New time on this Workorder"
+msgstr "Nouveau temps sur cet Ordre de travail"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__possible_workorder_ids
+msgid "Possible Workorders"
+msgstr "Ordres de travail possibles"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workorder__duration_hours
+msgid "Real Duration (h)"
+msgstr "Durée réelle (h)"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.mrp_production_workorder_tree_editable_view
+msgid "Real duration (h)"
+msgstr "Durée réelle (h)"
+
+#. module: mrp_attendance
+#: model:ir.actions.act_window,name:mrp_attendance.mrp_attendence_productivity_report
+#: model:ir.ui.menu,name:mrp_attendance.menu_mrp_attendance_report
+msgid "Reporting"
+msgstr "Rapport"
+
+#. module: mrp_attendance
+#. odoo-javascript
+#: code:addons/mrp_attendance/static/src/mrp_attendance/mo_kanban_button.xml:0
+#, python-format
+msgid "Sign off"
+msgstr "Se déconnecter"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_search_view
+msgid "This Week"
+msgstr "Cette semaine"
+
+#. module: mrp_attendance
+#: model:ir.ui.menu,name:mrp_attendance.menu_mrp_attendance_root
+msgid "Times"
+msgstr "Temps"
+
+#. module: mrp_attendance
+#: model:ir.actions.act_window,name:mrp_attendance.mrp_attendence_productivity_tree
+#: model:ir.ui.menu,name:mrp_attendance.menu_mrp_attendance_tree
+msgid "Times details"
+msgstr "Détails des temps"
+
+#. module: mrp_attendance
+#. odoo-javascript
+#. odoo-python
+#: code:addons/mrp_attendance/models/res_users.py:0
+#: code:addons/mrp_attendance/static/src/mrp_attendance/mo_kanban_button.xml:0
+#: model:ir.model.fields,field_description:mrp_attendance.field_res_users__mrp_time_ids_today
+#, python-format
+msgid "Times of today"
+msgstr "Temps du jour"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_search_view
+msgid "Today"
+msgstr "Aujourd'hui"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_form_view
+msgid "Total time today:"
+msgstr "Temps total aujourd'hui :"
+
+#. module: mrp_attendance
+#: model:ir.model,name:mrp_attendance.model_res_users
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__user_id
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_form_view
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_search_view
+msgid "User"
+msgstr "Utilisateur"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_production__user_logged_timed
+msgid "User Logged Timed"
+msgstr "Temps enregistré de l'utilisateur"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.view_mrp_production_filter_attendance
+msgid "Where I already logged time"
+msgstr "Où j'ai déjà saisi du temps"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__workcenter_id
+msgid "Work Center"
+msgstr "Poste de travail"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__workorder_id
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workorder__name
+msgid "Work Order"
+msgstr "Ordre de travail"
+
+#. module: mrp_attendance
+#: model:ir.model.fields,field_description:mrp_attendance.field_mrp_production__workcenter_ids
+msgid "Workcenter"
+msgstr "Poste de travail"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_form_view
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_search_view
+msgid "Workorder"
+msgstr "Ordre de travail"
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_search_view
+msgid "Yesterday"
+msgstr "Hier"
+
+#. module: mrp_attendance
+#. odoo-python
+#: code:addons/mrp_attendance/models/hr_employee_base.py:0
+#, python-format
+msgid ""
+"Your profile must be linked to an active user to use Manufacturing "
+"Attendance. Please contact your Human Resources to change this settings."
+msgstr ""
+"Votre profil doit être lié à un utilisateur actif pour pouvoir saisir des "
+"Temps de Fabrication. Veuillez contacter vos ressources humaines pour "
+"modifier ce paramètre si nécessaire."
