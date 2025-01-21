@@ -1,29 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <!-- New group `MRP/Manufacturing worker`... -->
+    <!-- New group `Attendance/Manufacturing worker`...
+        => distinguishes the **to-be filtered employees**
+        => on user because `user_id` is required anyway on `mrp.workcenter.productivity` 
+    -->
     <record id="group_hr_attendance_mrp" model="res.groups">
         <field name="name">Manufacturing worker</field>
         <field name="category_id" ref="base.module_category_human_resources_attendances"/>
         <field name="comment">
-            The user will gain access to the human resources attendance menu, enabling him to manage his own attendance.
-            It will only see other Manufacturing Workers in the list of Employee in Attendance kiosk mode.
+            Like User but it only sees other Manufacturing Workers in the list of Employee in Attendance kiosk mode.
+            Suited for actual Manufacturing Workers or shared account opening Attendance Kiosk mode on shared devices *With PIN*.
         </field>
+        <field name="implied_ids" eval="[(4, ref('hr_attendance.group_hr_attendance'))]"/>
     </record>
-    <!-- ...added to `Attendance User`... -->
-    <record id="hr_attendance.group_hr_attendance" model="res.groups">
+    <!-- ...Between `User` and `Officer : Manage all attendances` -->
+    <record id="hr_attendance.group_hr_attendance_user" model="res.groups">
         <field name="implied_ids" eval="[(4, ref('group_hr_attendance_mrp'))]"/>
     </record>
-    <!-- ...only seeing Employee with `manufacturing_worker`, so hr.employee.public is filtered -->
+
+    
+    <!-- New group `Attendance/Officer of Manufacturing Workers (only)`... -->
+    <record id="group_hr_attendance_officer_mrp" model="res.groups">
+        <field name="name">Manufacturing Officer : Manage presence of Manufacturing Workers only</field>
+        <field name="category_id" ref="base.module_category_human_resources_attendances"/>
+        <field name="comment">
+            Like Officer but it only sees Manufacturing Workers in the list of Employee in Attendance kiosk mode.
+            Suited for a shared account opening Attendance kiosk mode on shared devices *Without PIN*.
+        </field>
+        <field name="implied_ids" eval="[(4, ref('hr_attendance.group_hr_attendance_user'))]"/>
+    </record>
+    <!-- ...Between `Officer : Manage all attendances` and `Administrator` -->
+    <record id="hr_attendance.group_hr_attendance_manager" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_hr_attendance_officer_mrp'))]"/>
+    </record>
+
+    <!-- Those 2 new groups only sees Manufacturing Workers, so that `hr.employee.public` is filtered
+        => This is a trick to filter employees seen in Kiosk mode kanban, because it is way simplier
+           than overwritting Actions and OWL components
+    -->
     <record id="rule_mrp_attendance_manufacturing_worker" model="ir.rule">
         <field name="name">[MRP Attendance] Manufacturing Worker only sees other Manufacturing Workers in Attendance app</field>
         <field name="model_id" ref="hr.model_hr_employee_public"/>
-        <field name="groups" eval="[(4, ref('group_hr_attendance_mrp'))]" />
+        <field name="groups" eval="[
+            (4, ref('group_hr_attendance_mrp')),
+            (4, ref('group_hr_attendance_officer_mrp'))
+        ]" />
         <field name="domain_force">[('manufacturing_worker', '=', True)]</field>
     </record>
-    <record id="rule_mrp_attendance_user" model="ir.rule">
-        <field name="name">[MRP Attendance] Native Attendance User sees all Employees</field>
+    <record id="rule_mrp_attendance_see_all" model="ir.rule">
+        <field name="name">[MRP Attendance] Non-Manufacturing Workers see sees all Employees in Attendance app</field>
         <field name="model_id" ref="hr.model_hr_employee_public"/>
-        <field name="groups" eval="[(4, ref('hr_attendance.group_hr_attendance'))]" />
-        <field name="domain_force">[(1, '=', 1)]</field>
+        <field name="groups" eval="[
+            (4, ref('hr_attendance.group_hr_attendance_user')),
+            (4, ref('hr_attendance.group_hr_attendance_manager'))
+        ]" />
+        <field name="domain_force">[('manufacturing_worker', 'in', [True, False])]</field>
     </record>
 </odoo>

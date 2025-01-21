@@ -28,7 +28,7 @@ class HrEmployeeBase(models.AbstractModel):
     def _get_mf_workers(self):
         return (
             self.env.ref('mrp_attendance.group_hr_attendance_mrp').users
-            - self.env.ref('hr_attendance.group_hr_attendance').users
+            - self.env.ref('hr_attendance.group_hr_attendance_user').users
         )
     
     #===== Business Logics =====#

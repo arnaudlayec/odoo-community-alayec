@@ -22,7 +22,7 @@ class MrpWorkOrder(models.Model):
     )
     qty_production = fields.Float(
         string="Quantity to Produce",
-        required=True,
+        required=False,
         readonly=False,
         related='' # unset `related`, so it becomes user-defined per Work Order
     )
