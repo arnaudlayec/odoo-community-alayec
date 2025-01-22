@@ -29,21 +29,9 @@ class MrpWorkOrder(models.Model):
 
     # computed
     duration = fields.Float(readonly=True)
-    time_ids = fields.One2many(
-        comodel_name='mrp.workcenter.productivity',
-        inverse_name='workorder_id',
-        string="Productivity Times"
-    )
-    qty_produced = fields.Float(
-        string="Quantity Produced",
-        compute="_compute_qty_produced",
-        store=True
-    )
-    progress_qty = fields.Float(
-        string="Progress (qty)",
-        compute="_compute_qty_produced",
-        store=True
-    )
+    time_ids = fields.One2many(string="Productivity Times")
+    qty_produced = fields.Float(string="Quantity Produced", compute="_compute_qty_produced", store=True)
+    progress_qty = fields.Float(string="Progress (qty)", compute="_compute_qty_produced", store=True)
     unit_time_avg = fields.Float(string='Planned unit time', compute='_compute_performance') # in hours !
     unit_time_real = fields.Float(string='Realized unit time', compute='unit_time_real') # in hours !
     performance = fields.Float(string='Performance (%)', compute='_compute_performance')

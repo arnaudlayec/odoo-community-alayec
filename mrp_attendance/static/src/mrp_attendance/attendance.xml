@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<template xml:space="preserve">
+
+    <t t-name="HrAttendanceCheckInOutButtons" t-inherit="hr_attendance.HrAttendanceCheckInOutButtons" t-inherit-mode="extension">
+        <div class="flex-grow-1" position="inside">
+            <!-- Fixes a native Odoo bug where pressing Backspace without PIN settings raise a JS error
+                (...since it has no sense pressing Backspace whitout PIN in native Odoo, but here we need
+                backspace on MO Kanban's search bar or Productivity Form fields)
+            -->
+            <span class="o_hr_attendance_PINbox" />
+        </div>
+    </t>
+
+</template>

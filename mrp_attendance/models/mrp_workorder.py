@@ -12,7 +12,7 @@ class MrpWorkorder(models.Model):
             res = []
             for wo in self:
                 index = wo.production_id.workorder_ids.ids.index(wo._origin.id) + 1
-                res.append((wo.id, "%s - %s" % (index, wo.name)))
+                res.append((wo.id, wo.display_name or wo.name or ''))
         else:
             res = super().name_get()
         return res

@@ -5,6 +5,8 @@ from odoo import models, fields, api, _
 class MrpProduction(models.Model):
     _inherit = ["mrp.production"]
 
+
+    #===== Fields =====#
     user_logged_timed = fields.Boolean(
         compute='_compute_user_logged_timed',
         search='_search_user_logged_timed',
@@ -16,6 +18,45 @@ class MrpProduction(models.Model):
     )
 
 
+    #===== Native ORM methods overwritte =====#
+    @api.model
+    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None, **read_kwargs):
+        vals_list = super().search_read(domain, fields, offset, limit, order, **read_kwargs)
+        return self._search_read_filter_workorders(domain, vals_list)
+    
+    @api.model
+    def _search_read_filter_workorders(self, domain, vals_list):
+        """ Context: Kanban card of Manufacturing Orders lists their Work Orders.
+             User may filter on Work Centers via SearchPanel on Work Center
+            => this hack filters rendered `workorder_ids` field to in Kanban Card to
+             the one belonging of Work Centers selected in SearchPanel
+        """
+        # Get native search panel domain & result
+        mo_ids = [vals['id'] for vals in vals_list] # list of MO cards rendered in Kanban view
+        wc_ids = self._get_domain_part(domain, 'workcenter_ids', 'in') # workcenters selected in searchpanel
+        
+        if mo_ids and wc_ids:
+            domain = [('production_id', 'in', mo_ids), ('workcenter_id', 'in', wc_ids)]
+            wo_ids_relevant = self.env['mrp.workorder'].sudo().search(domain).ids
+
+            # filter render of field `workorder_ids`
+            if wo_ids_relevant:
+                for vals in vals_list:
+                    wo_ids_orm = vals.get('workorder_ids', [])
+                    vals['workorder_ids'] = [x for x in wo_ids_orm if x in wo_ids_relevant]
+
+        return vals_list
+
+    def _get_domain_part(self, domain, field, operator=None):
+        """ Search a domain_part in a `domain according to tuples' 1st item (i.e. `field`)
+            Return the value (3rd tuple item) of the 1st domain part found or False
+        """
+        domain_part = [
+            part for part in domain
+            if part[0] == field and (not(operator) or part[1] == operator)
+        ]
+        return bool(domain_part) and domain_part[0][2]
+    
     #===== Compute =====#
     @api.depends('workorder_ids.time_ids.user_id')
     def _compute_user_logged_timed(self):
@@ -35,16 +76,15 @@ class MrpProduction(models.Model):
         if self:
             domain += [('production_id', 'in', self.ids)]
         return self.env['mrp.workcenter.productivity'].search(domain).production_id
-
     
-    @api.depends('workorder_ids.workcenter_id')
+    @api.depends('workorder_ids', 'workorder_ids.workcenter_id')
     def _compute_workcenter_ids(self):
         for mo in self:
             mo.workcenter_ids = mo.workorder_ids.workcenter_id
-        
     @api.model
     def _search_workcenter_ids(self, operator, value):
-        mo_ids = self.env['mrp.workorder'].sudo().search([('workcenter_id', operator, value)]).production_id.ids
+        domain = [('workcenter_id', operator, value)]
+        mo_ids = self.env['mrp.workorder'].sudo().search(domain).production_id.ids
         return [('id', 'in', mo_ids)]
 
 

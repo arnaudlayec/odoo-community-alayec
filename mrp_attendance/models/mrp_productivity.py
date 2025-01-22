@@ -66,9 +66,9 @@ class MrpWorkcenterProductivity(models.Model):
     
     @api.depends('duration', 'date_start')
     def _compute_date_end(self):
-        for record in self:
-            if record.date_start and record.duration:
-                record.date_end = fields.Datetime.add(record.date_start, minutes=record.duration)
+        for productivity in self:
+            if productivity.date_start and productivity.duration:
+                productivity.date_end = fields.Datetime.add(productivity.date_start, minutes=productivity.duration)
 
     @api.depends('duration_hours', 'user_id.mrp_time_ids', 'user_id.mrp_time_ids.duration')
     def _compute_hours_today(self):
@@ -79,18 +79,6 @@ class MrpWorkcenterProductivity(models.Model):
                 - productivity._origin.duration_hours
                 + productivity.duration_hours
             )
-
-    # @api.depends('date_start', 'user_id', 'user_id.time_ids')
-    # def _compute_user_time_ids(self):
-    #     """ User's productivity record of `date_start` """
-    #     for productivity in self:
-    #         productivity.user_time_ids = productivity.user_id.time_ids.filtered(lambda x:
-    #             x.date_start.date() == productivity.date_start.date()
-    #         )
-    # def _inverse_user_time_ids(self):
-    #     """ User's productivity record of `date_start` """
-    #     for productivity in self:
-    #         productivity.user_id.time_ids = productivity.user_time_ids
     
     def _prepare_vals(self):
         self.ensure_one()
@@ -105,6 +93,28 @@ class MrpWorkcenterProductivity(models.Model):
             'description': self.description,
         }
 
+    #===== Button 'Times of today' =====#
+    def action_open_mrp_times_today(self):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Times of today'),
+            'res_model': 'mrp.workcenter.productivity',
+            'views': [(self.env.ref('mrp_attendance.oee_tree_view_attendance').id, 'tree')],
+            'domain': [
+                ('user_id', '=', self._context.get('mrp_attendance_user_id')),
+                ('date', '=', fields.Date.today())
+            ],
+            'context': self._context | {
+                'mrp_attendance': True,
+                'workorder_display_name_simple': False, # full name on form
+            },
+            'target': 'new',
+        }
+    
+    def unlink_and_reopen(self):
+        self.unlink()
+        return self.action_open_mrp_times_today()
+    
     #===== Synch with attendance =====#
     @api.model_create_multi
     def create(self, vals_list):

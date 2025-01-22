@@ -15,7 +15,7 @@ export class MfOrderKanbanController extends KanbanController {
     async actionTimesOfToday() {
         this.actionService.doActionButton({
             type: 'object',
-            resModel: 'res.users',
+            resModel: 'mrp.workcenter.productivity',
             name: 'action_open_mrp_times_today',
             context: this.model.root.context
         });

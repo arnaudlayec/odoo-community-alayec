@@ -33,8 +33,7 @@ class MrpWorkCenterProductivity(models.Model):
     #===== Onchange =====#
     @api.onchange('workorder_id')
     def _onchange_workorder_id(self):
-        if self.workorder_id:
-            self.qty_production = False if self.workorder_id.productivity_tracking == 'global' else None
+        self.qty_production = False
 
     #===== Compute =====#
     @api.depends('duration', 'qty_production', 'workorder_id', 'workorder_id')

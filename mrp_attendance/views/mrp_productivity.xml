@@ -7,6 +7,10 @@
         <field name="inherit_id" ref="mrp.oee_tree_view" />
 
         <field name="arch" type="xml">
+            <tree position="attributes">
+                <attribute name="editable">top</attribute>
+            </tree>
+
             <!-- dates & duration -->
             <field name="date_end" position="attributes">
                 <attribute name="optional">hide</attribute>
@@ -56,17 +60,29 @@
             </field>
         </field>
     </record>
-    <!-- Editable -->
-    <record id="oee_tree_view_editable" model="ir.ui.view">
-        <field name="name">mrp.workcenter.productivity.tree.attendance.editable</field>
+    <!-- Specific Tree for attendance -->
+    <record id="oee_tree_view_attendance" model="ir.ui.view">
+        <field name="name">mrp.workcenter.productivity.tree.attendance.attendance</field>
         <field name="model">mrp.workcenter.productivity</field>
         <field name="inherit_id" ref="oee_tree_view" />
         <field name="mode">primary</field>
 
         <field name="arch" type="xml">
             <tree position="attributes">
-                <attribute name="editable">top</attribute>
-                <attribute name="create">1</attribute>
+                <attribute name="create">0</attribute>
+            </tree>
+
+            <field name="workorder_id" position="attributes">
+                <attribute name="readonly">1</attribute>
+            </field>
+
+            <!-- Delete button -->
+            <tree position="inside">
+                <button name="unlink_and_reopen" type="object" title="Remove" icon="fa-trash"
+                    class="btn btn-danger ms-2"
+                    invisible="not context.get('mrp_attendance')"
+                    confirm="Are you sure?"
+                />
             </tree>
         </field>
     </record>
@@ -74,7 +90,7 @@
 
     <!-- Productivity Form -->
     <record id="oee_form_view" model="ir.ui.view">
-        <field name="name">mrp.workcenter.productivity.form</field>
+        <field name="name">mrp.workcenter.productivity.form.attendance</field>
         <field name="model">mrp.workcenter.productivity</field>
         <field name="inherit_id" ref="mrp.oee_form_view" />
 
@@ -107,30 +123,35 @@
                 <attribute name="string">New time</attribute>
                 <attribute name="attrs">{'invisible': ['&amp;', ('mrp_attendance', '=', True), ('workorder_id', '=', False)]}</attribute>
             </group>
-            <group position="before">
-                <div colspan="2" class="fs-4 fw-bold alert alert-warning" role="alert" invisible="not context.get('mrp_attendance')">
-                    Total time today: <field name="hours_today" class="oe_inline" widget="float_time" /> (h:min)
-                </div>
+            <form position="replace">
+                <form>
+                    <sheet>
+                        <div colspan="2" class="fs-4 fw-bold alert alert-warning" role="alert" invisible="not context.get('mrp_attendance')">
+                            Total time today: <field name="hours_today" class="oe_inline" widget="float_time" /> (h:min)
+                        </div>
 
-                <div class="oe_title">
-                    <label for="workorder_id" />
-                    <h1 class="mb-3" invisible="context.get('default_workorder_id')">
-                        <field name="workorder_id" class="w-100" placeholder="Workorder" options="{'no_create_edit': 1, 'no_open': 1}"
-                            attrs="{'required': [('mrp_attendance', '=', True)]}"
-                        />
-                    </h1>
-                    <h1 invisible="not context.get('default_workorder_id')">
-                        <field name="workorder_id" readonly="1" options="{'no_open': 1}" />
-                    </h1>
-                    <group name="head">
-                        <field name="production_id" readonly="1" options="{'no_open': 1}" invisible="context.get('default_workorder_id')" />
-                        <field name="user_id" class="w-100" placeholder="User" options="{'no_create_edit': 1, 'no_open': 1}"
-                            attrs="{'required': [('mrp_attendance', '=', True)]}"
-                            groups="mrp.group_mrp_user"
-                        />
-                    </group>
-                </div>
-            </group>
+                        <div class="oe_title">
+                            <label for="workorder_id" class="oe_edit_only" />
+                            <h1 class="mb-3" invisible="context.get('default_workorder_id')">
+                                <field name="workorder_id" class="w-100" placeholder="Workorder" options="{'no_create_edit': 1, 'no_open': 1}"
+                                    attrs="{'required': [('mrp_attendance', '=', True)]}"
+                                />
+                            </h1>
+                            <h1 invisible="not context.get('default_workorder_id')">
+                                <field name="workorder_id" readonly="1" options="{'no_open': 1}" />
+                            </h1>
+                            <group name="head">
+                                <field name="user_id" class="w-100" placeholder="User" options="{'no_create_edit': 1, 'no_open': 1}"
+                                    attrs="{'required': [('mrp_attendance', '=', True)]}"
+                                    groups="mrp.group_mrp_user"
+                                />
+                            </group>
+                        </div>
+
+                        <div>$0</div>
+                    </sheet>
+                </form>
+            </form>
             
             <!-- date_end: required to avoid conflict with opened productivity record -->
             <field name="date_end" position="attributes">
@@ -146,6 +167,9 @@
             </field>
             <field name="loss_id" position="after">
                 <field name="description" position="move" />
+            </field>
+            <field name="loss_id" position="attributes">
+                <attibute name="options">{'no_create_edit': 1, 'no_open': 1}</attibute>
             </field>
 
             <!-- Inverse 2 groups: duration *THEN* loss & description -->
@@ -215,8 +239,8 @@
 
             <search position="inside">
                 <searchpanel>
-                    <field name="workcenter_id" />
-                    <field name="production_id" />
+                    <field name="user_id" invisible="context.get('mrp_attendance')" />
+                    <field name="workcenter_id" invisible="context.get('mrp_attendance')" />
                 </searchpanel>
             </search>
         </field>

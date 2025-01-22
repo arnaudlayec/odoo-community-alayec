@@ -15,6 +15,7 @@ class ResUsers(models.Model):
         comodel_name='mrp.workcenter.productivity',
         compute='_compute_mrp_time_ids_today',
         inverse='_inverse_mrp_time_ids_today',
+        groups='mrp_attendance.group_hr_attendance_mrp,mrp_attendance.group_hr_attendance_officer_mrp'
     )
     mrp_hours_today = fields.Float(compute='_compute_mrp_hours_today')
 

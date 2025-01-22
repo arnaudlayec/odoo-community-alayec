@@ -18,3 +18,7 @@ Manufacturing Times:
 - times' wizard : select workorder (if not clicked on previous view)
 - can add a new time
 - view today's total + in wizard's bottom the recall for all today's logged productivities records (may updated/delete from this list)
+
+
+
+MO in green : wherre User alreayd logged time

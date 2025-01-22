@@ -5,7 +5,6 @@
         <field name="name">Times details</field>
         <field name="res_model">mrp.workcenter.productivity</field>
         <field name="view_mode">tree,form</field>
-        <field name="view_id" ref="oee_tree_view_editable" /> <!-- editable tree here -->
         <field name="context">{
             'search_default_this_week': 1,
             'search_default_group_user_id': 1,
@@ -71,6 +70,8 @@
                 <div class="o_kanban_record_body">
                     <field name="workorder_ids" widget="many2many_tags_workorder" />
                 </div>
+
+                <div class="o_hr_attendance_PINbox" value="1000" />
             </xpath>
         </field>
     </record>
@@ -94,7 +95,7 @@
 
             <search position="inside">
                 <searchpanel>
-                    <field name="workcenter_ids" icon="fa-industry" select="multi" />
+                    <field name="workcenter_ids" icon="fa-industry" select="multi" color="#605498" />
                 </searchpanel>
             </search>
         </field>
