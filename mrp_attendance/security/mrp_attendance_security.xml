@@ -54,6 +54,6 @@
             (4, ref('hr_attendance.group_hr_attendance_user')),
             (4, ref('hr_attendance.group_hr_attendance_manager'))
         ]" />
-        <field name="domain_force">[('manufacturing_worker', 'in', [True, False])]</field>
+        <field name="domain_force">[(1, '=', 1)]</field>
     </record>
 </odoo>

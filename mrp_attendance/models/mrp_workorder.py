@@ -27,7 +27,7 @@ class MrpWorkorder(models.Model):
     duration_expected_hours = fields.Float(
         string='Expected Duration (h)',
         compute='_compute_duration_hours',
-        inverse='_inverse_duration_hours',
+        inverse='_inverse_duration_expected_hours',
         digits=(16, 2),
     )
     
@@ -37,9 +37,9 @@ class MrpWorkorder(models.Model):
         for wo in self:
             wo.duration_hours = wo.duration / 60
             wo.duration_expected_hours = wo.duration_expected / 60
-    def _inverse_duration_hours(self):
+    def _inverse_duration_expected_hours(self):
         for wo in self:
-            wo.duration = wo.duration_hours * 60
+            wo.duration_expected = wo.duration_expected_hours * 60
 
     #===== Button (from MO kanban) =====#
     def action_open_productivity_attendance(self):

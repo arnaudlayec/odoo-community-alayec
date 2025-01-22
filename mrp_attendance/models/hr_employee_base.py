@@ -47,7 +47,7 @@ class HrEmployeeBase(models.AbstractModel):
         
         return {
             'action': {
-                'name': _('Manufacturing Orders'),
+                'name': self.display_name,
                 'type': 'ir.actions.act_window',
                 'res_model': 'mrp.production',
                 'views': [(self.env.ref('mrp_attendance.mrp_production_kanban_view_attendance').id, 'kanban')],

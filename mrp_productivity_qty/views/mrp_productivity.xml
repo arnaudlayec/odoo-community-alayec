@@ -119,11 +119,15 @@
 
                 <!-- Current/Expected Time (global follow-up) -->
                 <p name="gain" attrs="{'invisible': [('productivity_tracking', '!=', 'global')]}"
-                    decoration-danger="wo_duration &gt; wo_duration_expected"
+                    decoration-danger="wo_duration_hours &gt; wo_duration_hours_expected"
                 >
-                    <strong><field name="wo_duration" class="oe_inline" />min</strong> done over
-                    <strong><field name="wo_duration_expected" class="oe_inline" />min</strong> planned
-                    <strong>(<field name="wo_progress" class="oe_inline" />%)</strong>.
+                    <strong><field name="wo_duration_hours" widget="float_time" class="oe_inline"
+                        decoration-danger="wo_duration_hours &gt; wo_duration_hours_expected"
+                    /> (h:min)</strong> done over
+                    <strong><field name="wo_duration_hours_expected" widget="float_time" class="oe_inline" /> (h:min)</strong> planned
+                    <strong>(<field name="wo_progress" class="oe_inline"
+                        decoration-danger="wo_duration_hours &gt; wo_duration_hours_expected"
+                    />%)</strong>.
                 </p>
             </xpath>
         </field>
