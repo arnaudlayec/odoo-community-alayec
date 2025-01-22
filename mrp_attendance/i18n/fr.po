@@ -6,49 +6,71 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-21 09:33+0000\n"
-"PO-Revision-Date: 2025-01-21 10:51+0100\n"
-"Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
+"POT-Creation-Date: 2025-01-22 11:07+0000\n"
+"PO-Revision-Date: 2025-01-22 12:12+0100\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.5\n"
+
+#. module: mrp_attendance
+#: model:res.groups,comment:mrp_attendance.group_hr_attendance_officer_mrp
+msgid ""
+"\n"
+"            Like Officer but it only sees Manufacturing Workers in the list "
+"of Employee in Attendance kiosk mode.\n"
+"            Suited for a shared account opening Attendance kiosk mode on "
+"shared devices *Without PIN*.\n"
+"        "
+msgstr ""
+"\n"
+"Comme \"Officier\" mais ne voit que le Personnel d'atelier dans la liste "
+"des employés de la vue Kiosque des Présences.\n"
+"Convient pour un compte partagé ouvert en mode Kiosque sur l'application "
+"Présence (*sans PIN*).\n"
+" "
 
 #. module: mrp_attendance
 #: model:res.groups,comment:mrp_attendance.group_hr_attendance_mrp
 msgid ""
 "\n"
-"            The user will gain access to the human resources attendance "
-"menu, enabling him to manage his own attendance.\n"
-"            It will only see other Manufacturing Workers in the list of "
-"Employee in Attendance kiosk mode.\n"
+"            Like User but it only sees other Manufacturing Workers in the "
+"list of Employee in Attendance kiosk mode.\n"
+"            Suited for actual Manufacturing Workers or shared account "
+"opening Attendance Kiosk mode on shared devices *With PIN*.\n"
 "        "
 msgstr ""
 "\n"
-"            L'utilisateur aura accès au menu de gestion des ressources "
-"humaines, ce qui lui permettra de gérer ses propres présences.\n"
-"            Il ne verra que les autres ouvriers de fabrication dans la "
-"liste des employés en mode kiosque de présence.\n"
-"        "
+"Comme \"Utilisateur\" mais ne voit que le Personnel d'atelier dans la liste "
+"des employés de la vue Kiosque des Présences.\n"
+"Convient pour le Personnel d'atelier ou un compte partagé ouvert en mode "
+"Kiosque sur l'application Présence (*Avec PIN*).\n"
+" "
 
 #. module: mrp_attendance
 #: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_form_view
 msgid "(h:min)"
-msgstr "(h:min)"
+msgstr ""
+
+#. module: mrp_attendance
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_tree_view_attendance
+msgid "Are you sure?"
+msgstr "Confirmez-vous ?"
 
 #. module: mrp_attendance
 #: model:ir.model,name:mrp_attendance.model_hr_employee_base
 msgid "Basic Employee"
-msgstr "Employé de base"
+msgstr "Employé basique"
 
 #. module: mrp_attendance
 #: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__date
 #: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_search_view
 msgid "Date"
-msgstr "Date"
+msgstr ""
 
 #. module: mrp_attendance
 #: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__duration_hours
@@ -111,6 +133,19 @@ msgid "Last Week"
 msgstr "La semaine dernière"
 
 #. module: mrp_attendance
+#: model:ir.actions.act_window,name:mrp_attendance.action_mrp_attendence_config_loss
+#: model:ir.ui.menu,name:mrp_attendance.menu_mrp_attendance_config_loss
+msgid "Loss reasons"
+msgstr "Motifs de perte"
+
+#. module: mrp_attendance
+#: model:res.groups,name:mrp_attendance.group_hr_attendance_officer_mrp
+msgid "Manufacturing Officer : Manage presence of Manufacturing Workers only"
+msgstr ""
+"Officier du Personnel d'atelier : gère la présence du Personnel d'atelier "
+"uniquement"
+
+#. module: mrp_attendance
 #: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__production_id
 #: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_search_view
 msgid "Manufacturing Order"
@@ -171,6 +206,16 @@ msgid "Possible Workorders"
 msgstr "Ordres de travail possibles"
 
 #. module: mrp_attendance
+#: model:ir.model,name:mrp_attendance.model_mrp_production
+msgid "Production Order"
+msgstr "Ordre de fabrication"
+
+#. module: mrp_attendance
+#: model:ir.model,name:mrp_attendance.model_hr_employee_public
+msgid "Public Employee"
+msgstr "Fonctionnaire"
+
+#. module: mrp_attendance
 #: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workorder__duration_hours
 msgid "Real Duration (h)"
 msgstr "Durée réelle (h)"
@@ -181,7 +226,12 @@ msgid "Real duration (h)"
 msgstr "Durée réelle (h)"
 
 #. module: mrp_attendance
-#: model:ir.actions.act_window,name:mrp_attendance.mrp_attendence_productivity_report
+#: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_tree_view_attendance
+msgid "Remove"
+msgstr "Supprimer"
+
+#. module: mrp_attendance
+#: model:ir.actions.act_window,name:mrp_attendance.action_mrp_attendence_productivity_report
 #: model:ir.ui.menu,name:mrp_attendance.menu_mrp_attendance_report
 msgid "Reporting"
 msgstr "Rapport"
@@ -204,7 +254,7 @@ msgid "Times"
 msgstr "Temps"
 
 #. module: mrp_attendance
-#: model:ir.actions.act_window,name:mrp_attendance.mrp_attendence_productivity_tree
+#: model:ir.actions.act_window,name:mrp_attendance.action_mrp_attendence_productivity_tree
 #: model:ir.ui.menu,name:mrp_attendance.menu_mrp_attendance_tree
 msgid "Times details"
 msgstr "Détails des temps"
@@ -212,6 +262,7 @@ msgstr "Détails des temps"
 #. module: mrp_attendance
 #. odoo-javascript
 #. odoo-python
+#: code:addons/mrp_attendance/models/mrp_productivity.py:0
 #: code:addons/mrp_attendance/models/res_users.py:0
 #: code:addons/mrp_attendance/static/src/mrp_attendance/mo_kanban_button.xml:0
 #: model:ir.model.fields,field_description:mrp_attendance.field_res_users__mrp_time_ids_today
@@ -253,6 +304,7 @@ msgid "Work Center"
 msgstr "Poste de travail"
 
 #. module: mrp_attendance
+#: model:ir.model,name:mrp_attendance.model_mrp_workorder
 #: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workcenter_productivity__workorder_id
 #: model:ir.model.fields,field_description:mrp_attendance.field_mrp_workorder__name
 msgid "Work Order"
@@ -262,6 +314,11 @@ msgstr "Ordre de travail"
 #: model:ir.model.fields,field_description:mrp_attendance.field_mrp_production__workcenter_ids
 msgid "Workcenter"
 msgstr "Poste de travail"
+
+#. module: mrp_attendance
+#: model:ir.model,name:mrp_attendance.model_mrp_workcenter_productivity
+msgid "Workcenter Productivity Log"
+msgstr "Journal de productivité du poste de travail"
 
 #. module: mrp_attendance
 #: model_terms:ir.ui.view,arch_db:mrp_attendance.oee_form_view
