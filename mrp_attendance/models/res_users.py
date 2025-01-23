@@ -21,14 +21,14 @@ class ResUsers(models.Model):
     def _compute_manufacturing_worker(self):
         mf_workers = self._get_mf_workers()
         for user in self:
-            user.manufacturing_worker = user.id in mf_workers
+            user.manufacturing_worker = user in mf_workers
     @api.model
     def _search_manufacturing_worker(self, operator, value):
         return [('id', 'in', self._get_mf_workers().ids)]
     def _get_mf_workers(self):
         return (
             self.env.ref('mrp_attendance.group_hr_attendance_mrp').users
-            - self.env.ref('hr_attendance.group_hr_attendance_user').users
+            - self.env.ref('mrp_attendance.group_hr_attendance_officer_mrp').users
         )
     
     @api.depends('mrp_time_ids', 'mrp_time_ids.duration')

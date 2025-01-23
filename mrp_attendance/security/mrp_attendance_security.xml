@@ -1,14 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+    <record model="ir.module.category" id="module_category_manufacturing_presence">
+        <field name="name">Attendance</field>
+        <field name="parent_id" ref="base.module_category_manufacturing" />
+        <field name="description">Allowing Manufacturing Workers to use Presence to log productivity times by their own.</field>
+        <field name="sequence">6</field>
+    </record>
+
     <!-- New group `Attendance/Manufacturing worker`...
         => distinguishes the **to-be filtered employees**
         => on user because `user_id` is required anyway on `mrp.workcenter.productivity` 
     -->
     <record id="group_hr_attendance_mrp" model="res.groups">
-        <field name="name">Manufacturing worker</field>
-        <field name="category_id" ref="base.module_category_human_resources_attendances"/>
+        <field name="name">User</field>
+        <field name="category_id" ref="module_category_manufacturing_presence"/>
         <field name="comment">
-            Like User but it only sees other Manufacturing Workers in the list of Employee in Attendance kiosk mode.
+            Like Attendance's User but it only sees other Manufacturing Workers in the list of Employee in Attendance kiosk mode.
             Suited for actual Manufacturing Workers or shared account opening Attendance Kiosk mode on shared devices *With PIN*.
         </field>
         <field name="implied_ids" eval="[(4, ref('hr_attendance.group_hr_attendance'))]"/>
@@ -21,17 +28,13 @@
     
     <!-- New group `Attendance/Officer of Manufacturing Workers (only)`... -->
     <record id="group_hr_attendance_officer_mrp" model="res.groups">
-        <field name="name">Manufacturing Officer : Manage presence of Manufacturing Workers only</field>
-        <field name="category_id" ref="base.module_category_human_resources_attendances"/>
+        <field name="name">Officer</field>
+        <field name="category_id" ref="module_category_manufacturing_presence"/>
         <field name="comment">
-            Like Officer but it only sees Manufacturing Workers in the list of Employee in Attendance kiosk mode.
+            Like Attendance's Officer but it only sees Manufacturing Workers in the list of Employee in Attendance kiosk mode.
             Suited for a shared account opening Attendance kiosk mode on shared devices *Without PIN*.
         </field>
-        <field name="implied_ids" eval="[(4, ref('hr_attendance.group_hr_attendance_user'))]"/>
-    </record>
-    <!-- ...Between `Officer : Manage all attendances` and `Administrator` -->
-    <record id="hr_attendance.group_hr_attendance_manager" model="res.groups">
-        <field name="implied_ids" eval="[(4, ref('group_hr_attendance_officer_mrp'))]"/>
+        <field name="implied_ids" eval="[(4, ref('group_hr_attendance_mrp')), (4, ref('hr_attendance.group_hr_attendance_user'))]"/>
     </record>
 
     <!-- Those 2 new groups only sees Manufacturing Workers, so that `hr.employee.public` is filtered
@@ -41,19 +44,7 @@
     <record id="rule_mrp_attendance_manufacturing_worker" model="ir.rule">
         <field name="name">[MRP Attendance] Manufacturing Worker only sees other Manufacturing Workers in Attendance app</field>
         <field name="model_id" ref="hr.model_hr_employee_public"/>
-        <field name="groups" eval="[
-            (4, ref('group_hr_attendance_mrp')),
-            (4, ref('group_hr_attendance_officer_mrp'))
-        ]" />
+        <field name="groups" eval="[(4, ref('group_hr_attendance_mrp'))]" />
         <field name="domain_force">[('manufacturing_worker', '=', True)]</field>
-    </record>
-    <record id="rule_mrp_attendance_see_all" mdel="ir.rule">
-        <field name="name">[MRP Attendance] Non-Manufacturing Workers see sees all Employees in Attendance app</field>
-        <field name="model_id" ref="hr.model_hr_employee_public"/>
-        <field name="groups" eval="[
-            (4, ref('hr_attendance.group_hr_attendance_user')),
-            (4, ref('hr_attendance.group_hr_attendance_manager'))
-        ]" />
-        <field name="domain_force">[(1, '=', 1)]</field>
     </record>
 </odoo>

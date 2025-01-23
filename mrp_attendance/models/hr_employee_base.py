@@ -12,6 +12,15 @@ class HrEmployeeBase(models.AbstractModel):
             ' times instead of Check IN / Check OUT attendance buttons.',
         related='user_id.manufacturing_worker',
     )
+    user_is_manufacturing_worker = fields.Boolean(
+        # technical field telling if browsing user is manufacturing_worker
+        compute='_compute_user_is_manufacturing_worker',
+    )
+    
+    #===== Compute =====#
+    @api.depends_context('uid')
+    def _compute_user_is_manufacturing_worker(self):
+        self.user_is_manufacturing_worker = self.env.user.manufacturing_worker
     
     #===== Business Logics =====#
     def _action_mrp_attendance(self):
