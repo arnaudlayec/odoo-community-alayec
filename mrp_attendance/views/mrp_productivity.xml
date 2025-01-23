@@ -239,7 +239,6 @@
 
             <search position="inside">
                 <searchpanel>
-                    <field name="user_id" invisible="context.get('mrp_attendance')" />
                     <field name="workcenter_id" invisible="context.get('mrp_attendance')" />
                 </searchpanel>
             </search>

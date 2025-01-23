@@ -16,6 +16,14 @@ class MrpProduction(models.Model):
         compute='_compute_workcenter_ids',
         search='_search_workcenter_ids',
     )
+    production_duration_hours_expected = fields.Float(
+        string='Expected Duration (h)',
+        compute='_compute_production_duration_expected'
+    )
+    production_real_duration_hours = fields.Float(
+        string='Real Duration (h)',
+        compute='_compute_production_real_duration'
+    )
 
 
     #===== Native ORM methods overwritte =====#
@@ -87,6 +95,16 @@ class MrpProduction(models.Model):
         mo_ids = self.env['mrp.workorder'].sudo().search(domain).production_id.ids
         return [('id', 'in', mo_ids)]
 
+    # @api.depends is native
+    def _compute_production_duration_expected(self):
+        super()._compute_production_duration_expected()
+        for mo in self:
+            mo.production_duration_hours_expected = mo.production_duration_expected / 60
+        
+    def _compute_production_real_duration(self):
+        super()._compute_production_real_duration()
+        for mo in self:
+            mo.production_real_duration_hours = mo.production_real_duration / 60
 
     #===== Action =====#
     def _get_domain_mo_attendance(self):

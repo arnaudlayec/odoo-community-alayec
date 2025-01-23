@@ -22,7 +22,6 @@
         'views/mrp_productivity.xml',
         'views/mrp_production.xml',
         'views/mrp_workorder.xml',
-        'views/res_users.xml',
     ],
     'assets': {
         'web.assets_backend': [

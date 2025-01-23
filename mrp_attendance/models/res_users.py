@@ -5,21 +5,32 @@ from odoo import models, fields, api, _
 class ResUsers(models.Model):
     _inherit = ["res.users"]
 
+    manufacturing_worker = fields.Boolean(
+        compute='_compute_manufacturing_worker',
+        search='_search_manufacturing_worker',
+    )
     mrp_time_ids = fields.One2many(
         string='Manufacturing Times',
         comodel_name='mrp.workcenter.productivity',
         inverse_name='user_id'
     )
-    mrp_time_ids_today = fields.One2many(
-        string='Times of today',
-        comodel_name='mrp.workcenter.productivity',
-        compute='_compute_mrp_time_ids_today',
-        inverse='_inverse_mrp_time_ids_today',
-        groups='mrp_attendance.group_hr_attendance_mrp,mrp_attendance.group_hr_attendance_officer_mrp'
-    )
     mrp_hours_today = fields.Float(compute='_compute_mrp_hours_today')
 
     #===== Compute =====#
+    @api.depends('user_id', 'user_id.groups_id')
+    def _compute_manufacturing_worker(self):
+        mf_workers = self._get_mf_workers()
+        for user in self:
+            user.manufacturing_worker = user.id in mf_workers
+    @api.model
+    def _search_manufacturing_worker(self, operator, value):
+        return [('id', 'in', self._get_mf_workers().ids)]
+    def _get_mf_workers(self):
+        return (
+            self.env.ref('mrp_attendance.group_hr_attendance_mrp').users
+            - self.env.ref('hr_attendance.group_hr_attendance_user').users
+        )
+    
     @api.depends('mrp_time_ids', 'mrp_time_ids.duration')
     def _compute_mrp_hours_today(self):
         rg_result = self.env['mrp.workcenter.productivity'].read_group(
@@ -31,23 +42,6 @@ class ResUsers(models.Model):
 
         for user in self:
             user.mrp_hours_today = mapped_duration.get(user.id, 0) / 60
-    
-    @api.depends('mrp_time_ids')
-    def _compute_mrp_time_ids_today(self):
-        today = fields.Date.today()
-        for user in self:
-            user.mrp_time_ids_today = user.mrp_time_ids.filtered(lambda x: x.date == today)
-    def _inverse_mrp_time_ids_today(self):
-        today = fields.Date.today()
-        for user in self:
-            # delete removed ones
-            to_delete = user.mrp_time_ids.filtered(lambda x: x.date == today) - user.mrp_time_ids_today
-            to_delete.unlink()
-            
-            # update vals of modified ones
-            to_update = user.mrp_time_ids_today - to_delete
-            for x in to_update:
-                x._origin.write(x._prepare_vals())
 
     #===== Button 'Times of today' =====#
     def action_open_mrp_times_today(self):

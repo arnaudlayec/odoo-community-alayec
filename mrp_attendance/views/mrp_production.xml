@@ -33,6 +33,37 @@
     </record>
     <menuitem id="menu_mrp_attendance_config_loss" parent="mrp.menu_mrp_configuration" action="action_mrp_attendence_config_loss" />
 
+    <!-- MO tree view: replace 'min' field by 'hours' fields -->
+    <record id="mrp_production_tree_view" model="ir.ui.view">
+        <field name="name">mrp.production.tree</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_tree_view" />
+        
+        <field name="arch" type="xml">
+            <field name="production_duration_expected" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="production_duration_expected" position="after">
+                <field name="production_duration_hours_expected"
+                    attrs="{'invisible': [('production_duration_hours_expected', '=', 0)]}"
+                    groups="mrp.group_mrp_routings" widget="float_time"
+                    optional="show"
+                />
+            </field>
+
+            <field name="production_real_duration" position="attributes">
+                <attribute name="optional">hide</attribute>
+            </field>
+            <field name="production_real_duration" position="after">
+                <field name="production_real_duration_hours"
+                    attrs="{'invisible': [('production_real_duration_hours', '=', 0)]}"
+                    groups="mrp.group_mrp_routings" widget="float_time"
+                    optional="show"
+                />
+            </field>
+        </field>
+    </record>
+
     <!-- Manufacturing Orders Kanban view dedicated to Manufacturing Times:
         users selected MO card or WO button to access the times' wizard
     -->
