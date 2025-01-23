@@ -47,4 +47,10 @@
         <field name="groups" eval="[(4, ref('group_hr_attendance_mrp'))]" />
         <field name="domain_force">[('manufacturing_worker', '=', True)]</field>
     </record>
+    <record id="hr_attendance_rule_employee_manager" model="ir.rule">
+        <field name="name">attendance officer: full access</field>
+        <field name="model_id" ref="hr.model_hr_employee_public"/>
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="groups" eval="[(4,ref('hr_attendance.group_hr_attendance_user'))]"/>
+    </record>
 </odoo>
