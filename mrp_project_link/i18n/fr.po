@@ -6,16 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-21 09:33+0000\n"
-"PO-Revision-Date: 2025-01-21 10:45+0100\n"
+"POT-Creation-Date: 2025-01-31 15:53+0000\n"
+"PO-Revision-Date: 2025-01-31 15:53+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: fr_FR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.5\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
 
 #. module: mrp_project_link
 #: model:ir.actions.act_window,name:mrp_project_link.action_open_work_order_project
@@ -31,7 +29,7 @@ msgstr "Fabrication"
 #. module: mrp_project_link
 #: model:ir.model,name:mrp_project_link.model_stock_move_line
 msgid "Product Moves (Stock Move Line)"
-msgstr "Mouvements de stock"
+msgstr "Mouvements de produit (Ligne de mouvement de stock)"
 
 #. module: mrp_project_link
 #: model:ir.model,name:mrp_project_link.model_mrp_production
@@ -74,13 +72,3 @@ msgstr "Transfert"
 #: model:ir.model.fields,help:mrp_project_link.field_stock_picking__project_id
 msgid "Within your favorite projects"
 msgstr "Parmis vos projets favoris"
-
-#. module: mrp_project_link
-#: model:ir.model,name:mrp_project_link.model_mrp_workorder
-msgid "Work Order"
-msgstr "Ordre de travail"
-
-#. module: mrp_project_link
-#: model:ir.model,name:mrp_project_link.model_mrp_workcenter_productivity
-msgid "Workcenter Productivity Log"
-msgstr "Journal de productivité du poste de travail"
