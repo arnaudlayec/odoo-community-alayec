@@ -53,6 +53,8 @@ class AccountAnalyticAccount(models.Model):
             if budget_amount or self._context.get('display_analytic_budget'):
                 budget_amount = formatLang(self.env, budget_amount, dp='Product Unit of Measure')
                 name += ' ({}h)' . format(budget_amount)
+            
+            # add clock for timesheetable
 
             res.append((analytic.id, name))
         return res

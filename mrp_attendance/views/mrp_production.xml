@@ -31,7 +31,11 @@
         <field name="res_model">mrp.workcenter.productivity.loss</field>
         <field name="view_mode">tree,kanban,form</field>
     </record>
-    <menuitem id="menu_mrp_attendance_config_loss" parent="mrp.menu_mrp_configuration" action="action_mrp_attendence_config_loss" />
+    <menuitem id="menu_mrp_attendance_config_loss"
+        parent="mrp.menu_mrp_configuration"
+        action="action_mrp_attendence_config_loss"
+        sequence="150"
+    />
 
     <!-- MO tree view: replace 'min' field by 'hours' fields -->
     <record id="mrp_production_tree_view" model="ir.ui.view">

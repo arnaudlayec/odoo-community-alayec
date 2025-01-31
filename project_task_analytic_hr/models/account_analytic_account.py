@@ -10,13 +10,9 @@ class AccountAnalyticAccount(models.Model):
         default=False
     )
 
-    def _compute_display_name(self):
+    def name_get(self):
         """ Adds clock char icon in display_name if marked as `timesheetable` """
-        super()._compute_display_name()
-        for analytic in self:
-            analytic._compute_display_name_one()
-    
-    def _compute_display_name_one(self):
-        self.ensure_one()
-        if self.timesheetable:
-            self.display_name += ' 🕓'
+        return [
+            (id_, name + ' 🕓' if self.browse(id_).timesheetable else '')
+            for id_, name in res
+        ]
