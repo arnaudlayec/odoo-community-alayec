@@ -39,7 +39,7 @@
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('o_td_label')]" position="before">
                 <field name="project_id_domain" invisible="1" />
-                <field name="project_id" attrs="{'readonly': [('state', '!=', 'draft'), ('project_id', '!=', False)], 'required': [(1, '=', 1)]}" />
+                <field name="project_id" attrs="{'readonly': [('state', '!=', 'draft'), ('project_id', '!=', False)], 'required': [(1, '=', 1)]}" force_save="1" />
             </xpath>
         </field>
     </record>
