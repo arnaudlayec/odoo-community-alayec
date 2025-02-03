@@ -24,7 +24,8 @@ class StockPicking(models.Model):
         # can be set manually or computed from the MO (via the procurement group)
         compute='_compute_project_id',
         store=True,
-        readonly=False
+        readonly=False,
+        required=False
     )
     mrp_production_ids = fields.One2many(
         related='group_id.mrp_production_ids'
