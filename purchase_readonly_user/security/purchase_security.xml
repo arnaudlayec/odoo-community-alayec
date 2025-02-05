@@ -4,13 +4,13 @@
     <record id="group_purchase_user_readonly" model="res.groups">
         <field name="name">User (readonly)</field>
         <field name="implied_ids" eval="[(4, ref('purchase.group_purchase_user'))]"/>
-        <field name="category_id" ref="base.module_category_manufacturing_manufacturing"/>
+        <field name="category_id" ref="base.module_category_inventory_purchase"/>
     </record>
     <record id="purchase.group_purchase_manager" model="res.groups">
         <field name="implied_ids" eval="[(4, ref('group_purchase_user_readonly'))]"/>
     </record>
 
-    <record id="rule_purchase_readonly" model="ir.rule">
+    <record id="rule_purchase_readonly_po" model="ir.rule">
         <field name="name">Purchase readonly</field>
         <field name="model_id" ref="purchase.model_purchase_order" />
         <field name="domain_force">[(0,'=',1)]</field>
@@ -20,7 +20,7 @@
         <field name="perm_unlink">True</field>
         <field name="groups" eval="[(4, ref('group_purchase_user_readonly'))]" />
     </record>
-    <record id="rule_purchase_readonly" model="ir.rule">
+    <record id="rule_purchase_readonly_po_line" model="ir.rule">
         <field name="name">Purchase readonly</field>
         <field name="model_id" ref="purchase.model_purchase_order_line" />
         <field name="domain_force">[(0,'=',1)]</field>
@@ -30,7 +30,7 @@
         <field name="perm_unlink">True</field>
         <field name="groups" eval="[(4, ref('group_purchase_user_readonly'))]" />
     </record>
-    <record id="rule_purchase_readonly" model="ir.rule">
+    <record id="rule_purchase_readonly_account_move" model="ir.rule">
         <field name="name">Purchase readonly</field>
         <field name="model_id" ref="account.model_account_move" />
         <field name="domain_force">[(0,'=',1)]</field>
@@ -40,7 +40,7 @@
         <field name="perm_unlink">True</field>
         <field name="groups" eval="[(4, ref('group_purchase_user_readonly'))]" />
     </record>
-    <record id="rule_purchase_readonly" model="ir.rule">
+    <record id="rule_purchase_readonly_account_move_line" model="ir.rule">
         <field name="name">Purchase readonly</field>
         <field name="model_id" ref="account.model_account_move_line" />
         <field name="domain_force">[(0,'=',1)]</field>
