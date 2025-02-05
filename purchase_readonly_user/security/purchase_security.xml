@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Purchase > User Readonly -->
+    <record id="group_purchase_user_readonly" model="res.groups">
+        <field name="name">User (readonly)</field>
+        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="category_id" ref="base.module_category_manufacturing_manufacturing"/>
+    </record>
+    <record id="purchase.group_purchase_user" model="res.groups">
+        <field name="implied_ids" eval="[(4, ref('group_purchase_user_readonly'))]"/>
+    </record>
+</odoo>
