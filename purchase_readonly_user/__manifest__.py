@@ -2,7 +2,7 @@
 {
     'name': 'Purchase Readonly User',
     'summary': "Readonly user for purchase",
-    'category': 'Project',
+    'category': 'Inventory/Purchase',
     'version': '16.0.1.0.1',
     'license': 'LGPL-3',
     'author': 'Arnaud LAYEC',
@@ -11,5 +11,5 @@
     'application': False,
     'installable': True,
     'depends': ['purchase'],
-    'data': ['security/purchase_security.xml', 'security/ir.model.access.csv'],
+    'data': ['security/purchase_security.xml'],
 }
