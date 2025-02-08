@@ -9,11 +9,7 @@
         <field name="arch" type="xml">
             <!-- Explicit `sequence_code_choose` -->
             <h1 position="before">
-                <group attrs="{'invisible': ['|', ('id', '!=', False), ('parent_id', '!=', False)]}">
-                    <field name="sequence_code_choose" />
-                </group>
-
-                <label for="name" />
+                <label for="name" class="oe_edit_only" />
             </h1>
 
             <!-- Change display of project's sequence_code to left title -->
@@ -53,6 +49,9 @@
             <!-- Move `parent_id` below project's name -->
             <field name="partner_id" position="before">
                 <field name="parent_id" position="move" />
+                <field name="sequence_code_choose"
+                    attrs="{'invisible': ['|', ('id', '!=', False), ('parent_id', '!=', False)]}"
+                />
             </field>
             <field name="parent_id" position="attributes">
                 <attribute name="attrs">{

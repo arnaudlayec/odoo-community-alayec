@@ -14,7 +14,6 @@
     "data": [
         # views
         "views/project_assignment.xml",
-        "views/project_project.xml",
         # security
         "security/project_security.xml",
         "security/ir.model.access.csv",

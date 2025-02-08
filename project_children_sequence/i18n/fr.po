@@ -35,8 +35,7 @@ msgstr "Séquence des projets enfants de "
 #: model_terms:ir.ui.view,arch_db:project_children_sequence.edit_project
 msgid "Choose to make it a child project, or leave empty for main projects"
 msgstr ""
-"Laissez vide pour les projets principaux, et remplissez pour faire de ce "
-"projet un sous-projet."
+"À remplir pour les sous-projets. Laissez vide pour les projets principaux."
 
 #. module: project_children_sequence
 #: model:ir.model.fields,field_description:project_children_sequence.field_project_project__sequence_code

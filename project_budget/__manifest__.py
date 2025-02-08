@@ -12,9 +12,10 @@
     'version': '16.0.1.0.0',
 
     'depends': [
+        'hr_timesheet', # odoo (for form)
         'account_move_budget', # OCA
         'project_budget_line_template',
-        'project_favorite_switch'
+        'project_favorite_switch',
     ],
     'data': [
         # security
