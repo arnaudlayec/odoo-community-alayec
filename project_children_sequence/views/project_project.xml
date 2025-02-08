@@ -22,6 +22,7 @@
                     - if `sequence_code_choose` is activated by user
                     - if not a children project
                 -->
+                <field name="sequence_code_choose" invisible="1" />
                 <field name="sequence_code"
                     nolabel="1"
                     attrs="{
