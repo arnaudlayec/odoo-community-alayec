@@ -50,4 +50,33 @@
         <field name="perm_unlink">True</field>
         <field name="groups" eval="[(4, ref('group_purchase_user_readonly'))]" />
     </record>
+    
+    <record id="rule_purchase_readall_po" model="ir.rule">
+        <field name="name">Purchase read all</field>
+        <field name="model_id" ref="purchase.model_purchase_order" />
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="perm_read">True</field>
+        <field name="groups" eval="[(4, ref('purchase.group_purchase_manager'))]" />
+    </record>
+    <record id="rule_purchase_readall_po_line" model="ir.rule">
+        <field name="name">Purchase read all</field>
+        <field name="model_id" ref="purchase.model_purchase_order_line" />
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="perm_read">True</field>
+        <field name="groups" eval="[(4, ref('purchase.group_purchase_manager'))]" />
+    </record>
+    <record id="rule_purchase_readall_account_move" model="ir.rule">
+        <field name="name">Purchase read all</field>
+        <field name="model_id" ref="account.model_account_move" />
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="perm_read">True</field>
+        <field name="groups" eval="[(4, ref('purchase.group_purchase_manager'))]" />
+    </record>
+    <record id="rule_purchase_readall_account_move_line" model="ir.rule">
+        <field name="name">Purchase read all</field>
+        <field name="model_id" ref="account.model_account_move_line" />
+        <field name="domain_force">[(1,'=',1)]</field>
+        <field name="perm_read">True</field>
+        <field name="groups" eval="[(4, ref('purchase.group_purchase_manager'))]" />
+    </record>
 </odoo>
