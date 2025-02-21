@@ -6,11 +6,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-21 09:33+0000\n"
-"PO-Revision-Date: 2025-01-21 10:56+0100\n"
+"POT-Creation-Date: 2025-02-21 17:19+0000\n"
+"PO-Revision-Date: 2025-02-21 18:20+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: fr_FR\n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
@@ -47,6 +47,15 @@ msgid "(h:min)."
 msgstr ""
 
 #. module: mrp_productivity_qty
+#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
+msgid ""
+",\n"
+"                    so"
+msgstr ""
+",\n"
+"                    soit"
+
+#. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
 msgid ""
 "<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" "
@@ -61,7 +70,7 @@ msgid "Default unit of Work Order"
 msgstr "Unité par défaut de l'ordre de travail"
 
 #. module: mrp_productivity_qty
-#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_duration_expected
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_duration_hours_expected
 msgid "Expected Duration"
 msgstr "Durée prévue"
 
@@ -185,9 +194,9 @@ msgid "The number of products already handled by this work order"
 msgstr "Le nombre de produits déjà pris en charge par cet ordre de travail"
 
 #. module: mrp_productivity_qty
-#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_duration
+#: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_duration_hours
 msgid "Total Duration done"
-msgstr "Temps total fait"
+msgstr "Temps réalisé total"
 
 #. module: mrp_productivity_qty
 #: model:ir.model.fields,field_description:mrp_productivity_qty.field_mrp_workcenter_productivity__wo_gain
@@ -237,6 +246,16 @@ msgid "Work Center"
 msgstr "Poste de travail"
 
 #. module: mrp_productivity_qty
+#: model:ir.model,name:mrp_productivity_qty.model_mrp_workorder
+msgid "Work Order"
+msgstr "Ordre de travail"
+
+#. module: mrp_productivity_qty
+#: model:ir.model,name:mrp_productivity_qty.model_mrp_workcenter_productivity
+msgid "Workcenter Productivity Log"
+msgstr "Journal de productivité du poste de travail"
+
+#. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
 msgid "Workorder indicators"
 msgstr "Ordre de Travail - Statistiques de suivi"
@@ -250,11 +269,6 @@ msgstr "fait sur"
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
 msgid "meaning a performance of"
 msgstr "soit une performance de"
-
-#. module: mrp_productivity_qty
-#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
-msgid "min"
-msgstr ""
 
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.mrp_production_workorder_form_view_inherit
@@ -275,11 +289,6 @@ msgstr "planifié"
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
 msgid "remaining."
 msgstr "restant(es)."
-
-#. module: mrp_productivity_qty
-#: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
-msgid "so"
-msgstr "soit"
 
 #. module: mrp_productivity_qty
 #: model_terms:ir.ui.view,arch_db:mrp_productivity_qty.oee_form_view
