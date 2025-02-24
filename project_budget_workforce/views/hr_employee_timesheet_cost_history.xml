@@ -31,7 +31,10 @@
                     icon="fa-bars"
                     invisible="not context.get('display_analytic')"
                 />
-                <field name="analytic_account_id" invisible="not context.get('display_analytic')" />
+                <field name="analytic_account_id"
+                    options="{'no_create_edit': 1}"
+                    invisible="not context.get('display_analytic')"
+                />
             </field>
 
             <field name="starting_date" position="after">
