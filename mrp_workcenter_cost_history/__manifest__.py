@@ -17,6 +17,8 @@
         'mrp_account',
     ],
     'data': [
+        # security
+        'security/ir.model.access.csv',
         # wizard
         'wizard/cost_history.xml',
         # views

@@ -1,0 +1,2 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_mrp_workcenter_timesheet_cost_history,access_mrp_workcenter_timesheet_cost_history,hr_employee_cost_history.model_hr_employee_timesheet_cost_history,mrp.group_mrp_manager,1,1,1,1
