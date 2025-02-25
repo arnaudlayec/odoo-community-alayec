@@ -6,11 +6,11 @@
         <field name="inherit_id" ref="project.view_task_form2" />
 
         <field name="arch" type="xml">
-            <field name="description" position="before">
+            <notebook position="before">
                 <group>
-                    <field name="attachment_ids" widget="many2many_binary" readonly="False" force_save="True" />
+                    <field name="attachment_ids" widget="many2many_binary" />
                 </group>
-            </field>
+            </notebook>
         </field>
     </record>
 </odoo>
