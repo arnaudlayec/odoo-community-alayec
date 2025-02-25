@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
             <field name="description" position="before">
                 <group>
-                    <field name="all_attachment_ids" widget="many2many_binary" nolabel="1" />
+                    <field name="all_attachment_ids" widget="many2many_binary" nolabel="1" colspan="2" />
                 </group>
             </field>
         </field>
