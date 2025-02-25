@@ -10,5 +10,4 @@ class ProjectTask(models.Model):
         inverse_name='res_id',
         string='Attachments',
         domain=lambda self: [('res_model', '=', self._name)],
-        readonly=False
     )
