@@ -28,14 +28,13 @@
 
         <field name="arch" type="xml">
             <field name="invoice_user_id" position="attributes">
-                <attribute name="string">Buyer or Salesperson</attribute>
+                <attribute name="invisible">1</attribute>
             </field>
             
             <group id="other_tab_group" position="inside">
-                <group name="validation" string="Validation" />
-            </group>
-            <group name="validation" position="inside">
-                <field name="invoice_user_id" position="move" />
+                <group name="validation" string="Validation">
+                    <field name="invoice_user_id" string="Buyer or Salesperson" />
+                </group>
             </group>
         </field>
     </record>

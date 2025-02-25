@@ -3,11 +3,12 @@
 from odoo import models, fields
 
 class ProjectTask(models.Model):
+    _name = 'project.task'
     _inherit = ["project.task"]
 
     attachment_ids = fields.One2many(
         comodel_name='ir.attachment',
         inverse_name='res_id',
         string='Attachments',
-        domain=lambda self: [('res_model', '=', self._name)],
+        domain=[('res_model', '=', _name)],
     )
