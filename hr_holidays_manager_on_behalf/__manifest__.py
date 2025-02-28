@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
-    'name': "HR Department Cost History",
-    'summary': "Manage Hourly Cost per department and keep history",
+    'name': "HR Holidays On-Behalf for Managers",
+    'summary': "Allow manager to create their employees' leaves on their behalf.",
     'author': "Arnaud LAYEC",
     'website': "https://github.com/arnaudlayec/odoo-community-alayec",
     'license': "AGPL-3",
@@ -12,12 +12,9 @@
     'category': 'Human Resources',
     'version': '16.0.1.0.0',
 
-    'depends': ['hr_employee_cost_history'],
+    'depends': ['hr_holidays'],
     'data': [
-        # wizard
-        'wizard/hr_employee_timesheet_cost_wizard.xml',
         # views
-        'views/hr_employee_timesheet_cost_history.xml',
-        'views/hr_department.xml',
+        'hr_leave.xml',
     ],
 }

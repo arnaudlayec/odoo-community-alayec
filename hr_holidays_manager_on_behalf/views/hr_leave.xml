@@ -1,0 +1,24 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<odoo>
+
+    <record id="hr_leave_view_form_manager" model="ir.ui.view">
+        <field name="name">hr.leave.view.form.manager.on_behalf</field>
+        <field name="model">hr.leave</field>
+        <field name="inherit_id" ref="hr_holidays.hr_leave_view_form_manager"/>
+        
+        <field name="arch" type="xml">
+
+            <!-- Display `Employee(s)` field(s) without needing group
+                `group_hr_holidays_user` (Officer : manage all requests)
+            -->
+            <field name="employee_id" position="attributes">
+                <attribute name="groups">hr_holidays.group_hr_holidays_responsible</attribute>
+            </field>
+            <field name="employee_ids" position="attributes">
+                <attribute name="groups">hr_holidays.group_hr_holidays_responsible</attribute>
+            </field>
+            
+        </field>
+    </record>
+
+</odoo>
