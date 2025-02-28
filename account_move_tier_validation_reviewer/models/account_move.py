@@ -5,9 +5,7 @@ from odoo import models, fields, api
 class AccountMove(models.Model):
     _inherit = ['account.move']
 
-    review_ids = fields.Selection(
-        tracking=True
-    )
+    review_ids = fields.One2many(tracking=True)
 
     @api.depends('move_type')
     def _compute_invoice_default_sale_person(self):
