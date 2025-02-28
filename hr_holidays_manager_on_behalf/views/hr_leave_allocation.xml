@@ -19,6 +19,7 @@
             </field>
             <field name="employee_id" position="before">
                 <!-- To avoid context error due to conditional loading of `employee_id` -->
+                <field name="holiday_type" invisible="1" />
                 <field name="employee_id" invisible="1" />
             </field>
             
