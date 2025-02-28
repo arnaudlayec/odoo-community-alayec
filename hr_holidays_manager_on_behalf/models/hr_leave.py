@@ -17,4 +17,4 @@ class HolidaysRequest(models.Model):
         if self.env.user.has_group('hr_holidays.group_hr_holidays_user'):
             return [(1, '=', 1)]
         else:
-            return [('leave_manager_id', '=', self.env.user.employee_id.id)]
+            return [('leave_manager_id.user_id', '=', 'uid')]
