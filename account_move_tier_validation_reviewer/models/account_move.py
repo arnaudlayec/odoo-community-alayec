@@ -5,9 +5,8 @@ from odoo import models, fields, api
 class AccountMove(models.Model):
     _inherit = ['account.move']
 
-    validation_status = fields.Selection(
-        store=True,
-        tracking=True,
+    review_ids = fields.Selection(
+        tracking=True
     )
 
     @api.depends('move_type')
