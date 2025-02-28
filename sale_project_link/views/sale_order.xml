@@ -10,7 +10,7 @@
         <field name="arch" type="xml">
             <field name="partner_id" position="before">
                 <field name="project_id_domain" invisible="1" />
-                <field name="project_id" attrs="{'readonly': [('id','!=',False)]}" />
+                <field name="project_id" attrs="{'readonly': [('state','!=','draft')]}" />
             </field>
         </field>
     </record>
