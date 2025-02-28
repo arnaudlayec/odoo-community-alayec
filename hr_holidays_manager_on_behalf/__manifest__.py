@@ -15,6 +15,7 @@
     'depends': ['hr_holidays'],
     'data': [
         # views
-        'hr_leave.xml',
+        'views/hr_leave.xml',
+        'views/hr_leave_allocation.xml',
     ],
 }
