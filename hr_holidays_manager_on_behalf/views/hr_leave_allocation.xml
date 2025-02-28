@@ -11,16 +11,11 @@
             <!-- Display `Employee(s)` field(s) without needing group
                 `group_hr_holidays_user` (Officer : manage all requests)
             -->
-            <field name="employee_id" position="attributes">
+            <xpath expr="(//field[@name='employee_id'])[2]" position="attributes">
                 <attribute name="groups">hr_holidays.group_hr_holidays_responsible</attribute>
-            </field>
+            </xpath>
             <field name="employee_ids" position="attributes">
                 <attribute name="groups">hr_holidays.group_hr_holidays_responsible</attribute>
-            </field>
-            <field name="employee_id" position="before">
-                <!-- To avoid context error due to conditional loading of `employee_id` -->
-                <field name="holiday_type" invisible="1" />
-                <field name="employee_id" invisible="1" />
             </field>
             
         </field>

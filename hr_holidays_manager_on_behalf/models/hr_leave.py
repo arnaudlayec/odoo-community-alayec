@@ -9,6 +9,7 @@ class HolidaysRequest(models.Model):
         domain=lambda self: self._get_employee_ids_domain()
     )
     employee_ids = fields.Many2many(
+        groups="hr_holidays.group_hr_holidays_responsible",
         domain=lambda self: self._get_employee_ids_domain()
     )
 
