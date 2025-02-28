@@ -19,7 +19,7 @@ class CommentWizard(models.TransientModel):
         status = dict(record._fields['validation_status'].selection).get(record.validation_status)
         return {
             'message_type': 'notification',
-            'subtype_xmlid': 'mail.mt_note',
+            'subtype_xmlid': 'mail.mt_comment',
             'is_internal': True,
             'partner_ids': [],
             'body': _("Validation status: %s (%s)", status, self.comment),
