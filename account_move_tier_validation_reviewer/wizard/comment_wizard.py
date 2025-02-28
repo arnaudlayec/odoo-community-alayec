@@ -22,5 +22,5 @@ class CommentWizard(models.TransientModel):
             'subtype_xmlid': 'mail.mt_note',
             'is_internal': True,
             'partner_ids': [],
-            'body': _("Validation status: %s (%s)", status, record.comment),
+            'body': _("Validation status: %s (%s)", status, self.comment),
         }
