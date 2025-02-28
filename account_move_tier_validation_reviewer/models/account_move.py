@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api
 
 class AccountMove(models.Model):
     _inherit = ['account.move']
@@ -16,20 +16,3 @@ class AccountMove(models.Model):
         for move in self:
             if not move.invoice_user_id:
                 move.invoice_user_id = self.env.user
-
-    def validate_tier(self):
-        """ Send notification on chatter on validation """
-        res = super().validate_tier()
-        mail_values = self._get_chatter_validation_message()
-        self.message_post(**mail_values)
-
-        return res
-    
-    def _get_chatter_validation_message(self):
-        return {
-            'message_type': 'notification',
-            'subtype_xmlid': 'mail.mt_note',
-            'is_internal': True,
-            'partner_ids': [],
-            'body': _("Validation status: %s", self.validation_status),
-        }
