@@ -3,19 +3,12 @@
 from odoo import models, fields, api, _
 
 class HolidaysRequest(models.Model):
-    """ Modifies access specifications of Leave Requests:
-        - manager of an employee (leave_manager_id) may create leave
-          *on behalf* of employees he/she's the manager of
+    """ Adds accesses for Time Off responsible of employees so they may manage leaves on
+         behalf on their subordinates. They may:
+         - create leaves
+         - see name field
     """
     _inherit = ["hr.leave"]
-
-    # nom du congé ?
-    # cannot see name field of leaves belonging to other user as it may contain
-    # private information that we don't want to share to other people than
-    # HR people;
-    #     bypass approval);
-    #   - can discuss on its leave requests;
-    #   - can reset only its own leaves;
 
     #===== Fields' domain =====#
     def _get_subordinates_or_all(self):
@@ -76,4 +69,4 @@ class HolidaysRequest(models.Model):
 
     def _search_description(self, operator, value):
         domain = [('private_name', operator, value), ('leave_manager_id', '=', self.env.user.id)]
-        return super._search_description() | self.search(domain)
+        return super()._search_description() | self.search(domain)
