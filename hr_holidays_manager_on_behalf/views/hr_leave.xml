@@ -20,7 +20,8 @@
 
             <!-- For domain -->
             <form position="inside">
-                <field name="employee_ids_domain" invisible="1" />
+                <field name="holiday_type" />
+                <field name="employee_ids_possible" invisible="1" />
             </form>
             
         </field>

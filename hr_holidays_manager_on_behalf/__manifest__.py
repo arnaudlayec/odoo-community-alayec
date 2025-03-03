@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "HR Holidays On-Behalf for Managers",
-    'summary': "Allow manager to create their employees' leaves on their behalf.",
+    'summary': "Managers create their employees' leaves on their behalf",
     'author': "Arnaud LAYEC",
     'website': "https://github.com/arnaudlayec/odoo-community-alayec",
     'license': "AGPL-3",
@@ -14,6 +14,8 @@
 
     'depends': ['hr_holidays'],
     'data': [
+        # security
+        'security/hr_holidays_security.xml',
         # views
         'views/hr_leave.xml',
         'views/hr_leave_allocation.xml',
