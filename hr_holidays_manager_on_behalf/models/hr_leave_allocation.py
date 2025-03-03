@@ -11,4 +11,4 @@ class HolidaysAllocation(models.Model):
 
     def _compute_employee_ids_domain(self):
         domain = self.env['hr.leave']._get_employee_ids_domain()
-        self.employee_ids_domain = self.env['hr.employee'].search(domain)
+        self.employee_ids_domain = self.env['hr.employee'].search(domain).ids

@@ -14,7 +14,7 @@ class HolidaysRequest(models.Model):
 
     def _compute_employee_ids_domain(self):
         domain = self._get_employee_ids_domain()
-        self.employee_ids_domain = self.env['hr.employee'].search(domain)
+        self.employee_ids_domain = self.env['hr.employee'].search(domain).ids
     
     def _get_employee_ids_domain(self):
         return (
