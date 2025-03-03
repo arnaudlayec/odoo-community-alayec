@@ -17,6 +17,11 @@
             <xpath expr="(//field[@name='employee_ids'])[2]" position="attributes">
                 <attribute name="groups">hr_holidays.group_hr_holidays_responsible</attribute>
             </xpath>
+
+            <!-- For domain -->
+            <form position="inside">
+                <field name="employee_ids_domain" invisible="1" />
+            </form>
             
         </field>
     </record>

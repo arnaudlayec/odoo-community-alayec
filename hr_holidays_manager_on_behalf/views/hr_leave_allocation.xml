@@ -18,6 +18,11 @@
                 <attribute name="groups">hr_holidays.group_hr_holidays_responsible</attribute>
             </field>
             
+            <!-- For domain -->
+            <form position="inside">
+                <field name="employee_ids_domain" invisible="1" />
+            </form>
+            
         </field>
     </record>
 
