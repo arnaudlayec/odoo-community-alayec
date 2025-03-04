@@ -7,11 +7,24 @@ class HolidaysAllocation(models.Model):
 
     employee_id = fields.Many2one(domain="[('id', 'in', employee_ids_possible)]")
     employee_ids = fields.Many2many(domain="[('id', 'in', employee_ids_possible)]")
+    all_employee_ids = fields.Many2many(
+        # for easy ir.rule domain
+        comodel_name='hr.employee',
+        search='_search_all_employee_ids',
+        store=False,
+    )
     employee_ids_possible = fields.Many2many(
         comodel_name='hr.employee',
         default=lambda self: self.env['hr.leave']._get_subordinates_or_all(),
         store=False
     )
+    
+    #===== Compute =====#
+    def _search_all_employee_ids(self, operator, value):
+        if hasattr(value, '__iter__'):
+            return [('employee_ids', operator, value)]
+        else:
+            return [('employee_id', operator, value)]
 
     #===== Name/Description =====#
     @api.depends_context('uid')
