@@ -8,11 +8,12 @@ class MrpWorkOrder(models.Model):
     #===== Fields =====#
     # user-defined
     productivity_tracking = fields.Selection([
+            ('none', "None"),
             ('global', "Global"),
             ('unit', "Quantitative")
         ], string="Productivity Tracking",
         required=True,
-        default=lambda self: self.workcenter_id.productivity_tracking
+        default=lambda self: self.workcenter_id.productivity_tracking or 'none'
     )
     product_uom_id = fields.Many2one(
         # native re-used field

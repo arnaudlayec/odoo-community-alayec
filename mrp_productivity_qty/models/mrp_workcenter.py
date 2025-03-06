@@ -6,9 +6,10 @@ class MrpWorkCenter(models.Model):
     _inherit = ["mrp.workcenter"]
 
     productivity_tracking = fields.Selection([
+        ('none', "None"),
         ('global', "Global"),
         ('unit', "Quantitative")
-    ], string="Productivity Tracking", default='global')
+    ], string="Productivity Tracking", default='none')
     product_uom_id = fields.Many2one(
         comodel_name='uom.uom',
         string='Unit of Measure',
