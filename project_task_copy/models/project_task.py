@@ -28,9 +28,6 @@ class ProjectTask(models.Model):
         """
         self.ensure_one()
         for field in self._fields_to_copy():
-            print('field', field)
-            print('(source) self.copy_task_id[field]', self.copy_task_id[field])
-            print('(result) self[field]', self[field])
             self[field] = self.copy_task_id[field] or False
     
     def _fields_to_copy(self):

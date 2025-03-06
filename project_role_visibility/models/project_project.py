@@ -6,16 +6,20 @@ class ProjectProject(models.Model):
     _inherit = ["project.project"]
 
     privacy_visibility = fields.Selection(default='followers')
+    assignment_ids = fields.One2many(copy=True)
 
     #===== CRUD (assignees/followers synch) =====#
     def copy(self, default={}):
-        """ If project's privacy is `followers`,
-            synchronize project's followers from roles assignments
+        """ If copied project's privacy is `followers`,
+            copy project's followers from roles assignments
         """
         if self._should_synch_roles(default):
             self = self.with_context(project_role_no_raise=True)
         
-        return super(ProjectProject, self).copy(default)._rebase_followers_from_assignments()
+        projects = super(ProjectProject, self).copy(default)
+        print('projects', projects)
+        projects._rebase_followers_from_assignments()
+        return projects
     
     def write(self, vals):
         """ If project's privacy is moved to `followers`,
