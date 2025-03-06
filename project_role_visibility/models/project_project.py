@@ -15,7 +15,7 @@ class ProjectProject(models.Model):
         if self._should_synch_roles(vals):
             self = self.with_context(project_role_no_raise=True)
         
-        return super(ProjectProject, self).copy()._rebase_followers_from_assignments()
+        return super(ProjectProject, self).copy(vals)._rebase_followers_from_assignments()
     
     def write(self, vals):
         """ If project's privacy is moved to `followers`,
