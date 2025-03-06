@@ -48,19 +48,25 @@ class ProjectDefaultMixin(models.AbstractModel):
             `self.env['project.default.mixin']._get_project_id()`
             c.f. usage in `wizard/project_choice_wizard.py`
 
-            :option vals:   can be provided as alternate data source to look for `project_id`
-                            is set by default to `self._context`
-            :option record: in this Mixin is not inherited, this method can be called in
-                            standalone and `record` can be passed instead of `self`
+            :option vals:   Can be provided as alternate data source to look for `project_id`.
+                            This is set by default to `self._context`
+            :option record: In this Mixin is not inherited, this method can be called in
+                            standalone and `record` can be passed instead of `self`.
         """
         record = record or self
         vals = self._context | vals
 
+        print('context', self._context.get('default_project_id'))
+        print('default_project_id', vals.get('default_project_id'))
+
         project_id_ = (
+            # project_id
             vals.get('project_id') # custom call
             or 'project_id' in record and record.project_id.id # when validating this wizard
-            or vals.get('default_project_id') # 1/ passed from a form to an embedded tree view or 2/ custom (server action)
-            or ( # on smart button click from a Project form
+            # default_project_id
+            or vals.get('default_project_id') # e.g.: passed from a form to an embedded tree view
+            # on smart button click from a Project form
+            or (
                 vals.get('active_model') == 'project.project'
                 and vals.get('active_id')
             )
@@ -69,7 +75,8 @@ class ProjectDefaultMixin(models.AbstractModel):
 
         if not project_id_ and raise_if_not_found:
             raise exceptions.ValidationError(_(
-                "Cannot do this action with no project selected."
+                "Cannot do this action with no project selected. To access this page or action,"
+                " please choose a single project in your favorites and retry."
                 " Context: %s",
                 self._context
             ))
