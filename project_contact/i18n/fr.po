@@ -107,5 +107,5 @@ msgstr "Partie prenante"
 #. module: project_contact
 #: model:ir.model.fields,field_description:project_contact.field_project_project__contact_ids
 #: model_terms:ir.ui.view,arch_db:project_contact.edit_project
-msgid "Stakeholders"
-msgstr "Parties prenantes"
+msgid "External stakeholders"
+msgstr "Parties prenantes externes"

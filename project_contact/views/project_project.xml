@@ -7,7 +7,7 @@
 
         <field name="arch" type="xml">
             <page name="description" position="inside">
-                <group string="Stakeholders">
+                <group string="External stakeholders">
                     <field name="contact_ids" mode="kanban" nolabel="1" colspan="2" />
                 </group>
             </page>
