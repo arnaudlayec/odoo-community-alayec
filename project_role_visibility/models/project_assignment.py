@@ -4,7 +4,7 @@ from odoo import api, fields, models, exceptions, _, Command
 from collections import defaultdict
 
 class ProjectAssignment(models.Model):
-    _inherit = "project.assignment"
+    _inherit = ["project.assignment"]
     _order = "role_id DESC, primary DESC"
 
     #===== Fields =====#

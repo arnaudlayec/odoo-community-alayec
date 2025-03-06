@@ -3,43 +3,45 @@
 from odoo import api, fields, models, exceptions, _
 
 class ProjectProject(models.Model):
-    _inherit = "project.project"
+    _inherit = ["project.project"]
 
     privacy_visibility = fields.Selection(default='followers')
 
     #===== CRUD (assignees/followers synch) =====#
-    # @api.model_create_multi
-    # def create(self, vals_list):
-    #     """ Don't block `create` because of roles """
-    #     return super().with_context(project_role_no_raise=True).create(vals_list)
-    
-    # def copy(self, vals):
-    #     """ Don't block `copy` because of roles """
-    #     return super().with_context(project_role_no_raise=True).copy(vals)
-    
-    # def unlink(self):
-    #     """ Don't block `unlink` because of roles """
-    #     return super().with_context(project_role_no_raise=True).unlink()
+    def copy(self, vals):
+        """ If project's privacy is `followers`,
+            synchronize project's followers from roles assignments
+        """
+        if self._should_synch_roles(vals):
+            self = self.with_context(project_role_no_raise=True)
+        
+        return super(ProjectProject, self).copy()._rebase_followers_from_assignments()
     
     def write(self, vals):
         """ If project's privacy is moved to `followers`,
-            rebase project's followers from roles
+            rebase project's followers from roles assignments
         """
         if 'privacy_visibility' in vals:
-            self = self.with_context(project_role_no_raise=True)
-        
-        if self._should_synch_roles(vals):
-            internal_followers = self.message_partner_ids.filtered(lambda x: x.user_id.id)
-            assignees = self.assignment_ids._filter_has_access().user_id.partner_id
-            # unsubscribe all internal users not assigned to roles
-            # subscribe those last ones
-            self.message_unsubscribe((internal_followers - assignees).ids)
-            self.message_subscribe(assignees.ids)
+            self._rebase_followers_from_assignments(vals)
         return super().write(vals)
     
-    def _should_synch_roles(self, vals=None):
+    def _rebase_followers_from_assignments(self, vals={}):
+        """ For elligible projects:
+            1. Unsubscribe all internal users not assigned to roles
+            2. Subscribe those last ones
+        """
+        if not self._should_synch_roles(vals):
+            return
+        
+        for project in self.with_context(project_role_no_raise=True):
+            internal_followers = project.message_partner_ids.filtered(lambda x: x.user_id.id)
+            assignees = project.assignment_ids._filter_has_access().user_id.partner_id
+            project.message_unsubscribe((internal_followers - assignees).ids)
+            project.message_subscribe(assignees.ids)
+    
+    def _should_synch_roles(self, vals={}):
         """ Can be overriden to change logic on `privacy_visibility` """
-        privacy = vals.get('privacy_visibility') if vals else self.privacy_visibility
+        privacy = vals.get('privacy_visibility', self.privacy_visibility)
         return privacy == 'followers'
     
     #===== Constrain (assignees/followers synch) =====
