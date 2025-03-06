@@ -8,18 +8,18 @@ class ProjectProject(models.Model):
     privacy_visibility = fields.Selection(default='followers')
 
     #===== CRUD (assignees/followers synch) =====#
-    @api.model_create_multi
-    def create(self, vals_list):
-        """ Don't block `create` because of roles """
-        return super().with_context(project_role_no_raise=True).create(vals_list)
+    # @api.model_create_multi
+    # def create(self, vals_list):
+    #     """ Don't block `create` because of roles """
+    #     return super().with_context(project_role_no_raise=True).create(vals_list)
     
-    def copy(self, vals):
-        """ Don't block `copy` because of roles """
-        return super().with_context(project_role_no_raise=True).copy(vals)
+    # def copy(self, vals):
+    #     """ Don't block `copy` because of roles """
+    #     return super().with_context(project_role_no_raise=True).copy(vals)
     
-    def unlink(self):
-        """ Don't block `unlink` because of roles """
-        return super().with_context(project_role_no_raise=True).unlink()
+    # def unlink(self):
+    #     """ Don't block `unlink` because of roles """
+    #     return super().with_context(project_role_no_raise=True).unlink()
     
     def write(self, vals):
         """ If project's privacy is moved to `followers`,
