@@ -56,13 +56,6 @@ class ProjectDefaultMixin(models.AbstractModel):
         record = record or self
         vals = self._context | vals
 
-        print('=== _get_project_id ===')
-        print('record', record)
-        print('self', self)
-        print('vals', vals)
-        print('context', self._context)
-        print('vals.get(default_project_id)', vals.get('default_project_id'))
-
         project_id_ = (
             # project_id
             vals.get('project_id') # custom call
