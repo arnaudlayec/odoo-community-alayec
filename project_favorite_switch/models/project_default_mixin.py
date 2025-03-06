@@ -70,7 +70,7 @@ class ProjectDefaultMixin(models.AbstractModel):
         if not project_id_ and raise_if_not_found:
             raise exceptions.ValidationError(_(
                 "Cannot do this action with no project selected."
-                " Details: %s",
+                " Context: %s",
                 self._context
             ))
         
