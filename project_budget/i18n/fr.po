@@ -6,15 +6,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-06 17:13+0000\n"
-"PO-Revision-Date: 2025-01-06 18:24+0100\n"
-"Last-Translator: Arnaud LAYEC <arnaudlayec@gmail.com>\n"
+"POT-Creation-Date: 2025-03-08 16:23+0000\n"
+"PO-Revision-Date: 2025-03-08 17:23+0100\n"
+"Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.5\n"
 
 #. module: project_budget
@@ -40,14 +40,14 @@ msgid "<span class=\"o_stat_text\">Budget</span>"
 msgstr "<span class=\"o_stat_text\">Budget</span>"
 
 #. module: project_budget
-#: model:ir.model.constraint,message:project_budget.constraint_account_move_budget_line_unique_aac_per_project
-msgid "A budget line is already set on this project to the same analytic account."
-msgstr "Une autre ligne de budget utilise déjà ce compte analytique dans ce projet."
-
-#. module: project_budget
 #: model:ir.model,name:project_budget.model_account_move_budget
 msgid "Account Move Budget"
 msgstr "Budget comptable"
+
+#. module: project_budget
+#: model:ir.model,name:project_budget.model_account_move_budget_line
+msgid "Account Move Budget Line"
+msgstr "Ligne de budget comptable"
 
 #. module: project_budget
 #: model:ir.model,name:project_budget.model_account_move_budget_update_mixin
@@ -72,6 +72,7 @@ msgid "Amount"
 msgstr "Montant"
 
 #. module: project_budget
+#: model:ir.model,name:project_budget.model_account_analytic_account
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__analytic_account_id
 msgid "Analytic Account"
 msgstr "Compte analytique"
@@ -94,9 +95,10 @@ msgstr "Solde (qté)"
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__budget_id
+#: model:ir.model.fields,field_description:project_budget.field_project_project__budget_id
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_tree_simplified
 msgid "Budget"
-msgstr "Budget"
+msgstr ""
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_analytic_account__budget_project_ids
@@ -146,7 +148,7 @@ msgstr "Sociétés"
 #. module: project_budget
 #: model:ir.model,name:project_budget.model_res_config_settings
 msgid "Config Settings"
-msgstr "Configuration"
+msgstr "Paramètres de configuration"
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__credit
@@ -209,7 +211,7 @@ msgid "Line settings"
 msgstr "Paramètres de la ligne"
 
 #. module: project_budget
-#: model:ir.model.fields,field_description:project_budget.field_account_move_budget__project_id
+#: model:ir.model,name:project_budget.model_project_project model:ir.model.fields,field_description:project_budget.field_account_move_budget__project_id
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__project_id
 msgid "Project"
 msgstr "Projet"
@@ -250,7 +252,7 @@ msgstr "Séquence"
 #. module: project_budget
 #: model:ir.model.fields.selection,name:project_budget.selection__account_analytic_account__budget_type__service
 msgid "Service"
-msgstr "Service"
+msgstr ""
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_project_project__date_start
@@ -272,7 +274,7 @@ msgstr "Modèle (par défaut)"
 #: model:ir.model.fields,help:project_budget.field_res_company__analytic_budget_plan_id
 #: model:ir.model.fields,help:project_budget.field_res_config_settings__analytic_budget_plan_id
 msgid ""
-"This plan gathers analytic analytics on which budget can be defined per projects and expensed on Purchase Orders, Timesheets, etc. via analytic distribution "
+"This plan gathers analytic accounts on which budget can be defined per projects and expensed on Purchase Orders, Timesheets, etc. via analytic distribution "
 "or tasks."
 msgstr ""
 "Ce plan rassemble les comptes analytiques pour lesquels un budget peut être défini par projet et utilisé bons de commande, les feuilles de temps, etc. par le "
@@ -281,12 +283,12 @@ msgstr ""
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_tree_simplified
 msgid "Total"
-msgstr "Total"
+msgstr ""
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__type
 msgid "Type"
-msgstr "Type"
+msgstr ""
 
 #. module: project_budget
 #: model:ir.model.fields,field_description:project_budget.field_account_move_budget_line__standard_price
@@ -296,8 +298,8 @@ msgstr "Montant unitaire"
 
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.res_config_settings_view_form
-msgid "Use Analytic Account of this plan as budgets in all projects."
-msgstr "Utiliser les comptes analytiques de ce plan comme budget dans tous les projets."
+msgid "Use Analytic Accounts of this plan as budgets in all projects."
+msgstr "Utiliser les comptes analytiques de ce plan comme budgets sur tous les projets."
 
 #. module: project_budget
 #: model_terms:ir.ui.view,arch_db:project_budget.view_account_move_budget_line_form

@@ -22,7 +22,7 @@ class ResCompany(models.Model):
             # Fetch modified config or already created plan, if any
             budget_plan = (
                 self.env['ir.config_parameter'].with_company(company).sudo()
-                .get_param("project_budget_analytic_plan_id_%s" % company.id)
+                .get_param("project_budget_analytic_plan_id_%s" % company._origin.id)
             )
             company.analytic_budget_plan_id = int(budget_plan) if budget_plan else False
 
@@ -31,7 +31,7 @@ class ResCompany(models.Model):
                 company.analytic_budget_plan_id = (
                     self.env['account.analytic.plan'].with_company(company).create({
                         'name': _('Project Budgets'),
-                        'company_id': self.env.company.id,
+                        'company_id': company._origin.id,
                     })
                 )
 
