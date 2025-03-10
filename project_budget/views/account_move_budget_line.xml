@@ -18,7 +18,7 @@
                 <button type="object"
                     name="button_open_budget_line_form"
                     string="Details"
-                    icon="fa-bars"
+                    icon="fa-external-link"
                 />
             </field>
             <!-- Move analytic right after fiscal account -->
