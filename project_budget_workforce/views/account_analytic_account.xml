@@ -10,10 +10,10 @@
     </record>
 
     <!-- Form view of Budget Line: add date-range value -->
-    <record id="view_account_move_budget_line_form" model="ir.ui.view">
+    <record id="view_account_analytic_account_form" model="ir.ui.view">
         <field name="name">analytic.analytic.account.form.project_budget_workforce</field>
         <field name="model">analytic.analytic.account</field>
-        <field name="inherit_id" ref="analytic.view_account_move_budget_line_form" />
+        <field name="inherit_id" ref="analytic.view_account_analytic_account_form" />
 
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
