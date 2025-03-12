@@ -6,3 +6,4 @@ from . import mrp_workorder
 from . import mrp_productivity
 from . import stock_picking
 from . import stock_move
+from . import stock_valuation_layer
