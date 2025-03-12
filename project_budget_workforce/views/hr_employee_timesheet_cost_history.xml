@@ -24,6 +24,10 @@
         <field name="inherit_id" ref="hr_employee_cost_history.hr_employee_timesheet_cost_view_tree" />
         
         <field name="arch" type="xml">
+            <tree position="attributes">
+                <attribute name="create">0</attribute>
+            </tree>
+            
             <field name="department_id" position="before">
                 <button name="button_open_details"
                     type="object"
