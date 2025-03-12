@@ -16,3 +16,8 @@ class AccountMove(models.Model):
         for move in self:
             if not move.invoice_user_id:
                 move.invoice_user_id = self.env.user
+
+    def _post(self, soft=True):
+        move = super()._post(soft)
+        move.message_unsubscribe([move.partner_id.id])
+        return move

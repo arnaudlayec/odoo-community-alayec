@@ -6,7 +6,7 @@ class CommentWizard(models.TransientModel):
     _inherit = ['comment.wizard']
 
     def add_comment(self):
-        """ Send notification on chatter on validation """
+        """ Send notification in the chatter on validation """
         res = super().add_comment()
 
         record = self.env[self.res_model].browse(self.res_id)
