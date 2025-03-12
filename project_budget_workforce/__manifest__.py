@@ -21,5 +21,6 @@
     'data': [
         'views/account_move_budget_line.xml',
         'views/hr_employee_timesheet_cost_history.xml',
+        'views/account_analytic_account.xml',
     ],
 }

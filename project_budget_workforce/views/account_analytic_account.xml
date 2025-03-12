@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- Open cost history of a specific analytic account -->
+    <record id="account_move_analytic_cost_history_act_window" model="ir.actions.act_window">
+        <field name="name">Analytic Account's Cost History</field>
+        <field name="res_model">hr.employee.timesheet.cost.history</field>
+        <field name="view_mode">tree</field>
+        <field name="context">{'display_analytic': True}</field>
+        <field name="domain">[('analytic_account_id', '=', active_id)]</field>
+    </record>
+
+    <!-- Form view of Budget Line: add date-range value -->
+    <record id="view_account_move_budget_line_form" model="ir.ui.view">
+        <field name="name">analytic.analytic.account.form.project_budget_workforce</field>
+        <field name="model">analytic.analytic.account</field>
+        <field name="inherit_id" ref="analytic.view_account_move_budget_line_form" />
+
+        <field name="arch" type="xml">
+            <div name="button_box" position="inside">
+                <field name="timesheet_cost_history_ids" invisible="1" />
+                <button id="cost_history" 
+                    type="action"
+                    name="%(account_move_analytic_cost_history_act_window)d"
+                    class="oe_stat_button"
+                    icon="fa-clock-o"
+                    attrs="{'invisible': [('timesheet_cost_history_ids', '=', False)]}"
+                >
+                    <div class="o_field_statinfo">
+                        <span class="o_stat_text">Cost history</span>
+                    </div>
+                </button>
+            </div>
+        </field>
+    </record>
+</odoo>
