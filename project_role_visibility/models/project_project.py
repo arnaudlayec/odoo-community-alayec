@@ -17,7 +17,6 @@ class ProjectProject(models.Model):
             self = self.with_context(project_role_no_raise=True)
         
         projects = super(ProjectProject, self).copy(default)
-        print('projects', projects)
         projects._rebase_followers_from_assignments()
         return projects
     
