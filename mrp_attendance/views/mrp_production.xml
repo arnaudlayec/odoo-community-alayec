@@ -57,12 +57,15 @@
 
             <field name="production_real_duration" position="attributes">
                 <attribute name="optional">hide</attribute>
+                <attribute name="decoration-danger">production_real_duration &gt; production_duration_expected</attribute>
             </field>
             <field name="production_real_duration" position="after">
                 <field name="production_real_duration_hours"
                     attrs="{'invisible': [('production_real_duration_hours', '=', 0)]}"
-                    groups="mrp.group_mrp_routings" widget="float_time"
+                    groups="mrp.group_mrp_routings"
+                    widget="float_time"
                     optional="show"
+                    decoration-danger="production_real_duration_hours &gt; production_duration_hours_expected"
                 />
             </field>
         </field>
