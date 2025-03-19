@@ -7,13 +7,6 @@ from odoo.tools.misc import formatLang
 class AccountAnalyticAccount(models.Model):
     _inherit = ['account.analytic.account']
 
-    budget_line_ids = fields.One2many(
-        # for `project_task.py` (research by projects)
-        comodel_name='account.move.budget.line',
-        inverse_name='analytic_account_id',
-        string='Budget Lines'
-    )
-
     #===== Fields methods =====#
     def _get_timesheetable_types(self):
         return ['service']
