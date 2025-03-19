@@ -6,6 +6,7 @@ class StockValuationLayer(models.Model):
     _inherit = ['stock.valuation.layer']
 
     project_id = fields.Many2one(
+        comodel_name='project.project',
         compute='_compute_project_id',
         store=True,
         index=True,

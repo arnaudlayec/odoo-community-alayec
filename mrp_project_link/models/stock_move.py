@@ -6,7 +6,8 @@ class StockMove(models.Model):
     _inherit = ['stock.move']
 
     project_id = fields.Many2one(
-        compute='_compute_project_id'
+        comodel_name='project.project',
+        compute='_compute_project_id',
     )
 
     @api.depends(lambda self: self._get_fields_project_id())
