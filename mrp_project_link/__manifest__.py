@@ -14,7 +14,7 @@
 
     'depends': [
         'stock', 'stock_account', 'mrp', # Odoo CE
-        'project_favorite_switch', 'purchase_project_link', # other
+        'project_favorite_switch', # other
     ],
     'data': [
         # data
