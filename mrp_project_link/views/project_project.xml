@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <!-- Action to open project's workorders -->
-    <record id="action_open_work_order_project" model="ir.actions.act_window">
+    <!-- Action to open project's MOs -->
+    <record id="action_open_production_project" model="ir.actions.act_window">
         <field name="name">Manufacturing Orders</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">mrp.production</field>
@@ -10,7 +10,7 @@
         <field name="domain">[('project_id', '=', active_id)]</field>
     </record>
 
-    <!-- Project Form: add Smart-Button to WorkOrders -->
+    <!-- Project Form: add Smart-Button to MOs -->
     <record id="edit_project" model="ir.ui.view">
         <field name="name">project.project.form.mrp_link</field>
         <field name="model">project.project</field>
@@ -18,9 +18,9 @@
 
         <field name="arch" type="xml">
             <div name="button_box" position="inside">
-                <button id="workorder"
+                <button id="workcenter"
                     type="action"
-                    name="%(action_open_work_order_project)d"
+                    name="%(action_open_production_project)d"
                     class="oe_stat_button"
                     icon="fa-industry"
                     attrs="{'invisible': [('manufacturing_order_count', '=', 0)]}"
