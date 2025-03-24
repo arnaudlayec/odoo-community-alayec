@@ -24,6 +24,7 @@ class StockValuationLayer(models.Model):
                 if project_id:
                     svl.project_id = project_id
                     break
+            svl.project_id = False
     
     def _get_fields_project_id(self):
         return [

@@ -20,6 +20,7 @@ class StockMove(models.Model):
                 if project_id:
                     move.project_id = project_id
                     break
+            move.project_id = False
     
     def _get_fields_project_id(self):
         return [
