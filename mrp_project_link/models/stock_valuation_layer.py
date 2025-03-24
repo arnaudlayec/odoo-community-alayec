@@ -20,11 +20,9 @@ class StockValuationLayer(models.Model):
         ]
         for svl in self:
             for field in fields:
-                project_id = svl[field].project_id
-                if project_id:
-                    svl.project_id = project_id
+                svl.project_id = move[field].project_id
+                if svl.project_id:
                     break
-            svl.project_id = False
     
     def _get_fields_project_id(self):
         return [

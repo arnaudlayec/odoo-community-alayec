@@ -16,13 +16,14 @@ class StockMove(models.Model):
         fields = self._get_fields_project_id()
         for move in self:
             for field in fields:
-                project_id = move[field].project_id
-                if project_id:
-                    move.project_id = project_id
+                move.project_id = move[field].project_id
+                if move.project_id:
                     break
-            move.project_id = False
     
     def _get_fields_project_id(self):
+        """ Fields (in order) in which to lookup `project_id`
+            Useful when `project_id` may come from different origins
+        """
         return [
             'picking_id',
             'created_production_id',
