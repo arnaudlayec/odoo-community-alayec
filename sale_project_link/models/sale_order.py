@@ -55,7 +55,7 @@ class SaleOrder(models.Model):
             :option should_erase: if we should keep Sale Order's vals or erase them with Project's vals
             :option vals: must be given if `should_erase=False`
         """
-        project_id = project_id or self.project_id
+        project_id = (project_id or self.project_id)._origin
         return {
             field: (project_id[field].id if hasattr(project_id[field], '_name') else project_id[field])
             for field in self._get_fields_from_project()
@@ -73,6 +73,10 @@ class SaleOrder(models.Model):
         project_analytics = self.env.company.analytic_plan_id.account_ids
 
         for sale_order in self:
+            # do nothing if project did not change
+            if sale_order.project_id == sale_order.project_id._origin:
+                continue
+            
             # SO fields
             vals = sale_order._get_vals_from_project()
             if vals:
