@@ -59,7 +59,7 @@ class ProjectWizard(models.TransientModel):
     
     
     def _automate_context_and_domain(self, project_id, context_keys, action_arg):
-        """ When project is known, add relevant keys
+        """ When project is known, add relevant keys (project's & possibly others)
             in `context` and part in `domain`
 
             note: both action_dict['context'] and action_dict['domain'] can be str or python object
