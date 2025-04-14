@@ -11,7 +11,9 @@ class ProjectProject(models.Model):
         return [
             ('company_id', '=', self.env.company.id),
             ('stage_id.fold', '=', False)
-        ] + ([('favorite_user_ids', '=', self.env.uid)] if fav_only else [])
+        ] + (
+            [('favorite_user_ids', '=', self.env.uid)] if fav_only else []
+        )
 
 
     # Refresh `res_users.favorite_project_id`
@@ -22,6 +24,11 @@ class ProjectProject(models.Model):
 
     def toggle_favorite(self):
         res = super().toggle_favorite()
+        self.env.user._refresh_favorite_project_id()
+        return res
+    
+    def toggle_active(self):
+        res = super().toggle_active()
         self.env.user._refresh_favorite_project_id()
         return res
     
