@@ -29,9 +29,8 @@ class ProjectProject(models.Model):
     
     def toggle_active(self):
         res = super().toggle_active()
-        self.env.user._refresh_favorite_project_id()
+        self.favorite_user_ids._refresh_favorite_project_id()
         return res
-    
     
     # Add/remove a project to users' favorite when
     # users are added/removed to/from Chatter followers list
