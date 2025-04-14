@@ -15,8 +15,20 @@ class ProjectProject(models.Model):
             [('favorite_user_ids', '=', self.env.uid)] if fav_only else []
         )
 
+    #===== Fields =====
+    is_favorite = fields.Boolean(search='_search_is_favorite')
 
-    # Refresh `res_users.favorite_project_id`
+    #===== Compute: Refresh `res_users.favorite_project_id` ======
+    def _search_is_favorite(self, operator, value):
+        if operator == '==' and value or operator == '!=' and not value:
+            new_operator = 'in'
+        else:
+            new_operator = 'not in'
+        
+        domain = [('favorite_user_ids', '=', self.env.uid)]
+        projects = self.env['project.project'].search(domain)
+        return [('id', new_operator, projects.ids)]
+
     def _inverse_is_favorite(self):
         res = super()._inverse_is_favorite()
         self.env.user._refresh_favorite_project_id()
@@ -32,6 +44,7 @@ class ProjectProject(models.Model):
         self.favorite_user_ids._refresh_favorite_project_id()
         return res
     
+    #===== Logic =====#
     # Add/remove a project to users' favorite when
     # users are added/removed to/from Chatter followers list
     # (very useful in combination with `project_role_visibility`)
