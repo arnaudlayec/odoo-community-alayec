@@ -42,7 +42,7 @@ export class SystrayFavProjects extends Component {
         onWillStart(async () => {
             this.projects = await this.orm.searchRead(
                 "project.project",
-                [["stage_id.fold", "=", false]],
+                ['|', ["stage_id.fold", "=", false], ["is_favorite", "=", true]],
                 ["display_name", "is_favorite"]
             );
         });
