@@ -51,7 +51,6 @@ export class SystrayFavProjects extends Component {
 SystrayFavProjects.template = "project.SystrayFavProjects";
 SystrayFavProjects.components = { SystrayFavProjectsItem, Dropdown };
 
-
 export const systrayFavProjects = {
     Component: SystrayFavProjects
 };
