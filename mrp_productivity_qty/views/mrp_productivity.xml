@@ -22,10 +22,10 @@
                 <field name="productivity_tracking" invisible="1" />
 
                 <field name="qty_production" sum="1" attrs="{
-                    'column_invisible': [('productivity_tracking', '=', 'global')],
+                    'column_invisible': [('productivity_tracking', 'in', ['global', 'none'])],
                 }" />
                 <field name="product_uom_id" nolabel="1" options="{'no_open': 1}" attrs="{
-                    'column_invisible': [('productivity_tracking', '=', 'global')]
+                    'column_invisible': [('productivity_tracking', 'in', ['global', 'none'])]
                 }" />
                 <field name="unit_time" optional="show" widget="float_time" />
             </field>
@@ -48,13 +48,13 @@
             <field name="duration" position="after">
                 <field name="productivity_tracking" invisible="1" />
 
-                <label for="qty_production" attrs="{'invisible': [('productivity_tracking', '=', 'global')]}" />
-                <div attrs="{'invisible': [('productivity_tracking', '=', 'global')]}">
+                <label for="qty_production" attrs="{'invisible': [('productivity_tracking', 'in', ['global', 'none'])]}" />
+                <div attrs="{'invisible': [('productivity_tracking', 'in', ['global', 'none'])]}">
                     <field name="qty_production" class="oe_inline" attrs="{
-                        'invisible': [('productivity_tracking', '=', 'global')],
+                        'invisible': [('productivity_tracking', 'in', ['global', 'none'])],
                     }" />
                     <field name="product_uom_id" class="oe_inline ms-2" options="{'no_open': 1}"
-                        attrs="{'invisible': [('productivity_tracking', '=', 'global')]}" />
+                        attrs="{'invisible': [('productivity_tracking', 'in', ['global', 'none'])]}" />
                 </div>
             </field>
 
@@ -64,7 +64,7 @@
                     Workorder indicators
                 </div>
 
-                <p name="progress" class="mb-0" attrs="{'invisible': [('productivity_tracking', '=', 'global')]}">
+                <p name="progress" class="mb-0" attrs="{'invisible': [('productivity_tracking', 'in', ['global', 'none'])]}">
                     Produced quantities:
                     <strong>
                         <field name="wo_qty_produced" class="oe_inline" />
@@ -78,7 +78,7 @@
                     remaining.
                 </p>
 
-                <p name="unit_time" class="mb-0" attrs="{'invisible': [('productivity_tracking', '=', 'global')]}">
+                <p name="unit_time" class="mb-0" attrs="{'invisible': [('productivity_tracking', 'in', ['global', 'none'])]}">
                     For a planned unit time of
                     <strong>
                         <field name="wo_unit_time_avg" widget="float_time" class="oe_inline" /> (h:min)
@@ -97,7 +97,7 @@
                 <!-- Gain & perf -->
                 <p name="gain" attrs="{'invisible': ['|',
                     ('wo_gain', '=', 0),
-                    ('productivity_tracking', '=', 'global')]}
+                    ('productivity_tracking', 'in', ['global', 'none'])]}
                 ">
                     The
                     <span attrs="{'invisible': [('wo_gain', '&lt;', 0)]}">gain</span>

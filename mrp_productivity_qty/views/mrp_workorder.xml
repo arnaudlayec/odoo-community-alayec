@@ -11,25 +11,25 @@
                 <field name="productivity_tracking" />
                 <field name="qty_production" sum="1" attrs="{
                     'required':  [('productivity_tracking', '=', 'unit')],
-                    'invisible': [('productivity_tracking', '=', 'global')]
+                    'invisible': [('productivity_tracking', 'in', ['global', 'none'])]
                 }"/>
                 <field name="product_uom_id" options="{'no_open': 1}" attrs="{
                     'required':  [('productivity_tracking', '=', 'unit')],
-                    'invisible': [('productivity_tracking', '=', 'global')]
+                    'invisible': [('productivity_tracking', 'in', ['global', 'none'])]
                 }"/>
             </field>
 
-            <!-- Hide `qty_remaining` and `qty_produced` if trackign is `global` -->
+            <!-- Hide `qty_remaining` and `qty_produced` if tracking is `global` -->
             <field name="qty_remaining" position="attributes">
                 <attribute name="attrs">{
                     'column_invisible': [('parent.state', '=', 'done')],
-                    'invisible': [('productivity_tracking', '=', 'global')]
+                    'invisible': [('productivity_tracking', 'in', ['global', 'none'])]
                 }</attribute>
             </field>
             <field name="qty_produced" position="attributes">
                 <attribute name="attrs">{
                     'column_invisible': [('parent.state', '=', 'done')],
-                    'invisible': [('productivity_tracking', '=', 'global')]
+                    'invisible': [('productivity_tracking', 'in', ['global', 'none'])]
                 }</attribute>
             </field>
 
@@ -74,7 +74,7 @@
                 </div>
                 
                 <!-- KPIs for qty tracking -->
-                <group name="kpi_qty" attrs="{'invisible': [('productivity_tracking', '=', 'global')]}">
+                <group name="kpi_qty" attrs="{'invisible': [('productivity_tracking', 'in', ['global', 'none'])]}">
                     <group name="left">
                         <!-- Quantity: produced / total (% progress_qty) -->
                         <label for="qty_produced" string="Progress (qties)" />
@@ -170,15 +170,15 @@
 
                 <field name="qty_production" sum="1" attrs="{
                     'required': [('productivity_tracking', '=', 'unit')],
-                    'column_invisible': [('productivity_tracking', '=', 'global')],
+                    'column_invisible': [('productivity_tracking', 'in', ['global', 'none'])],
                 }" />
                 <field name="product_uom_id" nolabel="1" options="{'no_open': 1}"
-                    attrs="{'column_invisible': [('productivity_tracking', '=', 'global')]}"
+                    attrs="{'column_invisible': [('productivity_tracking', 'in', ['global', 'none'])]}"
                 />
                 <field name="unit_time" widget="float_time"
                     decoration-success="unit_time &lt; parent.unit_time_avg"
                     decoration-danger="unit_time &gt; parent.unit_time_avg"
-                    attrs="{'column_invisible': [('productivity_tracking', '=', 'global')]}"
+                    attrs="{'column_invisible': [('productivity_tracking', 'in', ['global', 'none'])]}"
                 />
                 <field name="gain" sum="1" optional="show"
                     widget="float_time"

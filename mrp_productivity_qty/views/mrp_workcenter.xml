@@ -10,7 +10,7 @@
                 <field name="productivity_tracking" />
                 <field name="product_uom_id" attrs="{
                     'required':  [('productivity_tracking', '=', 'unit')],
-                    'invisible': [('productivity_tracking', '=', 'global')]
+                    'invisible': [('productivity_tracking', 'in', ['global', 'none'])]
                 }" />
             </label>
         </field>
