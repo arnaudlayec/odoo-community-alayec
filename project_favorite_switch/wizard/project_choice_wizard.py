@@ -51,7 +51,7 @@ class ProjectWizard(models.TransientModel):
                 'type': 'ir.actions.act_window',
                 'res_model': 'project.choice.wizard',
                 'view_mode': 'form',
-                'name': 'Choose a project',
+                'name': _('Choose a project'),
                 'context': self._context | {'action_arg': action_arg, 'context_keys': context_keys},
                 'target': 'new'
             }
