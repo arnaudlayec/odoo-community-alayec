@@ -28,8 +28,10 @@ class StockPicking(models.Model):
         required=False
     )
     mrp_production_ids = fields.One2many(
-        related='group_id.mrp_production_ids',
+        comodel_name='mrp.production',
         string='Manufacturing Orders',
+        compute='_compute_mrp_production_ids',
+        search='_search_mrp_production_ids',
     )
 
     #===== Compute =====#
@@ -39,3 +41,11 @@ class StockPicking(models.Model):
         for picking in self:
             if picking.mrp_production_ids:
                 picking.project_id = picking._default_project_id()
+
+    @api.depends('group_id', 'group_id.mrp_production_ids')
+    def _compute_mrp_production_ids(self):
+        for picking in self:
+            picking.mrp_production_ids = picking.group_id.mrp_production_ids
+
+    def _search_mrp_production_ids(self, operator, value):
+        return [('group_id.mrp_production_ids', operator, value)]
