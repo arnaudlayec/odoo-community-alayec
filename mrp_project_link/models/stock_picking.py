@@ -28,7 +28,8 @@ class StockPicking(models.Model):
         required=False
     )
     mrp_production_ids = fields.One2many(
-        related='group_id.mrp_production_ids'
+        related='group_id.mrp_production_ids',
+        string='Manufacturing Orders',
     )
 
     #===== Compute =====#
