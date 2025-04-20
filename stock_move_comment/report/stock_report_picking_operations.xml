@@ -7,7 +7,7 @@
 
         <xpath expr="//td[@t-if='has_barcode']" position="after">
             <td>
-                <span t-field="ml.comment"/>
+                <span t-field="ml.comment" />
             </td>
         </xpath>
     </template>

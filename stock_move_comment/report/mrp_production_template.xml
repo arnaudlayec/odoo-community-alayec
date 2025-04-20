@@ -7,7 +7,7 @@
 
         <tbody position="inside">
             <td>
-                <span t-field="ml.comment"/>
+                <span t-field="raw_line.comment"/>
             </td>
         </tbody>
     </template>
