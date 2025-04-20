@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="report_mrp_production_components" inherit_id="mrp.report_mrp_production_components">
-        <thead position="inside">
+        <xpath expr="//thead/tr" position="inside">
             <th name="th_comment">Comment</th>
-        </thead>
+        </xpath>
 
-        <tbody position="inside">
+        <xpath expr="//tbody/tr" position="inside">
             <td>
                 <span t-field="raw_line.comment"/>
             </td>
-        </tbody>
+        </xpath>
     </template>
 </odoo>
