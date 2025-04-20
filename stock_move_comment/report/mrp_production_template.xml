@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_mrp_production_components" inherit_id="mrp.report_mrp_production_components">
+        <thead position="inside">
+            <th name="th_comment">Comment</th>
+        </thead>
+
+        <tbody position="inside">
+            <td>
+                <span t-field="ml.comment"/>
+            </td>
+        </tbody>
+    </template>
+</odoo>

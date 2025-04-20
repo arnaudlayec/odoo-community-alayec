@@ -9,7 +9,7 @@
         <field name="arch" type="xml">
             <!-- Components: `comment` field -->
             <button name="action_show_details" position="before">
-                <field name="comment" />
+                <field name="comment" attrs="{'readonly': [('state', '!=', 'draft')]}" />
             </button>
         </field>
     </record>

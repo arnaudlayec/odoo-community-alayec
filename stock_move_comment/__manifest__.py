@@ -12,10 +12,14 @@
     'installable': True,
     'auto_install': False,
     'depends': [
-        'product',
+        'mrp',
     ],
     'data': [
         # views
-        'views/sale_order.xml'
+        'views/stock_picking.xml',
+        'views/mrp_production.xml',
+        # report
+        'report/stock_report_picking_operations.xml',
+        'report/mrp_production_template.xml',
     ],
 }

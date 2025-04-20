@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="report_picking" inherit_id="stock.report_picking">
+        <th name="th_barcode" position="after">
+            <th name="th_comment">Comment</th>
+        </th>
+
+        <xpath expr="//td[@t-if='has_barcode']" position="after">
+            <td>
+                <span t-field="ml.comment"/>
+            </td>
+        </xpath>
+    </template>
+</odoo>
