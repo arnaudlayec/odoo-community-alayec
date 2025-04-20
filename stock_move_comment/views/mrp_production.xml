@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- MO Form -->
+    <record id="mrp_production_form_view" model="ir.ui.view">
+        <field name="name">mrp.production.form.stock_move_comment</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        
+        <field name="arch" type="xml">
+            <!-- Components: `comment` field -->
+            <button name="action_show_details" position="before">
+                <field name="comment" />
+            </button>
+        </field>
+    </record>
+</odoo>
