@@ -21,7 +21,6 @@ export class Many2ManyTagsFieldWorkOrder extends Many2ManyTagsField {
     }
 
     onBadgeClick(ev, record) {
-        console.log('record', record)
         this.actionService.doActionButton({
             type: 'object',
             resModel: 'mrp.workorder',
