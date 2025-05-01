@@ -17,10 +17,12 @@ class TestDepartmentCostHistory(HrEmployeeCostHistory):
         super().setUpClass()
         
         # Department
-        cls.department = cls.env['hr.department'].create({
+        cls.Department = cls.env['hr.department']
+        cls.department = cls.Department.create({
             'name': 'Test Department 01',
             'member_ids': [Command.set(cls.employee.ids)]
         })
+        cls.department2 = cls.Department.create({'name': 'Test Department 02'})
 
         # Costs history
         cls.Wizard = cls.env["hr.employee.timesheet.cost.wizard"]
@@ -77,3 +79,20 @@ class TestDepartmentCostHistory(HrEmployeeCostHistory):
             date.today() - relativedelta(days=5)
         )
         self.assertEqual(self.employee.hourly_cost, department_cost)
+
+    def test_05_employee_department_change(self):
+        """ Test change of employee's department
+            => employee's cost & history should align with department's
+        """
+        # Employee: set cost in future
+        employee_cost, date_from = 12.0, date.today() - relativedelta(days=10)
+        self.new_timesheet_cost_wizard(self.employee, employee_cost, date_from)
+        
+        # Employee's department: change it
+        self.employee.department_id = self.department2
+
+        # [Test] Employee's hourly_cost aligned to new department & no history in ftuure
+        self.assertEqual(self.employee.hourly_cost, self.department2.department_cost)
+        self.assertFalse(self.employee.timesheet_cost_history_ids.filtered_domain(
+            [("date", ">=", date.today())]
+        ))
