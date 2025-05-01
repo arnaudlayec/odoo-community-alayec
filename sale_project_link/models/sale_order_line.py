@@ -17,7 +17,7 @@ class SaleOrderLine(models.Model):
 
     #====== Constrain ======#
     @api.constrains('analytic_distribution')
-    def _constrain_analytic_to_project(self):
+    def _constrain_analytic_project(self):
         """ Prevent setting different project analytic than PO's project """
         project_plan = self.env.company.analytic_plan_id
         for line in self:
