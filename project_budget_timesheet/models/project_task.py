@@ -25,7 +25,6 @@ class Task(models.Model):
 
         return analytics if not project_id_ else analytics.filtered_domain(domain)
     
-    #===== Fields methods =====#
     @api.model
     def default_get(self, fields):
         """ By default, Task analytic follow kanban column (context) """
@@ -50,7 +49,8 @@ class Task(models.Model):
     available_budget = fields.Float(
         string='Available Budget',
         compute='_compute_available_budget',
-        help="[Project budget] - [Budget reserved in project's tasks, including this one]"
+        help="[Project budget] - [Planned hours of project's tasks, including this one]. "
+             "Can be negative, in contrary of real budget reservation in below table."
     )
     
     @api.depends(
@@ -80,12 +80,12 @@ class Task(models.Model):
         for task in self:
             key = (task.project_id.id, task.analytic_account_id.id)
             project_budget = mapped_budget.get(key, 0.0)
-            siblings_budget = sum([
+            siblings_planned_hours = sum([
                 v for k, v in mapped_planned_hours.get(key, {}).items()
                 if k != task.id
             ])
             
-            task.available_budget = project_budget - siblings_budget - (task.planned_hours or 0.0)
+            task.available_budget = project_budget - siblings_planned_hours - (task.planned_hours or 0.0)
 
             # if task.available_budget < 0:
             #     raise exceptions.UserError(_(

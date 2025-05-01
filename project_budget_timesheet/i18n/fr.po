@@ -72,7 +72,9 @@ msgstr "Feuilles de temps ?"
 #. module: project_budget_timesheet
 #: model:ir.model.fields,help:project_budget_timesheet.field_project_task__available_budget
 msgid ""
-"[Project budget] - [Budget reserved in project's tasks, including this one]"
+"[Project budget] - [Planned hours in project's tasks, including this one]. "
+"Can be negative, in contrary of real budget reservation in below table."
 msgstr ""
-"[Budget du projet] - [Budget réservé dans les tâches du projet, y compris "
-"celle-ci]"
+"[Budget du projet] - [Heures allouées dans les tâches du projet, y compris "
+"celle-ci]. Peut être négatif, à contrario de la réelle réservation de budget "
+"dans le tableau en contrebas."
