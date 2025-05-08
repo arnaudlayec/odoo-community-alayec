@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- PO Form -->
+    <record id="purchase_order_form" model="ir.ui.view">
+        <field name="name">purchase.order.multiple_date_arrival</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_form" />
+        
+        <field name="arch" type="xml">
+            <!-- AFter `draft` state, replaced `date_planned` by `date_arrival_ids` -->
+            <label for="date_planned" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', '!=', 'draft')]}</attribute>
+            </label>
+            <div name="date_planned_div" position="attributes">
+                <attribute name="attrs">{'invisible': [('state', '!=', 'draft')]}</attribute>
+            </div>
+            <div name="date_planned_div" position="after">
+                <label for="date_arrival_ids" attrs="{'invisible': [('state', '=', 'draft')]}"
+                />
+                <div name="date_arrival_div"
+                    attrs="{'invisible': [('state', '=', 'draft')]}"
+                >
+                    <div class="o_row" attrs="{'invisible': [('date_arrival_ids', '=', [])]}">
+                        <field name="date_arrival_ids" widget="many2many_tags" options="{'create': False}" />
+                    </div>
+                    <div class="o_row">
+                        <button name="%(open_date_arrival_form)d" type="action"
+                            icon="fa-plus"
+                            string="New"
+                            class="oe_highlight"
+                            attrs="{'invisible': ['|', ('id', '=', False), ('state', '=', 'draft')]}"
+                        />
+
+                        <field name="date_arrival_state" nolabel="1" widget="badge"
+                            decoration-danger ="date_arrival_state == 'none'"
+                            decoration-warning="date_arrival_state == 'partial'"
+                            decoration-success="date_arrival_state == 'ok'"
+                        />
+                    </div>
+                </div>
+            </div>
+
+            <notebook position="before">
+                <label for="date_arrival_attachments" colspan="2" />
+                <field name="date_arrival_attachments" widget="many2many_binary" nolabel="1" colspan="2" readonly="1" />
+            </notebook>
+        </field>
+    </record>
+
+    <!-- PO tree -->
+    <record id="purchase_order_view_tree" model="ir.ui.view">
+        <field name="name">purchase.order.view.tree.multiple_date_arrival</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_tree" />
+        
+        <field name="arch" type="xml">
+            <!-- Add `date_arrival_ids` & `date_arrival_state` -->
+            <field name="date_approve" position="after">
+                <field name="date_arrival_ids" widget="many2many_tags" optional="show" />
+                <field name="date_arrival_state" widget="badge" optional="show"
+                    decoration-danger ="date_arrival_state == 'none'"
+                    decoration-warning="date_arrival_state == 'partial'"
+                    decoration-success="date_arrival_state == 'ok'"
+                />
+            </field>
+        </field>
+    </record>
+
+    <!-- PO search -->
+    <record id="purchase_order_view_search" model="ir.ui.view">
+        <field name="name">purchase.order.select.multiple_date_arrival</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase.purchase_order_view_search" />
+
+        <field name="arch" type="xml">
+            <!-- Add filtering possibilities by `date_arrival_state` -->
+            <filter name="unconfirmed" position="replace">
+                <filter name="unconfirmed" string="Not Acknowledged"       domain="[('date_arrival_state', '=', 'none'),    ('state', '=', 'purchase')]" />
+                <filter name="partial"     string="Partially acknowledged" domain="[('date_arrival_state', '=', 'partial'), ('state', '=', 'purchase')]" />
+                <filter name="ok"          string="Acknowledged"           domain="[('date_arrival_state', '=', 'ok'),      ('state', '=', 'purchase')]" />
+                <separator />
+            </filter>
+        </field>
+    </record>
+</odoo>

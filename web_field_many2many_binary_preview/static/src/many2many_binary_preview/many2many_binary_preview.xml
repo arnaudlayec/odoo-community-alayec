@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-inherit="web.Many2ManyBinaryField.attachment_preview" t-inherit-mode="extension" owl="1">
+        <xpath expr="(//a[@t-att-href])[1]" position="attributes">
+            <attribute name="target">_blank</attribute>
+            <attribute name="download" />
+        </a>
+        <xpath expr="(//a[@t-att-href])[2]" position="attributes">
+            <attribute name="target">_blank</attribute>
+            <attribute name="download" />
+        </a>
+        <xpath expr="(//a[@t-att-href])[3]" position="attributes">
+            <attribute name="target">_blank</attribute>
+            <attribute name="download" />
+        </a>
+    </t>
+
+</templates>
