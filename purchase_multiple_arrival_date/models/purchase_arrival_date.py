@@ -52,6 +52,11 @@ class PurchaseArrivalDate(models.Model):
         inverse_name='date_arrival_id',
     )
 
+    #===== CRUD =====#
+    def unlink(self):
+        self.order_line.date_arrival_confirmed = False
+        return super().unlink()
+
     #===== Compute =====#
     @api.depends('filename')
     def _compute_attachment_id(self):

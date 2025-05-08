@@ -8,7 +8,7 @@ class PurchaseOrderLine(models.Model):
     date_arrival_id = fields.Many2one(
         comodel_name='purchase.arrival.date',
         string='Confirmed Arrival date',
-        ondelete='set null'
+        ondelete='set null',
     )
     date_arrival_confirmed = fields.Boolean(
         string='Confirmed Arrival',
@@ -30,5 +30,8 @@ class PurchaseOrderLine(models.Model):
     
     @api.depends('date_arrival_id')
     def _compute_date_arrival_confirmed(self):
+        print('===_compute_date_arrival_confirmed===')
         for line in self:
+            print('line', line)
+            print('line.date_arrival_id', line.date_arrival_id)
             line.date_arrival_confirmed = bool(line.date_arrival_id)

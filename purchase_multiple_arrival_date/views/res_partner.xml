@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_partner_property_form" model="ir.ui.view">
+        <field name="name">res.partner.purchase.property.form.inherit.purchase_multiple_arrival_date</field>
+        <field name="model">res.partner</field>
+        <field name="inherit_id" ref="purchase.view_partner_property_form"/>
+        
+        <field name="arch" type="xml">
+            <div name="receipt_reminder" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </div>
+        </field>
+    </record>
+
+</odoo>

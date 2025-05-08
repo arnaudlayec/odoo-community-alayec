@@ -17,5 +17,6 @@
         # views
         'views/purchase_arrival_date.xml',
         'views/purchase_order.xml',
+        'views/res_partner.xml',
     ],
 }

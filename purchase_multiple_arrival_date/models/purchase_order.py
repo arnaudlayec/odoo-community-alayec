@@ -5,6 +5,9 @@ from odoo import models, fields, api, Command
 class PurchaseOrder(models.Model):
     _inherit = ['purchase.order']
 
+    date_planned = fields.Datetime(
+        string='Requested Arrival',
+    )
     date_arrival_ids = fields.One2many(
         comodel_name='purchase.arrival.date',
         inverse_name='order_id',
@@ -75,3 +78,8 @@ class PurchaseOrder(models.Model):
                 state = 'ok'
             
             order.date_arrival_state = state
+
+    #===== Button =====#
+    def send_reminder(self):
+        template = self.env.ref('purchase.email_template_edi_purchase_reminder', raise_if_not_found=False)
+        return self._send_reminder_open_composer(template.id)

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-05-08 11:32+0000\n"
-"PO-Revision-Date: 2025-05-08 13:38+0200\n"
+"POT-Creation-Date: 2025-05-08 12:13+0000\n"
+"PO-Revision-Date: 2025-05-08 14:17+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -19,13 +19,13 @@ msgstr ""
 
 #. module: purchase_multiple_arrival_date
 #: model_terms:ir.ui.view,arch_db:purchase_multiple_arrival_date.purchase_order_view_search
-msgid "Acknowledged"
-msgstr "Confirmé"
+msgid "All Acknowledged"
+msgstr "Entièrement confirmée"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields.selection,name:purchase_multiple_arrival_date.selection__purchase_order__date_arrival_state__ok
 msgid "All acknowledged"
-msgstr "Confirmé"
+msgstr "Entièrement confirmée"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__date_arrival
@@ -55,23 +55,22 @@ msgstr "Commentaire"
 #. module: purchase_multiple_arrival_date
 #: model:ir.actions.act_window,name:purchase_multiple_arrival_date.open_date_arrival_form
 msgid "Confirm an arrival date of a Purchase Order"
-msgstr ""
-"Enregistrer un accusé de réception d'une commande fournisseur"
+msgstr "Enregistrer un accusé de réception d'une commande fournisseur"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_order_line__date_arrival_confirmed
 msgid "Confirmed Arrival"
-msgstr "Réception confirmée"
+msgstr "Arrivée confirmée"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_order_line__date_arrival_id
 msgid "Confirmed Arrival date"
-msgstr "Date de réception "
+msgstr "Date de réception confirmée"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_order__date_arrival_ids
 msgid "Confirmed arrivals"
-msgstr "Réceptions confirmées"
+msgstr "Arrivées confirmées"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__create_uid
@@ -82,6 +81,15 @@ msgstr "Créé par"
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__create_date
 msgid "Created on"
 msgstr "Créé le"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,help:purchase_multiple_arrival_date.field_purchase_order__date_planned
+msgid ""
+"Delivery date promised by vendor. This date is used to determine expected "
+"arrival of products."
+msgstr ""
+"Date de livraison promise par le fournisseur. Cette date est utilisée pour "
+"déterminer la date de réception prévue des produits."
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__display_name
@@ -150,8 +158,8 @@ msgid ""
 "Products on which the Arrival Date will apply. Pre-filled with yet "
 "unconfirmed products."
 msgstr ""
-"Produits concernés par cette date de réception. Pré-rempli avec "
-"les produits dont la date de réception est encore non-confirmée."
+"Produits concernés par cette date de réception. Pré-rempli avec les "
+"produits dont la date de réception est encore non-confirmée."
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model,name:purchase_multiple_arrival_date.model_purchase_arrival_date
@@ -168,3 +176,13 @@ msgstr "Commande fournisseur"
 #: model:ir.model,name:purchase_multiple_arrival_date.model_purchase_order_line
 msgid "Purchase Order Line"
 msgstr "Ligne de commande d'achat"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_order__date_planned
+msgid "Requested Arrival"
+msgstr "Arrivée demandée"
+
+#. module: purchase_multiple_arrival_date
+#: model_terms:ir.ui.view,arch_db:purchase_multiple_arrival_date.purchase_order_form
+msgid "Send reminder"
+msgstr "Envoyer une relance"
