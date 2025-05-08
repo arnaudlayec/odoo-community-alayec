@@ -5,8 +5,11 @@ from odoo import models, fields, api, Command
 class PurchaseOrder(models.Model):
     _inherit = ['purchase.order']
 
-    date_planned = fields.Datetime(
+    date_planned_requested = fields.Date(
+        # copy of original `date_planned` at creation only (to keep the info)
         string='Requested Arrival',
+        compute='_compute_date_planned_requested',
+        store=True,
     )
     date_arrival_ids = fields.One2many(
         comodel_name='purchase.arrival.date',
@@ -30,6 +33,7 @@ class PurchaseOrder(models.Model):
         # inverse='_inverse_date_arrival_attachments',
     )
 
+
     #===== Compute =====#
     @api.depends('date_arrival_ids')
     def _compute_date_arrival_attachments(self):
@@ -38,6 +42,12 @@ class PurchaseOrder(models.Model):
         for order in self:
             attachment_ids_ = mapped_data.get(order.id, [])
             order.date_arrival_attachments = [Command.set(attachment_ids_)]
+    
+    @api.depends('date_planned')
+    def _compute_date_planned_requested(self):
+        for order in self:
+            if order.state in ['draft', 'cancel']:
+                order.date_planned_requested = order.date_planned
     
     # def _inverse_date_arrival_attachments(self):
     #     """ Allow attachment removal, and cascade deletion

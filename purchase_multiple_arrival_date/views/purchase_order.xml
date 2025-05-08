@@ -8,14 +8,31 @@
         
         <field name="arch" type="xml">
 
-            <!-- After `draft` state, replaced `date_planned` by `date_arrival_ids` -->
-            <!-- <label for="date_planned" position="attributes">
+            <!-- After `draft` state, replaced `date_planned`
+                by `date_planned_requested` and `date_arrival_ids`
+            -->
+            <label for="date_planned" position="attributes">
                 <attribute name="attrs">{'invisible': [('state', '!=', 'draft')]}</attribute>
             </label>
             <div name="date_planned_div" position="attributes">
                 <attribute name="attrs">{'invisible': [('state', '!=', 'draft')]}</attribute>
-            </div> -->
+            </div>
+            
+
             <div name="date_planned_div" position="after">
+                <!-- date_planned_requested -->
+                <label for="date_planned_requested"    attrs="{'invisible': [('state', '=', 'draft')]}" />
+                <div name="date_planned_requested_div" attrs="{'invisible': [('state', '=', 'draft')]}">
+                    <field name="date_planned_requested" class="oe_inline" />
+                    <button name="send_reminder" type="object"
+                        groups="purchase.group_send_reminder"
+                        string="Send reminder" icon="fa-envelope-o"
+                        attrs="{'invisible': [('date_arrival_state', '=', 'ok')]}"
+                        class="btn btn-secondary btn-sm ms-2"
+                    />
+                </div>
+
+                <!-- date_arrival_ids -->
                 <label for="date_arrival_ids" attrs="{'invisible': [('state', '=', 'draft')]}"
                 />
                 <div name="date_arrival_div"
@@ -37,13 +54,6 @@
                             decoration-danger ="date_arrival_state == 'none'"
                             decoration-warning="date_arrival_state == 'partial'"
                             decoration-success="date_arrival_state == 'ok'"
-                        />
-                    </div>
-                    <div class="o_row" name="reminder_button" groups="purchase.group_send_reminder"
-                        attrs="{'invisible': [('date_arrival_state', '=', 'ok')]}"
-                    >
-                        <button name="send_reminder" type="object"
-                            string="Send reminder" icon="fa-envelope-o"
                         />
                     </div>
                 </div>
