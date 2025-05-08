@@ -1,0 +1,170 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* purchase_multiple_arrival_date
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-08 11:32+0000\n"
+"PO-Revision-Date: 2025-05-08 13:38+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.6\n"
+
+#. module: purchase_multiple_arrival_date
+#: model_terms:ir.ui.view,arch_db:purchase_multiple_arrival_date.purchase_order_view_search
+msgid "Acknowledged"
+msgstr "Confirmé"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields.selection,name:purchase_multiple_arrival_date.selection__purchase_order__date_arrival_state__ok
+msgid "All acknowledged"
+msgstr "Confirmé"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__date_arrival
+msgid "Arrival Date"
+msgstr "Date de réception"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_order__date_arrival_state
+msgid "Arrival confirmation"
+msgstr "Accusés de réception"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__attachment_id
+msgid "Attachment"
+msgstr "Pièce-jointe"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_order__date_arrival_attachments
+msgid "Attachments of Expected arrivals"
+msgstr "Accusés de réception"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__comment
+msgid "Comment"
+msgstr "Commentaire"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.actions.act_window,name:purchase_multiple_arrival_date.open_date_arrival_form
+msgid "Confirm an arrival date of a Purchase Order"
+msgstr ""
+"Enregistrer un accusé de réception d'une commande fournisseur"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_order_line__date_arrival_confirmed
+msgid "Confirmed Arrival"
+msgstr "Réception confirmée"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_order_line__date_arrival_id
+msgid "Confirmed Arrival date"
+msgstr "Date de réception "
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_order__date_arrival_ids
+msgid "Confirmed arrivals"
+msgstr "Réceptions confirmées"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__create_uid
+msgid "Created by"
+msgstr "Créé par"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__create_date
+msgid "Created on"
+msgstr "Créé le"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__display_name
+msgid "Display Name"
+msgstr "Nom d'affichage"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__attachment
+msgid "File"
+msgstr "Fichier"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__filename
+msgid "Filename"
+msgstr "Nom du fichier"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__id
+msgid "ID"
+msgstr ""
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date____last_update
+msgid "Last Modified on"
+msgstr "Dernière modification le"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__write_uid
+msgid "Last Updated by"
+msgstr "Dernière modification par"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__write_date
+msgid "Last Updated on"
+msgstr "Dernière mise à jour le"
+
+#. module: purchase_multiple_arrival_date
+#: model_terms:ir.ui.view,arch_db:purchase_multiple_arrival_date.purchase_order_form
+msgid "New"
+msgstr "Nouveau"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields.selection,name:purchase_multiple_arrival_date.selection__purchase_order__date_arrival_state__none
+msgid "None acknowledged"
+msgstr "Non-confirmé"
+
+#. module: purchase_multiple_arrival_date
+#: model_terms:ir.ui.view,arch_db:purchase_multiple_arrival_date.purchase_order_view_search
+msgid "Not Acknowledged"
+msgstr "Non-confirmé"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields.selection,name:purchase_multiple_arrival_date.selection__purchase_order__date_arrival_state__partial
+#: model_terms:ir.ui.view,arch_db:purchase_multiple_arrival_date.purchase_order_view_search
+msgid "Partially acknowledged"
+msgstr "Partiellement confirmé"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__order_line
+msgid "Products"
+msgstr "Produits"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model.fields,help:purchase_multiple_arrival_date.field_purchase_arrival_date__order_id
+msgid ""
+"Products on which the Arrival Date will apply. Pre-filled with yet "
+"unconfirmed products."
+msgstr ""
+"Produits concernés par cette date de réception. Pré-rempli avec "
+"les produits dont la date de réception est encore non-confirmée."
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model,name:purchase_multiple_arrival_date.model_purchase_arrival_date
+msgid "Purchase Arrival Date"
+msgstr "Date de réception"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model,name:purchase_multiple_arrival_date.model_purchase_order
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__order_id
+msgid "Purchase Order"
+msgstr "Commande fournisseur"
+
+#. module: purchase_multiple_arrival_date
+#: model:ir.model,name:purchase_multiple_arrival_date.model_purchase_order_line
+msgid "Purchase Order Line"
+msgstr "Ligne de commande d'achat"

@@ -10,10 +10,7 @@
 
     'application': False,
     'installable': True,
-    'depends': [
-        'purchase', # Odoo CE
-        'web_field_many2many_binary_preview', # custom
-    ],
+    'depends': ['purchase'],
     'data': [
         # security
         'security/ir.model.access.csv',
@@ -21,9 +18,4 @@
         'views/purchase_arrival_date.xml',
         'views/purchase_order.xml',
     ],
-    'assets': {
-        'web.assets_backend': [
-            'purchase_multiple_arrival_date/static/src/**/*',
-        ]
-    }
 }
