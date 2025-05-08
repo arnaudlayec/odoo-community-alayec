@@ -1,0 +1,50 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* stock_valuation_no_zero
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2025-05-08 15:37+0000\n"
+"PO-Revision-Date: 2025-05-08 17:38+0200\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.6\n"
+
+#. module: stock_valuation_no_zero
+#: model:ir.model,name:stock_valuation_no_zero.model_product_product
+msgid "Product Variant"
+msgstr "Variante de produit"
+
+#. module: stock_valuation_no_zero
+#: model:ir.model,name:stock_valuation_no_zero.model_stock_valuation_layer
+msgid "Stock Valuation Layer"
+msgstr "Couche de valorisation d'inventaire"
+
+#. module: stock_valuation_no_zero
+#. odoo-python
+#: code:addons/stock_valuation_no_zero/models/stock_valuation_layer.py:0
+#, python-format
+msgid ""
+"Valuating products move with zero unit cost is not accepted. Products:\n"
+"%s"
+msgstr ""
+"La valorisation de mouvements de produits avec un coût unitaire à zéro est restreint. Produits :\n"
+"%s"
+
+#. module: stock_valuation_no_zero
+#. odoo-python
+#: code:addons/stock_valuation_no_zero/models/product_product.py:0
+#, python-format
+msgid ""
+"Zero cost is not permitted. Products:\n"
+"%s"
+msgstr ""
+"Un coût nul n'est pas autorisé. Produits :\n"
+"%s"

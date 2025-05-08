@@ -46,7 +46,7 @@ class PurchaseOrder(models.Model):
     @api.depends('date_planned')
     def _compute_date_planned_requested(self):
         for order in self:
-            if order.state in ['draft', 'cancel']:
+            if order.state in ['draft', 'cancel'] or not order.date_planned_requested:
                 order.date_planned_requested = order.date_planned
     
     # def _inverse_date_arrival_attachments(self):
