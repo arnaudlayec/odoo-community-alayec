@@ -28,14 +28,20 @@
 
     <!-- Search (Stock Valuation Layer) -->
     <record id="view_inventory_valuation_search" model="ir.ui.view">
-        <field name="name">stock.valuation.layer.search.carpentry</field>
+        <field name="name">stock.valuation.layer.search.mrp_project_link</field>
         <field name="model">stock.valuation.layer</field>
         <field name="inherit_id" ref="stock_account.view_inventory_valuation_search" />
         
         <field name="arch" type="xml">
-            <field name="categ_id" position="after">
-                <field name="project_id" />
-            </field>
+            <group position="inside">
+                <filter string="Project" name="grp_project" context="{'group_by': 'project_id'}" />
+            </group>
+
+            <search position="inside">
+                <searchpanel>
+                    <field name="project_id" select="multi" />
+                </searchpanel>
+            </search>
         </field>
     </record>
 

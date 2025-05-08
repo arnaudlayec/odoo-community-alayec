@@ -13,7 +13,7 @@
     'version': '16.0.1.0.1',
 
     'depends': [
-        'stock', 'stock_account', 'mrp', # Odoo CE
+        'mrp_account', # Odoo CE
         'project_favorite_switch', # other
     ],
     'data': [
