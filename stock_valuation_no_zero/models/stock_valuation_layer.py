@@ -11,8 +11,10 @@ class StockValuationLayer(models.Model):
     def _check_unit_cost_no_zero(self):
         """ Check that unit cost is not 0.00€ """
         zero_unit_cost = self.filtered(lambda svl:
-            not svl.unit_cost or
-            float_is_zero(svl.unit_cost, precision_rounding=svl.product_id.uom_id.rounding)
+            svl.quantity > 0 and (
+                not svl.unit_cost or
+                float_is_zero(svl.unit_cost, precision_rounding=svl.product_id.uom_id.rounding)
+            )
         )
         if zero_unit_cost:
             raise exceptions.ValidationError(_(
