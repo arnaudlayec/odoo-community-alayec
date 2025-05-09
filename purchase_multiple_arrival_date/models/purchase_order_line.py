@@ -30,8 +30,5 @@ class PurchaseOrderLine(models.Model):
     
     @api.depends('date_arrival_id')
     def _compute_date_arrival_confirmed(self):
-        print('===_compute_date_arrival_confirmed===')
         for line in self:
-            print('line', line)
-            print('line.date_arrival_id', line.date_arrival_id)
             line.date_arrival_confirmed = bool(line.date_arrival_id)
