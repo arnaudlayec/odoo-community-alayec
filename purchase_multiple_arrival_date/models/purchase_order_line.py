@@ -13,8 +13,6 @@ class PurchaseOrderLine(models.Model):
     date_arrival_confirmed = fields.Boolean(
         string='Confirmed Arrival',
         compute='_compute_date_arrival_confirmed',
-        store=True,
-        readonly=False,
     )
 
     #===== Compute =====#

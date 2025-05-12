@@ -53,18 +53,24 @@ class PurchaseArrivalDate(models.Model):
     )
 
     #===== CRUD =====#
-    def unlink(self):
-        self.order_line.date_arrival_confirmed = False
-        return super().unlink()
-    
     @api.model_create_multi
     def create(self, vals_list):
-        """ Don't store `ir_attachment`.`res_field` for `purchase.arrival.date` attachments
+        """ 1. `ir.attachment`
+            Don't store `ir_attachment`.`res_field` for `purchase.arrival.date` attachments
             because it throws an access error and we actually don't need it
+
+            2. Update `date_planned` in PO and PO lines
         """
         res = super().create(vals_list)
-        # need sudo() to bypass access error
+
+        # 1. Need sudo() to bypass access error
         res.sudo().attachment_id.res_field = False
+
+        # 2. `date_planned`
+        for arrival in res:
+            arrival.order_line.date_planned = arrival.date_arrival
+            # arrival.order_id.date_planned = arrival.date_arrival
+        
         return res
 
     #===== Compute =====#
