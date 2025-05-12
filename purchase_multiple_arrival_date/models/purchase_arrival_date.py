@@ -69,7 +69,6 @@ class PurchaseArrivalDate(models.Model):
         # 2. `date_planned`
         for arrival in res:
             arrival.order_line.date_planned = arrival.date_arrival
-            # arrival.order_id.date_planned = arrival.date_arrival
         
         return res
 
