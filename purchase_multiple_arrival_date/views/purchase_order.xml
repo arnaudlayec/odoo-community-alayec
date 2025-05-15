@@ -39,7 +39,7 @@
                     attrs="{'invisible': [('state', '=', 'draft')]}"
                 >
                     <div class="o_row" attrs="{'invisible': [('date_arrival_ids', '=', [])]}">
-                        <field name="date_arrival_ids" widget="many2many_tags" options="{'create': False}" />
+                        <field name="date_arrival_ids" widget="many2many_tags" options="{'create': False,}" />
                     </div>
                     <div class="o_row">
                         <button name="%(open_date_arrival_form)d" type="action"

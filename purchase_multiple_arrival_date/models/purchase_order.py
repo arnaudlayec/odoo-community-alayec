@@ -14,6 +14,7 @@ class PurchaseOrder(models.Model):
     date_arrival_ids = fields.One2many(
         comodel_name='purchase.arrival.date',
         inverse_name='order_id',
+        domain="[('order_id', '=', id)]",
         string='Confirmed arrivals',
     )
     date_arrival_state = fields.Selection(
