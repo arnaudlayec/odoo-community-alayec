@@ -75,7 +75,7 @@ class PurchaseOrder(models.Model):
         return {x['order_id'][0]: x['attachment_id'] for x in rg_result}
     
 
-    @api.depends('order_line')
+    @api.depends('order_line', 'order_line.date_arrival_id')
     def _compute_date_arrival_state(self):
         for order in self:
             lines = order.order_line.filtered(lambda x: not x.display_type)
@@ -88,7 +88,7 @@ class PurchaseOrder(models.Model):
                 state = 'ok'
             
             order.date_arrival_state = state
-
+    
     #===== Button =====#
     def send_reminder(self):
         template = self.env.ref('purchase.email_template_edi_purchase_reminder', raise_if_not_found=False)

@@ -14,17 +14,6 @@ class PurchaseOrderLine(models.Model):
         string='Confirmed Arrival',
         compute='_compute_date_arrival_confirmed',
     )
-
-    #===== Compute =====#
-    # @api.depends('date_arrival_id')
-    # def _compute_price_unit_and_date_planned_and_name(self):
-    #     """ Fill in `date_planned` when entering a new confirmed Arrival Date
-    #         on the Purchase Order
-    #     """
-    #     res = super()._compute_price_unit_and_date_planned_and_name()
-    #     for line in self:
-    #         line.date_planned = line.date_arrival_id.date_arrival
-    #     return res
     
     @api.depends('date_arrival_id')
     def _compute_date_arrival_confirmed(self):

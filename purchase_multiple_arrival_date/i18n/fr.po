@@ -20,12 +20,12 @@ msgstr ""
 #. module: purchase_multiple_arrival_date
 #: model_terms:ir.ui.view,arch_db:purchase_multiple_arrival_date.purchase_order_view_search
 msgid "All Acknowledged"
-msgstr "Entièrement confirmée"
+msgstr "Entièrement confirmé"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields.selection,name:purchase_multiple_arrival_date.selection__purchase_order__date_arrival_state__ok
 msgid "All acknowledged"
-msgstr "Entièrement confirmée"
+msgstr "Entièrement confirmé"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__date_arrival

@@ -71,6 +71,16 @@ class PurchaseArrivalDate(models.Model):
             arrival.order_line.date_planned = arrival.date_arrival
         
         return res
+    
+    def unlink(self):
+        """ Force the refresh of `purchase_order`.`date_arrival_state`
+            because removal of `purchase.arrival.date` record
+            doesn't trigger the recompute
+        """
+        order_ids = self.order_id
+        res = super().unlink()
+        order_ids._compute_date_arrival_state()
+        return res
 
     #===== Compute =====#
     @api.depends('filename')
