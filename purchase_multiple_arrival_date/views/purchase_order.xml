@@ -18,7 +18,6 @@
                 <attribute name="attrs">{'invisible': [('state', '!=', 'draft')]}</attribute>
             </div>
             
-
             <div name="date_planned_div" position="after">
                 <!-- date_planned_requested -->
                 <label for="date_planned_requested"    attrs="{'invisible': [('state', '=', 'draft')]}" />
@@ -39,10 +38,12 @@
                     attrs="{'invisible': [('state', '=', 'draft')]}"
                 >
                     <div class="o_row" attrs="{'invisible': [('date_arrival_ids', '=', [])]}">
-                        <field name="date_arrival_ids" widget="many2many_tags" options="{'create': False,}" />
+                        <a name="open_date_arrival_list" type="object">
+                            <field name="date_arrival_ids" widget="many2many_tags" options="{'create': False,}" readonly="1" />
+                        </a>
                     </div>
                     <div class="o_row">
-                        <button name="%(open_date_arrival_form)d" type="action"
+                        <button name="open_date_arrival_form" type="object"
                             id="date_arrival_add"
                             icon="fa-plus"
                             string="New"
@@ -50,7 +51,8 @@
                             attrs="{'invisible': ['|', ('id', '=', False), ('state', '=', 'draft')]}"
                         />
 
-                        <field name="date_arrival_state" nolabel="1" widget="badge"
+                        <field name="date_arrival_state"
+                            nolabel="1" widget="badge" 
                             decoration-danger ="date_arrival_state == 'none'"
                             decoration-warning="date_arrival_state == 'partial'"
                             decoration-success="date_arrival_state == 'ok'"
@@ -110,6 +112,9 @@
                 <filter name="unconfirmed" string="Delivery not acknowledged"       domain="[('date_arrival_state', '=', 'none'),    ('state', '=', 'purchase')]" />
                 <filter name="partial"     string="Delivery partially acknowledged" domain="[('date_arrival_state', '=', 'partial'), ('state', '=', 'purchase')]" />
                 <filter name="ok"          string="Delivery all acknowledged"       domain="[('date_arrival_state', '=', 'ok'),      ('state', '=', 'purchase')]" />
+                <separator />
+                <filter name="unit_price_unverified"  string="Unverified prices"  domain="[('date_arrival_ids.price_unit_verified', '!=', True), ('date_arrival_state', '!=', 'none')]" />
+                <filter name="unit_price_verified"    string="Verified prices"    domain="[('date_arrival_ids.price_unit_verified', '=', True)]" />
                 <separator />
             </filter>
         </field>

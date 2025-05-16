@@ -1,12 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <record id="open_date_arrival_form" model="ir.actions.act_window">
-        <field name="name">Confirm an arrival date of a Purchase Order</field>
+    <!-- Action & menu-item -->
+    <record id="action_open_arrival_date" model="ir.actions.act_window">
+        <field name="name">Vendors acknowledgments</field>
         <field name="res_model">purchase.arrival.date</field>
-        <field name="view_mode">form</field>
-        <field name="target">new</field>
-        <field name="context">{'default_order_id': active_id}</field>
+        <field name="view_mode">tree,form</field>
+        <field name="domain">[]</field>
+        <field name="context">{}</field>
     </record>
+    <menuitem id="menu_purchase_arrival_date"
+        action="action_open_arrival_date"
+        parent="purchase.menu_procurement_management"
+        sequence="8"
+    />
     
     <record id="view_purchase_date_arrival_form" model="ir.ui.view">
         <field name="name">purchase.arrival.date.form</field>
@@ -14,14 +20,21 @@
 
         <field name="arch" type="xml">
             <form>
-                <field name="order_id" invisible="1" />
-
                 <sheet>
+                    <div class="oe_title" name="title" invisible="context.get('default_order_id')">
+                        <label for="order_id" />
+                        <h1>
+                            <field name="order_id" options="{'no_create': True}" class="w-100" />
+                        </h1>
+                    </div>
+
                     <group>
+                        <field name="partner_id" invisible="context.get('default_order_id')" />
                         <field name="date_arrival" required="1" />
                         <field name="attachment" filename="filename" />
                         <field name="filename" invisible="1" />
                         <field name="comment" />
+                        <field name="price_unit_verified" widget="boolean_toggle" />
                     </group>
                     
                     <!-- Products choice -->
@@ -29,22 +42,14 @@
                     <field name="order_line" nolabel="1"
                         widget="many2many"
                         domain="[('order_id', '=', order_id), ('date_arrival_id', '=', False), ('display_type', '=', False)]"
-                        context="{'tree_view_ref' : 'purchase.purchase_order_line_tree'}"
-                    >
-                        <tree>
-                            <field name="product_id"/>
-                            <field name="name"/>
-                            <field name="price_unit"/>
-                            <field name="product_qty"/>
-                            <field name="product_uom" groups="uom.group_uom"/>
-                            <field name="date_planned" widget="date" />
-                        </tree>
-                    </field>
+                        context="{'tree_view_ref' : 'purchase_multiple_arrival_date.purchase_order_line_arrival_date_tree'}"
+                    />
                 </sheet>
             </form>
         </field>
     </record>
-
+    
+    <!-- Tree -->
     <record id="view_purchase_date_arrival_tree" model="ir.ui.view">
         <field name="name">purchase.arrival.date.tree</field>
         <field name="model">purchase.arrival.date</field>
@@ -52,12 +57,31 @@
         <field name="arch" type="xml">
             <tree>
                 <field name="order_id" invisible="context.get('default_order_id')" />
+                <field name="partner_id" invisible="context.get('default_order_id')" />
                 <field name="date_arrival" />
                 <field name="create_uid" widget="many2one_avatar_user" />
                 <field name="create_date" />
-                <field name="comment" />
             </tree>
         </field>
     </record>
 
+    <!-- Search -->
+    <record id="view_purchase_date_arrival_search" model="ir.ui.view">
+        <field name="name">purchase.arrival.date.search</field>
+        <field name="model">purchase.arrival.date</field>
+
+        <field name="arch" type="xml">
+            <search>
+                <field name="order_id" />
+                <field name="partner_id" />
+                <field name="date_arrival" />
+                <field name="create_uid" />
+                
+                <filter name="my_arrival_date" string="Created by me" domain="[('create_uid', '=', uid)]"/>
+                <separator />
+                <filter name="price_unit_verified"   string="Verified prices"   domain="[('price_unit_verified', '=', True)]"/>
+                <filter name="price_unit_unverified" string="Unverified prices" domain="[('price_unit_verified', '=', False)]"/>
+            </search>
+        </field>
+    </record>
 </odoo>

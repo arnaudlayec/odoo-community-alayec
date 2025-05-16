@@ -15,6 +15,7 @@
         # security
         'security/ir.model.access.csv',
         # views
+        'views/purchase_order_line.xml',
         'views/purchase_arrival_date.xml',
         'views/purchase_order.xml',
         'views/res_partner.xml',

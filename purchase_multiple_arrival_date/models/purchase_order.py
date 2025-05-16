@@ -90,7 +90,28 @@ class PurchaseOrder(models.Model):
             
             order.date_arrival_state = state
     
+    #===== Logics =====#
+    def _get_unconfirmed_date_order_line(self):
+        return self.order_line.filtered(
+            lambda x: not x.date_arrival_id and not x.display_type
+        )
+    
     #===== Button =====#
     def send_reminder(self):
         template = self.env.ref('purchase.email_template_edi_purchase_reminder', raise_if_not_found=False)
         return self._send_reminder_open_composer(template.id)
+
+    def open_date_arrival_form(self):
+        return self._get_date_arrival_action() | {
+            'views': [(False, 'form')],
+            'target': 'new',
+            'context': {'default_order_id': self.id}
+        }
+    def open_date_arrival_list(self):
+        return self._get_date_arrival_action() | {
+            'domain': [('order_id', '=', self.id)]
+        }
+    def _get_date_arrival_action(self):
+        xml_id = 'purchase_multiple_arrival_date.action_open_arrival_date'
+        return self.env['ir.actions.act_window']._for_xml_id(xml_id)
+    

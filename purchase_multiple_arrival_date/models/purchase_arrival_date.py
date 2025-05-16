@@ -6,6 +6,7 @@ class PurchaseArrivalDate(models.Model):
     _name = 'purchase.arrival.date'
     _description = 'Purchase Arrival Date'
     _rec_name = 'date_arrival'
+    _rec_names_search = ['date_arrival', 'order_id', 'partner_id']
 
     #===== Fields methods =====#
     def default_get(self, fields):
@@ -15,9 +16,7 @@ class PurchaseArrivalDate(models.Model):
             vals.get('order_id') or self._context.get('default_order_id')
         )
         if order and 'order_line' in fields:
-            vals['order_line'] = [Command.set(order.order_line.filtered(
-                lambda x: not x.date_arrival_id and not x.display_type
-            ).ids)]
+            vals['order_line'] = [Command.set(order._get_unconfirmed_date_order_line().ids)]
         return vals
 
     #===== Fields =====#
@@ -28,6 +27,9 @@ class PurchaseArrivalDate(models.Model):
         ondelete='cascade',
         help='Products on which the Arrival Date will apply. '
              'Pre-filled with yet unconfirmed products.'
+    )
+    partner_id = fields.Many2one(
+        related='order_id.partner_id'
     )
     date_arrival = fields.Date(
         # required=True in the view but not in the model
@@ -50,6 +52,12 @@ class PurchaseArrivalDate(models.Model):
         string='Products',
         comodel_name='purchase.order.line',
         inverse_name='date_arrival_id',
+    )
+    price_unit_verified = fields.Boolean(
+        string='Verified prices',
+        default=False,
+        help='Whether the product prices were confirmed by the seller '
+             ' in acknowledgment and verified by someone.'
     )
 
     #===== CRUD =====#
@@ -82,6 +90,21 @@ class PurchaseArrivalDate(models.Model):
         order_ids._compute_date_arrival_state()
         return res
 
+    #===== Onchange =====#
+    @api.onchange('date_arrival')
+    def _onchange_date_arrival(self):
+        """ Real-time update of po lines `planned_date` in arrival form """
+        for arrival in self:
+            arrival.order_line.date_planned = arrival.date_arrival
+
+    @api.onchange('order_id')
+    def _onchange_order_id(self):
+        """ When creating new acknowledgment form from scratch (not wizard),
+            auto-fill order line
+        """
+        for arrival in self:
+            arrival.order_line = arrival.order_id._get_unconfirmed_date_order_line()
+
     #===== Compute =====#
     @api.depends('filename')
     def _compute_attachment_id(self):
@@ -108,3 +131,8 @@ class PurchaseArrivalDate(models.Model):
                 '[{}] {}' . format(arrival.date_arrival, arrival.filename) if arrival.filename
                 else str(arrival.date_arrival)
             )
+
+    #===== Button =====#
+    def action_toggle_price_unit_verified(self):
+        for arrival in self:
+            arrival.price_unit_verified = not arrival.price_unit_verified
