@@ -107,9 +107,9 @@
         <field name="arch" type="xml">
             <!-- Add filtering possibilities by `date_arrival_state` -->
             <filter name="unconfirmed" position="replace">
-                <filter name="unconfirmed" string="Not Acknowledged"       domain="[('date_arrival_state', '=', 'none'),    ('state', '=', 'purchase')]" />
-                <filter name="partial"     string="Partially acknowledged" domain="[('date_arrival_state', '=', 'partial'), ('state', '=', 'purchase')]" />
-                <filter name="ok"          string="All Acknowledged"       domain="[('date_arrival_state', '=', 'ok'),      ('state', '=', 'purchase')]" />
+                <filter name="unconfirmed" string="Delivery not acknowledged"       domain="[('date_arrival_state', '=', 'none'),    ('state', '=', 'purchase')]" />
+                <filter name="partial"     string="Delivery partially acknowledged" domain="[('date_arrival_state', '=', 'partial'), ('state', '=', 'purchase')]" />
+                <filter name="ok"          string="Delivery all acknowledged"       domain="[('date_arrival_state', '=', 'ok'),      ('state', '=', 'purchase')]" />
                 <separator />
             </filter>
         </field>

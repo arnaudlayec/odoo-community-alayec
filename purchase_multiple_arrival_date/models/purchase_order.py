@@ -19,7 +19,7 @@ class PurchaseOrder(models.Model):
     )
     date_arrival_state = fields.Selection(
         selection=[
-            ('none', 'None acknowledged'),
+            ('none', 'Not acknowledged'),
             ('partial', 'Partially acknowledged'),
             ('ok', 'All acknowledged'),
         ],

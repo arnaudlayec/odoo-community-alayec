@@ -124,13 +124,13 @@ msgstr "Nouveau"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields.selection,name:purchase_multiple_arrival_date.selection__purchase_order__date_arrival_state__none
-msgid "None acknowledged"
+msgid "Not acknowledged"
 msgstr "Non-confirmé"
 
 #. module: purchase_multiple_arrival_date
 #: model_terms:ir.ui.view,arch_db:purchase_multiple_arrival_date.purchase_order_view_search
-msgid "Not Acknowledged"
-msgstr "Non-confirmé"
+msgid "Delivery not acknowledged"
+msgstr "Livraison non-confirmée"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields.selection,name:purchase_multiple_arrival_date.selection__purchase_order__date_arrival_state__partial

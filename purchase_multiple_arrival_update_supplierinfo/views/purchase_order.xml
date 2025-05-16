@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <!-- PO search -->
+    <record id="purchase_order_view_search" model="ir.ui.view">
+        <field name="name">purchase.order.select.multiple_arrival_update_supplier_info</field>
+        <field name="model">purchase.order</field>
+        <field name="inherit_id" ref="purchase_multiple_arrival_date.purchase_order_view_search" />
+
+        <field name="arch" type="xml">
+            <!-- Add PO filtering capacities by (un)verified PO's acknowledgment -->
+            <search position="inside">
+                <separator />
+                <filter name="date_arrival_unverified"  string="Unverified supplier acknowledgments"   domain="[('date_arrival_ids.verified', '!=', True), ('date_arrival_state', '!=', 'none')]" />
+                <filter name="date_arrival_verified"    string="All verified supplier acknowledgments" domain="[('date_arrival_ids.verified', '=', True)]" />
+            </search>
+        </field>
+    </record>
+</odoo>
