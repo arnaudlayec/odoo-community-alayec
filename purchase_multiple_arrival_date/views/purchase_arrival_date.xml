@@ -25,7 +25,7 @@
                         <label for="order_id" />
                         <h1>
                             <field name="order_id" options="{'no_create': True}" class="w-100"
-                                attrs="{'readonly': [(('id', '!=', False)]}"
+                                attrs="{'readonly': [('id', '!=', False)]}"
                             />
                         </h1>
                     </div>
