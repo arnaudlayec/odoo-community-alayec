@@ -19,11 +19,6 @@ class ProductProduct(models.Model):
                 precision_rounding=product.uom_id.rounding
             )
         )
-        print('product', self)
-        print('product.standard_price', self.standard_price)
-        print('product.uom_id.rounding', self.uom_id.rounding)
-        print('self._context', self._context)
-
         if zero_standard_price:
             raise exceptions.ValidationError(_(
                 "Zero cost is not permitted. Products:\n"
