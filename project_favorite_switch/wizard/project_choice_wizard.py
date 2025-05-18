@@ -66,6 +66,7 @@ class ProjectWizard(models.TransientModel):
             depending `action_arg` was a dict or a XML_ID
         """
         action_dict = self._resolve_action_arg(project_id, action_arg)
+        res_model = action_dict.get('res_model')
 
         # Update context to add project's default keys
         context = _resolve_string_to_python(action_dict.get('context'))
@@ -75,14 +76,16 @@ class ProjectWizard(models.TransientModel):
             | {key: project_id.id for key in context_keys}
         )
         
-        # Domain: get existing
-        domain = _resolve_string_to_python(action_dict.get('domain'))
-        domain = safe_eval(domain) if isinstance(domain, str) else domain or []
-        # Update domain to filter on selected project
-        action_dict['domain'] = expression.AND([
-            domain,
-            [('project_id', '=', project_id.id)]
-        ])
+        # Filter on the project
+        if res_model == 'project.project':
+            action_dict['res_id'] = project_id.id
+        else:
+            domain = _resolve_string_to_python(action_dict.get('domain'))
+            domain = safe_eval(domain) if isinstance(domain, str) else domain or []
+            action_dict['domain'] = expression.AND([
+                domain,
+                [('project_id', '=', project_id.id)]
+            ])
 
         # Prefix action's name with project's
         project_id = project_id.with_context(action_dict['context'])
