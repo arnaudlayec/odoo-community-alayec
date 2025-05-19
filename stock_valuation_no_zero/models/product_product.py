@@ -16,8 +16,7 @@ class ProductProduct(models.Model):
         prec = self.env['decimal.precision'].precision_get('Product Price')
         zero_standard_price = self.filtered(lambda product:
             not product.standard_price or float_is_zero(
-                product.standard_price,
-                precision_rounding = prec
+                product.standard_price, precision_digits=prec
             )
         )
         if zero_standard_price:
