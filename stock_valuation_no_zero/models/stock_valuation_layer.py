@@ -10,10 +10,11 @@ class StockValuationLayer(models.Model):
     @api.constrains('unit_cost')
     def _check_unit_cost_no_zero(self):
         """ Check that unit cost is not 0.00€ """
+        prec = self.env['decimal.precision'].precision_get('Product Price')
         zero_unit_cost = self.filtered(lambda svl:
             svl.quantity > 0 and (
                 not svl.unit_cost or
-                float_is_zero(svl.unit_cost, precision_rounding=svl.product_id.uom_id.rounding)
+                float_is_zero(svl.unit_cost, precision_digits=prec)
             )
         )
         if zero_unit_cost:
