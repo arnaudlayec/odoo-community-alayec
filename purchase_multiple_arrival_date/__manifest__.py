@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'Purchase Multiple Arrival Dates',
-    'summary': "Helps managing multiple arrival dates confirmed from suppliers",
+    'summary': "Manage multiple arrival date confirmations from suppliers",
     'category': 'Inventory/Purchase',
     'version': '16.0.1.0.1',
     'license': 'LGPL-3',
