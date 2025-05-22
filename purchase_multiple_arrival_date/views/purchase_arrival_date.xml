@@ -4,7 +4,7 @@
     <record id="action_open_arrival_date" model="ir.actions.act_window">
         <field name="name">Vendors acknowledgments</field>
         <field name="res_model">purchase.arrival.date</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,calendar,pivot,form</field>
         <field name="domain">[]</field>
         <field name="context">{}</field>
     </record>
@@ -14,6 +14,7 @@
         sequence="8"
     />
     
+    <!-- Form -->
     <record id="view_purchase_date_arrival_form" model="ir.ui.view">
         <field name="name">purchase.arrival.date.form</field>
         <field name="model">purchase.arrival.date</field>
@@ -84,6 +85,33 @@
                 <filter name="price_unit_verified"   string="Verified prices"   domain="[('price_unit_verified', '=', True)]"/>
                 <filter name="price_unit_unverified" string="Unverified prices" domain="[('price_unit_verified', '=', False)]"/>
             </search>
+        </field>
+    </record>
+
+    <!-- Calendar -->
+    <record id="view_purchase_date_arrival_calendar" model="ir.ui.view">
+        <field name="name">purchase.arrival.date.calendar</field>
+        <field name="model">purchase.arrival.date</field>
+
+        <field name="arch" type="xml">
+            <calendar date_start="date_arrival" color="order_id" hide_time="true" event_limit="20" create="false" mode="month">
+                <field name="partner_id" filters="1" />
+                <field name="order_id" filters="1" />
+                <field name="comment" />
+            </calendar>
+        </field>
+    </record>
+
+    <!-- Pivot -->
+    <record id="view_purchase_date_arrival_pivot" model="ir.ui.view">
+        <field name="name">purchase.arrival.date.pivot</field>
+        <field name="model">purchase.arrival.date</field>
+
+        <field name="arch" type="xml">
+            <pivot>
+                <field name="order_id" type="row" />
+                <field name="date_arrival" type="col" />
+            </pivot>
         </field>
     </record>
 </odoo>

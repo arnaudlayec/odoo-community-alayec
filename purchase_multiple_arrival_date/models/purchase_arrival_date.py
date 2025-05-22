@@ -5,7 +5,6 @@ from odoo import models, fields, api, Command
 class PurchaseArrivalDate(models.Model):
     _name = 'purchase.arrival.date'
     _description = 'Purchase Arrival Date'
-    _rec_name = 'date_arrival'
     _rec_names_search = ['date_arrival', 'order_id', 'partner_id']
 
     #===== Fields methods =====#
@@ -18,6 +17,15 @@ class PurchaseArrivalDate(models.Model):
         if order and 'order_line' in fields:
             vals['order_line'] = [Command.set(order._get_unconfirmed_date_order_line().ids)]
         return vals
+    
+    @api.depends('date_arrival', 'order_id')
+    def _compute_display_name(self):
+        for arrival in self:
+            arrival.display_name = (
+                arrival.date_arrival
+                if self._context.get('display_date_ony') else
+                arrival.order_id.name
+            )
 
     #===== Fields =====#
     order_id = fields.Many2one(

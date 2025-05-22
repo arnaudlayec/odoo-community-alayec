@@ -90,7 +90,7 @@
         <field name="arch" type="xml">
             <!-- Add `date_arrival_ids` & `date_arrival_state` -->
             <field name="date_approve" position="after">
-                <field name="date_arrival_ids" widget="many2many_tags" optional="show" />
+                <field name="date_arrival_ids" widget="many2many_tags" optional="show" context="{'display_date_ony': 1}" />
                 <field name="date_arrival_state" widget="badge" optional="show"
                     decoration-danger ="date_arrival_state == 'none'"
                     decoration-warning="date_arrival_state == 'partial'"

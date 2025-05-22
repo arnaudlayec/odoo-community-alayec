@@ -16,6 +16,7 @@ class PurchaseOrder(models.Model):
         inverse_name='order_id',
         domain="[('order_id', '=', id)]",
         string='Confirmed arrivals',
+        context={'display_date_ony': 1},
     )
     date_arrival_state = fields.Selection(
         selection=[
@@ -33,7 +34,6 @@ class PurchaseOrder(models.Model):
         compute='_compute_date_arrival_attachments',
         # inverse='_inverse_date_arrival_attachments',
     )
-
 
     #===== Compute =====#
     @api.depends('date_arrival_ids')
