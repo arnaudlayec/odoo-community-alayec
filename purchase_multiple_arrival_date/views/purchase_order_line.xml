@@ -15,29 +15,6 @@
                 <attribute name="editable">top</attribute>
             </tree>
 
-            <!-- Add *price_unit_verified* button when groupping by `date_arrival_id` -->
-            <tree position="inside">
-                <field name="product_uom_category_id" invisible="1" />
-
-                <groupby name="order_id">
-                    <button type="edit" name="edit" icon="fa-external-link" />
-                </groupby>
-
-                <groupby name="date_arrival_id">
-                    <button type="edit" name="edit" icon="fa-external-link" />
-
-                    <field name="price_unit_verified" invisible="1" />
-                    <button type="object" name="action_toggle_price_unit_verified"
-                        icon="fa-check" string="Mark prices as verified"
-                        attrs="{'invisible': [('price_unit_verified', '=', True)]}"
-                    />
-                    <button type="object" name="action_toggle_price_unit_verified"
-                        icon="fa-undo" string="Mark prices as un-verified"
-                        attrs="{'invisible': [('price_unit_verified', '=', False)]}"
-                    />
-                </groupby>
-            </tree>
-
             <!-- Adapt/Hide existing fields -->
             <field name="order_id" position="attributes">
                 <attribute name="invisible">1</attribute>

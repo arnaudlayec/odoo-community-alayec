@@ -14,6 +14,10 @@ class PurchaseOrderLine(models.Model):
         string='Confirmed Arrival',
         compute='_compute_date_arrival_confirmed',
     )
+    price_unit_verified = fields.Boolean(
+        string='Verified price',
+        related='date_arrival_id.price_unit_verified',
+    )
     
     @api.depends('date_arrival_id')
     def _compute_date_arrival_confirmed(self):

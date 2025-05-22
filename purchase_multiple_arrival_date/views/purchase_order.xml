@@ -78,6 +78,11 @@
                     attrs="{'invisible': [('date_arrival_attachments', '=', [])]}"
                 />
             </notebook>
+
+            <!-- Show `price_unit_verified` in order_line -->
+            <xpath expr="//page[@name='products']//tree" position="inside">
+                <field name="price_unit_verified" optional="hide" />
+            </xpath>
         </field>
     </record>
 
