@@ -15,6 +15,11 @@
                 <attribute name="editable">top</attribute>
             </tree>
 
+            <!-- Add *price_unit_verified* button when groupping by `date_arrival_id` -->
+            <tree position="inside">
+                <field name="product_uom_category_id" invisible="1" />
+            </tree>
+
             <!-- Adapt/Hide existing fields -->
             <field name="order_id" position="attributes">
                 <attribute name="invisible">1</attribute>
