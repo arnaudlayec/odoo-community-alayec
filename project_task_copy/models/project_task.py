@@ -28,7 +28,8 @@ class ProjectTask(models.Model):
         """
         self.ensure_one()
         for field in self._fields_to_copy():
-            self[field] = self.copy_task_id[field] or False
+            if field in self:
+                self[field] = self.copy_task_id[field] or False
     
     def _fields_to_copy(self):
-        return ['name', 'description', 'tag_ids']
+        return ['name', 'description', 'tag_ids', 'attachment_ids']
