@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Tree -->
+    <record id="view_purchase_project_discount_tree" model="ir.ui.view">
+        <field name="name">purchase.project.discount.tree</field>
+        <field name="model">purchase.project.discount</field>
+
+        <field name="arch" type="xml">
+            <tree>
+                <field name="project_id" invisible="context.get('default_project_id')" />
+                <field name="partner_id" />
+                <field name="discount" />
+            </tree>
+        </field>
+    </record>
+
+    <!-- Form -->
+    <record id="view_purchase_project_discount_form" model="ir.ui.view">
+        <field name="name">purchase.project.discount.form</field>
+        <field name="model">purchase.project.discount</field>
+
+        <field name="arch" type="xml">
+            <form>
+                <field name="project_id_domain" invisible="1" />
+                
+                <group>
+                    <field name="project_id" invisible="context.get('default_project_id')" />
+                    <field name="partner_id" />
+                    <field name="discount" />
+                    <field name="contract_ref" />
+                </group>
+            </form>
+        </field>
+    </record>
+    
+</odoo>

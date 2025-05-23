@@ -9,7 +9,6 @@ class ProjectDefaultMixin(models.AbstractModel):
     _name = "project.default.mixin"
     _description = "Project Default"
 
-
     #===== Fields' methods =====#
     def _default_project_id_domain(self):
         """ Allow to select either:

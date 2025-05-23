@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Form -->
+    <record id="edit_project" model="ir.ui.view">
+        <field name="name">project.project.form.purchase_discount</field>
+        <field name="model">project.project</field>
+        <field name="inherit_id" ref="project.edit_project" />
+
+        <field name="arch" type="xml">
+            <page name="description" position="after">
+                <page name="purchase" string="Purchase">
+                    <label for="purchase_discount_ids" />
+                    <field name="purchase_discount_ids" nolabel="1" colspan="2">
+                        <tree editable="top">
+                            <field name="partner_id" />
+                            <field name="discount" />
+                            <field name="contract_ref" />
+                        </tree>
+                    </field>
+                </page>
+            </page>
+        </field>
+    </record>
+    
+</odoo>
