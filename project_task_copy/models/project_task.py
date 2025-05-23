@@ -32,4 +32,4 @@ class ProjectTask(models.Model):
                 self[field] = self.copy_task_id[field] or False
     
     def _fields_to_copy(self):
-        return ['name', 'description', 'tag_ids', 'attachment_ids']
+        return ['name', 'description', 'tag_ids']
