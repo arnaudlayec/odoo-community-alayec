@@ -95,7 +95,7 @@ msgstr "Domaine du projet"
 #. module: purchase_project_discount
 #: model_terms:ir.ui.view,arch_db:purchase_project_discount.edit_project
 msgid "Purchase"
-msgstr "Commande"
+msgstr "Achats"
 
 #. module: purchase_project_discount
 #: model:ir.model,name:purchase_project_discount.model_purchase_order

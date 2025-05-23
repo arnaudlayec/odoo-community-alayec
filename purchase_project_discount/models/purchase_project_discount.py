@@ -18,7 +18,6 @@ class PurchaseProjectDiscount(models.Model):
     discount = fields.Float(
         string="Discount (%)",
         digits="Discount",
-        required=True,
     )
     contract_ref = fields.Char(
         string='Contract Reference',
