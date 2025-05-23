@@ -4,7 +4,7 @@
     <record id="action_open_arrival_date" model="ir.actions.act_window">
         <field name="name">Vendors acknowledgments</field>
         <field name="res_model">purchase.arrival.date</field>
-        <field name="view_mode">tree,calendar,pivot,form</field>
+        <field name="view_mode">calendar,pivot,tree,form</field>
         <field name="domain">[]</field>
         <field name="context">{}</field>
     </record>
@@ -94,7 +94,9 @@
         <field name="model">purchase.arrival.date</field>
 
         <field name="arch" type="xml">
-            <calendar date_start="date_arrival" color="order_id" hide_time="true" event_limit="20" create="false" mode="month">
+            <calendar date_start="date_arrival" color="order_id" hide_time="true" event_limit="20" mode="month"
+                quick_add="false" event_open_popup="true"
+            >
                 <field name="partner_id" filters="1" />
                 <field name="order_id" filters="1" />
                 <field name="comment" />
