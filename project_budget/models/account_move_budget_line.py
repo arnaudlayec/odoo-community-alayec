@@ -109,8 +109,9 @@ class AccountMoveBudgetLine(models.Model):
     @api.onchange('project_id')
     def _onchange_project_id(self):
         for line in self:
-            line.budget_id = line.project_id.budget_id
-            line.date = line.budget_id.date_from
+            if line.project_id:
+                line.budget_id = line.project_id.budget_id
+                line.date = line.budget_id.date_from
 
     @api.depends('analytic_account_id', 'analytic_account_id.budget_type')
     def _compute_type(self):
