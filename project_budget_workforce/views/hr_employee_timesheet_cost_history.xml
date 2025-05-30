@@ -25,16 +25,12 @@
         
         <field name="arch" type="xml">
             <tree position="attributes">
-                <attribute name="create">0</attribute>
+                <attribute name="create">false</attribute>
+                <attribute name="action">button_open_details</attribute>
+                <attribute name="type">object</attribute>
             </tree>
 
             <field name="department_id" position="before">
-                <button name="button_open_details"
-                    type="object"
-                    string="Open"
-                    icon="fa-bars"
-                    invisible="not context.get('display_analytic')"
-                />
                 <field name="analytic_account_id"
                     options="{'no_create_edit': 1}"
                     invisible="not context.get('display_analytic')"
