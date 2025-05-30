@@ -46,6 +46,12 @@ class MrpWorkcenterProductivity(models.Model):
     hours_today = fields.Float(required=True, compute='_compute_hours_today')
 
     #===== Compute =====#
+    def _close(self):
+        """ Cancel this method which is called when closing a workorder (or a MO)
+            It is not relevant since here, the duration is only from *attendance*
+        """
+        return
+    
     @api.depends('date_start')
     def _compute_date(self):
         for productivity in self:
