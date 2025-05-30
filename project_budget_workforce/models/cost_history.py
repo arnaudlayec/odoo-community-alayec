@@ -11,7 +11,8 @@ class HrEmployeeTimesheetCostHistory(models.Model):
         # related-like field to employee's, department's or workcenter's analytic
         comodel_name="account.analytic.account",
         compute='_compute_analytic_account_id',
-        store=True
+        store=True,
+        readonly=False,
     )
     date_to = fields.Date(
         string='Date To',
