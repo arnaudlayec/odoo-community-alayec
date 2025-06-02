@@ -109,7 +109,13 @@ class PurchaseOrder(models.Model):
         }
     def open_date_arrival_list(self):
         return self._get_date_arrival_action() | {
-            'domain': [('order_id', '=', self.id)]
+            'views': [
+                (False, 'list'),
+                (False, 'calendar'),
+                (False, 'pivot'),
+                (False, 'form'),
+            ],
+            'domain': [('order_id', '=', self.id)],
         }
     def _get_date_arrival_action(self):
         xml_id = 'purchase_multiple_arrival_date.action_open_arrival_date'
