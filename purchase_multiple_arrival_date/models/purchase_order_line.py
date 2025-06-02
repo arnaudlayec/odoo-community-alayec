@@ -22,13 +22,7 @@ class PurchaseOrderLine(models.Model):
     @api.constrains('date_arrival_id')
     def _constrain_date_arrival_id(self):
         for line in self:
-            arrival_order_id = line.date_arrival_id.order_id
-            if arrival_order_id and arrival_order_id != line.order_id:
-                raise exceptions.ValidationError(_(
-                    "A vendor acknowledgment must belong to the same order "
-                    "than order's line (%s, %s)",
-                    arrival_order_id.display_name, line.display_name
-                ))
+            line.date_arrival_id._constrain_order_consistency()
     
     @api.depends('date_arrival_id')
     def _compute_date_arrival_confirmed(self):
