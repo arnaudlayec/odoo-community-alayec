@@ -36,7 +36,7 @@ class MrpWorkOrder(models.Model):
     unit_time_avg = fields.Float(string='Planned unit time', compute='_compute_performance') # in hours !
     unit_time_real = fields.Float(string='Realized unit time', compute='unit_time_real') # in hours !
     performance = fields.Float(string='Performance (%)', compute='_compute_performance')
-    gain = fields.Float(string='Gain', compute='_compute_performance')
+    gain = fields.Float(string='Gain', compute='_compute_performance') # in minutes
 
     #===== Onchange (default) =====#
     @api.onchange('workcenter_id')
@@ -55,12 +55,20 @@ class MrpWorkOrder(models.Model):
         for wo in self:
             # use `sum` so it's real-time
             duration = sum(wo.time_ids.mapped('duration'))
-            qty_produced = sum(wo.time_ids.mapped('qty_production'))
 
-            wo.unit_time_avg = wo.qty_production and wo.duration_expected / wo.qty_production / 60
-            wo.unit_time_real, wo.performance, wo.gain = wo._compute_metrics(
-                wo.unit_time_avg, duration, qty_produced
-            )
+            if wo.productivity_tracking == 'unit':
+                qty_produced = sum(wo.time_ids.mapped('qty_production'))
+
+                wo.unit_time_avg = wo.qty_production and wo.duration_expected / wo.qty_production / 60
+                wo.unit_time_real, wo.performance, wo.gain = wo._compute_metrics(
+                    wo.unit_time_avg, duration, qty_produced
+                )
+            else:
+                wo.gain = (
+                    wo.duration_expected - duration
+                    if duration > wo.duration_expected or wo.production_id.state == 'done'
+                    else False
+                )
 
     @api.model
     def _compute_metrics(self, unit_time_avg, duration, qty_produced):
