@@ -44,7 +44,6 @@
                     <label for="order_line" />
                     <field name="order_line" nolabel="1"
                         widget="many2many"
-                        domain="[('order_id', '=', order_id), ('date_arrival_id', '=', False), ('display_type', '=', False)]"
                         context="{'tree_view_ref' : 'purchase_multiple_arrival_date.purchase_order_line_arrival_date_tree'}"
                     />
                 </sheet>

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, Command
+from odoo import models, fields, api, Command, exceptions, _
 
 class PurchaseArrivalDate(models.Model):
     _name = 'purchase.arrival.date'
@@ -60,6 +60,7 @@ class PurchaseArrivalDate(models.Model):
         string='Products',
         comodel_name='purchase.order.line',
         inverse_name='date_arrival_id',
+        domain="[('order_id', '=', order_id), ('date_arrival_id', '=', False), ('display_type', '=', False)]"
     )
     price_unit_verified = fields.Boolean(
         string='Verified prices',
@@ -68,6 +69,18 @@ class PurchaseArrivalDate(models.Model):
              ' in acknowledgment and verified by someone.'
     )
 
+    @api.constrains('order_id', 'order_line')
+    def _constrain_order_id(self):
+        for arrival in self:
+            line_order_id = arrival.order_line.order_id
+            if line_order_id != arrival.order_id:
+                raise exceptions.ValidationError(_(
+                    "A vendor acknowledgment must belong to the same order "
+                    "than order's line (%s / %s)",
+                    arrival.order_id.display_name,
+                    line_order_id.mapped('display_name')
+                ))
+    
     #===== CRUD =====#
     @api.model_create_multi
     def create(self, vals_list):
