@@ -75,7 +75,7 @@ class PurchaseOrder(models.Model):
         )
         return {x['order_id'][0]: x['attachment_id'] for x in rg_result}
     
-
+    
     @api.depends('order_line', 'order_line.date_arrival_id')
     def _compute_date_arrival_state(self):
         for order in self:

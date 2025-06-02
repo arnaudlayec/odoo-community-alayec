@@ -19,10 +19,27 @@ class PurchaseOrderLine(models.Model):
         related='date_arrival_id.price_unit_verified',
     )
 
+    #===== Constrains =====#
     @api.constrains('date_arrival_id')
     def _constrain_date_arrival_id(self):
         for line in self:
             line.date_arrival_id._constrain_order_consistency()
+    
+    #===== Compute =====#
+    @api.depends('date_arrival_id.date_arrival')
+    def _compute_price_unit_and_date_planned_and_name(self):
+        """ Inherite and complete date_planned computation """
+        res = super()._compute_price_unit_and_date_planned_and_name()
+        self.filtered(lambda x: x.date_arrival_id)._compute_date_planned_arrival()
+        return res
+
+    def _compute_date_planned_arrival(self):
+        """ Compute `date_planned` as per arrival_date
+            Should not be executed on order.line with empty `date_arrival_id`
+            so that draft po have an initial `planned_date`
+        """
+        for line in self:
+            line.date_planned = line.date_arrival_id.date_arrival
     
     @api.depends('date_arrival_id')
     def _compute_date_arrival_confirmed(self):

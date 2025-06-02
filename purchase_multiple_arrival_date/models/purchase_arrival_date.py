@@ -84,21 +84,12 @@ class PurchaseArrivalDate(models.Model):
     #===== CRUD =====#
     @api.model_create_multi
     def create(self, vals_list):
-        """ 1. `ir.attachment`
+        """ `ir.attachment`
             Don't store `ir_attachment`.`res_field` for `purchase.arrival.date` attachments
             because it throws an access error and we actually don't need it
-
-            2. Update `date_planned` in PO and PO lines
         """
         res = super().create(vals_list)
-
-        # 1. Need sudo() to bypass access error
-        res.sudo().attachment_id.res_field = False
-
-        # 2. `date_planned`
-        for arrival in res:
-            arrival.order_line.date_planned = arrival.date_arrival
-        
+        res.sudo().attachment_id.res_field = False # sudo() to bypass access error
         return res
     
     def unlink(self):
