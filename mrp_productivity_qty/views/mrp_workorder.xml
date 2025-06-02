@@ -18,7 +18,7 @@
                     'invisible': [('productivity_tracking', 'in', ['global', 'none'])]
                 }"/>
             </field>
-
+            
             <!-- Hide `qty_remaining` and `qty_produced` if tracking is `global` -->
             <field name="qty_remaining" position="attributes">
                 <attribute name="attrs">{
@@ -32,11 +32,19 @@
                     'invisible': [('productivity_tracking', 'in', ['global', 'none'])]
                 }</attribute>
             </field>
-
+            
             <field name="date_planned_start" position="attributes">
                 <attribute name="widget">date</attribute>
             </field>
 
+            <!-- Add gain -->
+            <field name="state" position="before">
+                <field name="gain" class="fw-bold"
+                    decoration-success="gain &gt; 0"
+                    decoration-danger="gain &lt; 0"
+                />
+            </field>
+            
             <!-- Hide some fields -->
             <field name="product_id" position="attributes">
                 <attribute name="invisible">1</attribute>
