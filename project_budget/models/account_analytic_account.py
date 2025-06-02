@@ -12,7 +12,7 @@ class AccountAnalyticAccount(models.Model):
     )
     is_project_budget = fields.Boolean(
         compute='_compute_is_project_budget',
-        search='_search_is_project_budget'
+        store=True,
     )
     budget_type = fields.Selection(
         selection=[
@@ -37,7 +37,7 @@ class AccountAnalyticAccount(models.Model):
         return 'unit' if self.budget_type == 'service' else 'amount'
 
     #===== Compute =====#
-    @api.depends('plan_id')
+    @api.depends('plan_id', 'company_id.analytic_budget_plan_id')
     def _compute_is_project_budget(self):
         """ Configuration per company defining if the analytic account
             can be used as a project's budget in budget lines
