@@ -9,6 +9,7 @@ class PurchaseOrderLine(models.Model):
         comodel_name='purchase.arrival.date',
         string='Confirmed Arrival date',
         ondelete='set null',
+        copy=False,
     )
     date_arrival_confirmed = fields.Boolean(
         string='Confirmed Arrival',
@@ -20,10 +21,10 @@ class PurchaseOrderLine(models.Model):
     )
 
     #===== Constrains =====#
-    @api.constrains('date_arrival_id')
-    def _constrain_date_arrival_id(self):
-        for line in self:
-            line.date_arrival_id._constrain_order_consistency()
+    # @api.constrains('date_arrival_id')
+    # def _constrain_date_arrival_id(self):
+    #     for line in self:
+    #         line.date_arrival_id._constrain_order_consistency()
     
     #===== Compute =====#
     @api.depends('date_arrival_id.date_arrival')

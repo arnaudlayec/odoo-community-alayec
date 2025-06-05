@@ -10,6 +10,7 @@ class PurchaseOrder(models.Model):
         string='Requested Arrival',
         compute='_compute_date_planned_requested',
         store=True,
+        copy=False,
     )
     date_arrival_ids = fields.One2many(
         comodel_name='purchase.arrival.date',
@@ -27,12 +28,14 @@ class PurchaseOrder(models.Model):
         string='Arrival confirmation',
         compute='_compute_date_arrival_state',
         store=True,
+        copy=False,
     )
     date_arrival_attachments = fields.Many2many(
         comodel_name='ir.attachment',
         string='Attachments of Expected arrivals',
         compute='_compute_date_arrival_attachments',
         # inverse='_inverse_date_arrival_attachments',
+        copy=False,
     )
 
     #===== Compute =====#

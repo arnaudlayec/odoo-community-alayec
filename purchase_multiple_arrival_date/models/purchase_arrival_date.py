@@ -37,7 +37,7 @@ class PurchaseArrivalDate(models.Model):
              'Pre-filled with yet unconfirmed products.'
     )
     partner_id = fields.Many2one(
-        related='order_id.partner_id'
+        related='order_id.partner_id',
     )
     date_arrival = fields.Date(
         # required=True in the view but not in the model
@@ -53,6 +53,7 @@ class PurchaseArrivalDate(models.Model):
         compute='_compute_attachment_id',
         store=True,
         ondelete='cascade',
+        copy=False,
     )
     filename = fields.Char()
     comment = fields.Text(string='Comment')
@@ -60,7 +61,8 @@ class PurchaseArrivalDate(models.Model):
         string='Products',
         comodel_name='purchase.order.line',
         inverse_name='date_arrival_id',
-        domain="[('order_id', '=', order_id), ('date_arrival_id', '=', False), ('display_type', '=', False)]"
+        domain="[('order_id', '=', order_id), ('date_arrival_id', '=', False), ('display_type', '=', False)]",
+        copy=False,
     )
     price_unit_verified = fields.Boolean(
         string='Verified prices',
@@ -69,17 +71,17 @@ class PurchaseArrivalDate(models.Model):
              ' in acknowledgment and verified by someone.'
     )
 
-    @api.constrains('order_id', 'order_line')
-    def _constrain_order_consistency(self):
-        for arrival in self:
-            line_order_id = arrival.order_line.order_id
-            if line_order_id and arrival.order_id and line_order_id != arrival.order_id:
-                raise exceptions.ValidationError(_(
-                    "A vendor acknowledgment must shared the same Purchase Order "
-                    "than its products (%s, %s)",
-                    arrival.order_id.display_name,
-                    line_order_id.mapped('display_name')
-                ))
+    # @api.constrains('order_id', 'order_line')
+    # def _constrain_order_consistency(self):
+    #     for arrival in self:
+    #         line_order_id = arrival.order_line.order_id
+    #         if line_order_id and arrival.order_id and line_order_id != arrival.order_id:
+    #             raise exceptions.ValidationError(_(
+    #                 "The Purchase Order of the Vendor Acknowledgment should not be different "
+    #                 "than the Purchase Order of the products (%s, %s)."
+    #                 arrival.order_id.display_name,
+    #                 line_order_id.mapped('display_name')
+    #             ))
     
     #===== CRUD =====#
     @api.model_create_multi
