@@ -48,30 +48,21 @@ class MrpWorkOrder(models.Model):
 
     #===== performance & qty_produced (compute & button) =====#
     @api.depends(
-        'qty_production', 'duration_expected',
+        'qty_production', 'duration_expected', 'productivity_tracking',
         'time_ids', 'time_ids.duration', 'time_ids.qty_production'
     )
     def _compute_performance(self):
         for wo in self:
-            # use `sum` so it's real-time
-            duration = sum(wo.time_ids.mapped('duration'))
-
-            if wo.productivity_tracking == 'unit':
-                qty_produced = sum(wo.time_ids.mapped('qty_production'))
-
-                wo.unit_time_avg = wo.qty_production and wo.duration_expected / wo.qty_production / 60
-                wo.unit_time_real, wo.performance, wo.gain = wo._compute_metrics(
-                    wo.unit_time_avg, duration, qty_produced
-                )
-            else:
-                wo.gain = (
-                    wo.duration_expected - duration
-                    if duration > wo.duration_expected or wo.production_id.state == 'done'
-                    else False
-                )
+            wo.unit_time_avg = wo.qty_production and wo.duration_expected / wo.qty_production / 60
+            wo.unit_time_real, wo.performance, wo.gain = wo._compute_metrics(
+                unit_time_avg=wo.unit_time_avg,
+                duration=sum(wo.time_ids.mapped('duration')),
+                qty_produced=sum(wo.time_ids.mapped('qty_production')),
+                workorder=wo,
+            )
 
     @api.model
-    def _compute_metrics(self, unit_time_avg, duration, qty_produced):
+    def _compute_metrics(self, unit_time_avg, duration, qty_produced, workorder):
         """ :arg unit_time_avg: h/unit
             :arg duration:      in min
             :arg qty_procuded:  /
@@ -81,9 +72,18 @@ class MrpWorkOrder(models.Model):
         performance = 0.0
         gain = 0.0
 
-        if unit_time_avg and unit_time_real:
+        # unit follow-up => gain & perf without waiting overconsumption or closing
+        if workorder.productivity_tracking == 'unit' and unit_time_avg and unit_time_real:
             performance = -1 * (unit_time_real - unit_time_avg) / unit_time_avg * 100
             gain = -1 * (unit_time_real - unit_time_avg) * qty_produced
+        
+        # standard or no follow-up => gain & perf at overconsumption or closing
+        elif workorder.productivity_tracking != 'unit':
+            expected = workorder.duration_expected or 0.0
+
+            if expected  and (duration > expected or workorder.production_id.state == 'done'):
+                gain = expected - duration
+                performance = (expected - duration) / expected * 100
 
         return unit_time_real, performance, gain
 

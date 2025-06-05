@@ -42,7 +42,10 @@ class MrpWorkCenterProductivity(models.Model):
         for record in self:
             # productivity
             record.unit_time, record.performance, record.gain = _compute_metrics(
-                record.wo_unit_time_avg, record.duration, record.qty_production
+                unit_time_avg=record.wo_unit_time_avg,
+                duration=record.duration,
+                qty_produced=record.qty_production,
+                workorder=record.workorder_id,
             )
 
             # workorder quantities & duration
@@ -55,7 +58,10 @@ class MrpWorkCenterProductivity(models.Model):
 
             # workorder performance
             record.wo_unit_time_real, record.wo_performance, record.wo_gain = _compute_metrics(
-                record.wo_unit_time_avg, wo_duration, record.wo_qty_produced
+                unit_time_avg=record.wo_unit_time_avg,
+                duration=wo_duration,
+                qty_produced=record.wo_qty_produced,
+                workorder=record.workorder_id,
             )
             record.wo_progress_qty = record.wo_qty_remaining and record.wo_qty_produced / record.wo_qty_remaining * 100 # as per qties
             record.wo_progress = wo.duration_expected and wo_duration / wo.duration_expected * 100 # as per times
