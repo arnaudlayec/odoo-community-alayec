@@ -77,9 +77,9 @@ class MrpWorkOrder(models.Model):
             :arg qty_procuded:  /
             :return: unit_time_real (h/unit), performance, gain (h)
         """
-        unit_time_real = qty_produced and duration / qty_produced / 60 or 0
-        performance = 0
-        gain = 0
+        unit_time_real = duration / qty_produced / 60.0 if qty_produced else 0.0
+        performance = 0.0
+        gain = 0.0
 
         if unit_time_avg and unit_time_real:
             performance = -1 * (unit_time_real - unit_time_avg) / unit_time_avg * 100
