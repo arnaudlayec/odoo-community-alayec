@@ -28,7 +28,7 @@
             </field>
             <field name="qty_produced" position="attributes">
                 <attribute name="attrs">{
-                    'column_invisible': [('parent.state', '=', 'done')],
+                    'column_invisible': [('parent.state', '!=', 'done')],
                     'invisible': [('productivity_tracking', 'in', ['global', 'none'])]
                 }</attribute>
             </field>

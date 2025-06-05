@@ -77,18 +77,22 @@ class MrpWorkOrder(models.Model):
         performance = 0.0
         gain = 0.0
 
-        # unit follow-up => gain & perf without waiting overconsumption or closing
-        if workorder.productivity_tracking == 'unit' and unit_time_avg and unit_time_real:
-            performance = -1 * (unit_time_real - unit_time_avg) / unit_time_avg * 100
-            gain = -1 * (unit_time_real - unit_time_avg) * qty_produced
-        
         # standard or no follow-up => gain & perf at overconsumption or closing
-        elif workorder.productivity_tracking != 'unit':
-            expected = workorder.duration_expected or 0.0
-
-            if expected  and (duration > expected or workorder.production_id.state == 'done'):
-                gain = expected - duration
-                performance = (expected - duration) / expected * 100
+        expected = workorder.duration_expected or 0.0
+        if duration > expected or workorder.production_id.state == 'done':
+            gain = expected - duration
+            performance = (
+                (expected - duration) / expected * 100.0
+                if expected else -100.0
+            )
+        # unit follow-up => gain & perf without waiting overconsumption or closing
+        elif workorder.productivity_tracking == 'unit':
+            if qty_produced:
+                gain = -1 * ((unit_time_real or 0.0) - (unit_time_avg or 0.0)) * qty_produced * 60.0
+            performance = (
+                -1 * ((unit_time_real or 0.0) - (unit_time_avg or 0.0)) / unit_time_avg * 100.0
+                if unit_time_avg else -100.0
+            )
 
         return unit_time_real, performance, gain
 
