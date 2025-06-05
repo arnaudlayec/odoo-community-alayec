@@ -27,7 +27,12 @@ class MrpWorkOrder(models.Model):
         readonly=False,
         related='' # unset `related`, so it becomes user-defined per Work Order
     )
-
+    # native
+    duration_expected = fields.Float(
+        # cancel computes so `duration_expected` is not recomputed
+        # when updating quantities
+        compute=''
+    )
     # computed
     duration = fields.Float(readonly=True)
     time_ids = fields.One2many(string="Productivity Times")
