@@ -70,18 +70,6 @@ class PurchaseArrivalDate(models.Model):
         help='Whether the product prices were confirmed by the seller '
              ' in acknowledgment and verified by someone.'
     )
-
-    # @api.constrains('order_id', 'order_line')
-    # def _constrain_order_consistency(self):
-    #     for arrival in self:
-    #         line_order_id = arrival.order_line.order_id
-    #         if line_order_id and arrival.order_id and line_order_id != arrival.order_id:
-    #             raise exceptions.ValidationError(_(
-    #                 "The Purchase Order of the Vendor Acknowledgment should not be different "
-    #                 "than the Purchase Order of the products (%s, %s)."
-    #                 arrival.order_id.display_name,
-    #                 line_order_id.mapped('display_name')
-    #             ))
     
     #===== CRUD =====#
     @api.model_create_multi
