@@ -34,8 +34,7 @@
                     <group>
                         <field name="partner_id" invisible="context.get('default_order_id')" />
                         <field name="date_arrival" required="1" />
-                        <field name="attachment" filename="filename" />
-                        <field name="filename" invisible="1" />
+                        <field name="attachment_ids" widget="many2many_binary" />
                         <field name="comment" />
                         <field name="price_unit_verified" widget="boolean_toggle" />
                     </group>

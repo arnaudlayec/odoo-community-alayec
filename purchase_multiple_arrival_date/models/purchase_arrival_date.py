@@ -46,16 +46,11 @@ class PurchaseArrivalDate(models.Model):
         string='Arrival Date',
         default=lambda self: fields.Date.today(),
     )
-    attachment = fields.Binary(string='File')
-    attachment_id = fields.Many2one(
+    attachment_ids = fields.Many2many(
         comodel_name='ir.attachment',
-        string='Attachment',
-        compute='_compute_attachment_id',
-        store=True,
-        ondelete='cascade',
+        string='Attachments',
         copy=False,
     )
-    filename = fields.Char()
     comment = fields.Text(string='Comment')
     order_line = fields.One2many(
         string='Products',
@@ -72,16 +67,6 @@ class PurchaseArrivalDate(models.Model):
     )
     
     #===== CRUD =====#
-    @api.model_create_multi
-    def create(self, vals_list):
-        """ `ir.attachment`
-            Don't store `ir_attachment`.`res_field` for `purchase.arrival.date` attachments
-            because it throws an access error and we actually don't need it
-        """
-        res = super().create(vals_list)
-        res.sudo().attachment_id.res_field = False # sudo() to bypass access error
-        return res
-    
     def unlink(self):
         """ Force the refresh of `purchase_order`.`date_arrival_state`
             because removal of `purchase.arrival.date` record
@@ -108,31 +93,15 @@ class PurchaseArrivalDate(models.Model):
             arrival.order_line = arrival.order_id._get_unconfirmed_date_order_line()
 
     #===== Compute =====#
-    @api.depends('filename')
-    def _compute_attachment_id(self):
-        res = self.env['ir.attachment'].search_read(
-            domain=[
-                ('res_model', '=', self._name),
-                ('res_id', 'in', self.ids),
-                ('res_field', '=', 'attachment')
-            ],
-            fields=['res_id']
-        )
-        mapped_attachments = {vals['res_id']: vals['id'] for vals in res}
-        for arrival in self:
-            arrival.attachment_id = mapped_attachments.get(arrival.id)
-        
-        self._update_attachment_name()
-
-    def _update_attachment_name(self):
-        """ Synchronize `filename` in `ir.attachment`,
-            else filename is not well displayed when shown in `purchase.order` form
-        """
-        for arrival in self:
-            arrival.attachment_id.name = (
-                '[{}] {}' . format(arrival.date_arrival, arrival.filename) if arrival.filename
-                else str(arrival.date_arrival)
-            )
+    # def _update_attachment_name(self):
+    #     """ Synchronize `filename` in `ir.attachment`,
+    #         else filename is not well displayed when shown in `purchase.order` form
+    #     """
+    #     for arrival in self:
+    #         arrival.attachment_id.name = (
+    #             '[{}] {}' . format(arrival.date_arrival, arrival.filename) if arrival.filename
+    #             else str(arrival.date_arrival)
+    #         )
 
     #===== Button =====#
     def action_toggle_price_unit_verified(self):
