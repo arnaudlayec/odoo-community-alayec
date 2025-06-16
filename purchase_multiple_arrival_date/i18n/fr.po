@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-06-02 13:38+0000\n"
-"PO-Revision-Date: 2025-06-02 15:40+0200\n"
+"POT-Creation-Date: 2025-06-16 14:13+0000\n"
+"PO-Revision-Date: 2025-06-16 16:14+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -16,17 +16,6 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 3.6\n"
-
-#. module: purchase_multiple_arrival_date
-#. odoo-python
-#: code:addons/purchase_multiple_arrival_date/models/purchase_arrival_date.py:0
-#, python-format
-msgid ""
-"A vendor acknowledgment must shared the same same Purchase Order than its "
-"products (%s, %s)"
-msgstr ""
-"Un accusé de réception doit être déclaré sur la même commande que ses "
-"produits (%s, %s)"
 
 #. module: purchase_multiple_arrival_date
 #: model_terms:ir.ui.view,arch_db:purchase_multiple_arrival_date.purchase_order_line_search
@@ -55,9 +44,9 @@ msgid "Arrival confirmation"
 msgstr "Accusés de réception"
 
 #. module: purchase_multiple_arrival_date
-#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__attachment_id
-msgid "Attachment"
-msgstr "Pièce-jointe"
+#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__attachment_ids
+msgid "Attachments"
+msgstr "Pièces jointes"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_order__date_arrival_attachments
@@ -118,16 +107,6 @@ msgstr "Livraison partiellement confirmée"
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__display_name
 msgid "Display Name"
 msgstr "Nom d'affichage"
-
-#. module: purchase_multiple_arrival_date
-#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__attachment
-msgid "File"
-msgstr "Fichier"
-
-#. module: purchase_multiple_arrival_date
-#: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__filename
-msgid "Filename"
-msgstr "Nom du fichier"
 
 #. module: purchase_multiple_arrival_date
 #: model:ir.model.fields,field_description:purchase_multiple_arrival_date.field_purchase_arrival_date__id
