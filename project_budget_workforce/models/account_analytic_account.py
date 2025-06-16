@@ -19,7 +19,7 @@ class AccountAnalyticAccount(models.Model):
 
         # cost history table ensuring unique entry per starting_date
         analytic_cost_history = {}
-        for x in self.timesheet_cost_history_ids:
+        for x in self.sudo().timesheet_cost_history_ids:
             analytic_cost_history[x.starting_date] = (
                 x.starting_date,
                 x.date_to,
