@@ -67,6 +67,16 @@ class PurchaseArrivalDate(models.Model):
     )
     
     #===== CRUD =====#
+    @api.model_create_multi
+    def create(self, vals_list):
+        """ `ir.attachment`
+            Don't store `ir_attachment`.`res_field` for `purchase.arrival.date` attachments
+            because it throws an access error and we actually don't need it
+        """
+        res = super().create(vals_list)
+        res.sudo().attachment_ids.res_field = False # sudo() to bypass access error
+        return res
+    
     def unlink(self):
         """ Force the refresh of `purchase_order`.`date_arrival_state`
             because removal of `purchase.arrival.date` record
