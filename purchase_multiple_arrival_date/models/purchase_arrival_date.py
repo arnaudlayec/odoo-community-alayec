@@ -74,7 +74,11 @@ class PurchaseArrivalDate(models.Model):
             because it throws an access error and we actually don't need it
         """
         res = super().create(vals_list)
-        res.sudo().attachment_ids.res_field = False # sudo() to bypass access error
+        for arrival in res:
+            arrival.sudo().attachment_ids.write({
+                'res_field': False,
+                'res_id': arrival.id,
+            })
         return res
     
     def unlink(self):
