@@ -24,7 +24,7 @@ class AccountMoveBudgetLine(models.Model):
     #===== Compute: valuation =====#
     @api.depends(
         'qty_debit', 'qty_credit', 'standard_price',
-        'budget_id', 'budget_id.date_from', 'budget_id.date_to',
+        'budget_id.date_from', 'budget_id.date_to',
         'analytic_account_id',
         'timesheet_cost_history_ids',
         'timesheet_cost_history_ids.hourly_cost',
@@ -41,6 +41,6 @@ class AccountMoveBudgetLine(models.Model):
             return super()._compute_debit_credit_one()
         
         _value_workforce = self.sudo().analytic_account_id._value_workforce
-        self.debit = _value_workforce(self.qty_debit, self.budget_id)
-        self.credit = _value_workforce(self.qty_credit, self.budget_id)
+        self.debit = _value_workforce(self.qty_debit,   self.budget_id.date_from, self.budget_id.date_to)
+        self.credit = _value_workforce(self.qty_credit, self.budget_id.date_from, self.budget_id.date_to)
     

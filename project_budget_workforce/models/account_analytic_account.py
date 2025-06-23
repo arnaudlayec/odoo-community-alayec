@@ -11,9 +11,10 @@ class AccountAnalyticAccount(models.Model):
     )
 
     #===== Valuation logics of a qty, using `timesheet_cost_history_ids` =====#
-    def _value_workforce(self, qty, budget_id):
+    def _value_workforce(self, qty, date_from, date_to):
         """ :arg qty: quantity to multiply by unit value logic
-            :arg budget_id: for date_from and date_to
+            :arg date_from: explicit
+            :arg date_to: explicit
         """
         self.ensure_one()
 
@@ -28,7 +29,7 @@ class AccountAnalyticAccount(models.Model):
 
         return self._calculate_total_valuation(
             qty,
-            [budget_id.date_from, budget_id.date_to],
+            [date_from, date_to],
             analytic_cost_history.values()
         )
     
@@ -46,7 +47,7 @@ class AccountAnalyticAccount(models.Model):
         if budget_start == budget_end or not budget_start or not budget_end or not qty or not costs_per_dates:
             return 0
 
-        total_days = (budget_end - budget_start).days + 1
+        total_days = (budget_end - budget_start).days + 1.0
         total_valuation = 0.0
 
         for period_start, period_end, unitary_value in costs_per_dates:
@@ -59,7 +60,7 @@ class AccountAnalyticAccount(models.Model):
             overlap_end = min(budget_end, period_end) if period_end else budget_end
             
             if overlap_start < overlap_end: # There is overlap
-                overlap_days = (overlap_end - overlap_start).days + 1
+                overlap_days = (overlap_end - overlap_start).days + 1.0
                 weight_of_period = overlap_days / total_days
                 total_valuation += weight_of_period * qty * unitary_value
 

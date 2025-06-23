@@ -16,7 +16,9 @@ class HrEmployeeTimesheetCostHistory(models.Model):
     )
     date_to = fields.Date(
         string='Date To',
-        compute='_compute_date_to'
+        compute='_compute_date_to',
+        store=True,
+        readonly=True,
     )
 
     #===== Compute =====#

@@ -1,8 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _, Command
-from collections import defaultdict
-
 from datetime import timedelta
 
 class Project(models.Model):
