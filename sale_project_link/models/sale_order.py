@@ -50,7 +50,7 @@ class SaleOrder(models.Model):
         
         return name_key
 
-    def _get_vals_from_project(self, project_id=None, should_erase=True, vals=None):
+    def _get_vals_from_project(self, project_id=None, should_erase=True, vals={}):
         """ :option project_id: for `create()`
             :option should_erase: if we should keep Sale Order's vals or erase them with Project's vals
             :option vals: must be given if `should_erase=False`
@@ -59,7 +59,7 @@ class SaleOrder(models.Model):
         return {
             field: (project_id[field].id if hasattr(project_id[field], '_name') else project_id[field])
             for field in self._get_fields_from_project()
-            if should_erase or not vals.get(field)
+            if (should_erase or not vals.get(field)) and project_id[field]
         }
     def _get_fields_from_project(self):
         """ Can be overwritten """
