@@ -6,7 +6,7 @@
         </xpath>
 
         <xpath expr="//tbody/tr" position="inside">
-            <td>
+            <td name="td_comment">
                 <span t-field="raw_line.comment"/>
             </td>
         </xpath>

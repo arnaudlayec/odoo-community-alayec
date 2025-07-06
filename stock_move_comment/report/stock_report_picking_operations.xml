@@ -2,11 +2,11 @@
 <odoo>
     <template id="report_picking" inherit_id="stock.report_picking">
         <th name="th_barcode" position="after">
-            <th name="th_comment">Comment</th>
+            <th name="th_comment"> <strong>Comment</strong> </th>
         </th>
 
         <xpath expr="//td[@t-if='has_barcode']" position="after">
-            <td>
+            <td name="td_comment">
                 <span t-field="ml.comment" />
             </td>
         </xpath>
