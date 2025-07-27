@@ -70,7 +70,6 @@ class SaleOrder(models.Model):
     @api.onchange('project_id')
     def _onchange_project_id(self):
         """ Auto-populates SO fields from project's ones, and lines analytic """
-        project_analytics = self.env.company.analytic_plan_id.account_ids
 
         for sale_order in self:
             # SO fields
@@ -79,6 +78,7 @@ class SaleOrder(models.Model):
                 sale_order.write(vals)
             
             # SO lines analytics
+            project_analytics = sale_order.company_id.analytic_plan_id.account_ids
             sale_order.order_line._replace_analytic(
                 replaced_ids=project_analytics._origin.ids,
                 added_id=sale_order.project_id.analytic_account_id._origin.id

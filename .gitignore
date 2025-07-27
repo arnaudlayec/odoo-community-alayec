@@ -1,7 +1,6 @@
 
-# ALUVAL private data (migration only)
-import_tools/data/*/*.csv
-import_tools/data/*/*.tar.gz
+# Tools
+oca_temp/
 
 # Personal "mess" folders & files
 __old/
