@@ -10,7 +10,7 @@ class StockMove(models.Model):
         compute='_compute_project_id',
     )
 
-    @api.depends(lambda self: self._get_fields_project_id())
+    @api.depends(lambda self: [x + '.project_id' for x in self._get_fields_project_id()])
     def _compute_project_id(self):
         """ Compute `stock_move.project_id` from the fields listed in `_get_fields_project_id` """
         fields = self._get_fields_project_id()

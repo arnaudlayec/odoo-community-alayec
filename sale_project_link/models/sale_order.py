@@ -66,24 +66,16 @@ class SaleOrder(models.Model):
         return ['partner_id', 'analytic_account_id']
     
 
-    #===== Onchange (vals & line analytic) =====#
+    #===== Onchange (vals) =====#
     @api.onchange('project_id')
     def _onchange_project_id(self):
-        """ Auto-populates SO fields from project's ones, and lines analytic """
+        """ Auto-populates SO fields from project's ones """
 
         for sale_order in self:
             # SO fields
             vals = sale_order._get_vals_from_project()
             if vals:
                 sale_order.write(vals)
-            
-            # SO lines analytics
-            project_analytics = sale_order.company_id.analytic_plan_id.account_ids
-            sale_order.order_line._replace_analytic(
-                replaced_ids=project_analytics._origin.ids,
-                added_id=sale_order.project_id.analytic_account_id._origin.id
-            )
-
 
     #===== Invoice =====#
     def _prepare_invoice(self):
