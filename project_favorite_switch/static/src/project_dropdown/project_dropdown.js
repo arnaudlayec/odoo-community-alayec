@@ -42,10 +42,15 @@ export class SystrayFavProjects extends Component {
         onWillStart(async () => {
             this.projects = await this.orm.searchRead(
                 "project.project",
-                ['|', ["stage_id.fold", "=", false], ["is_favorite", "=", true]],
+                this.domainFavProjects,
                 ["display_name", "is_favorite"]
             );
         });
+    }
+
+    get domainFavProjects() {
+        // Can be inheritted
+        return []
     }
 }
 SystrayFavProjects.template = "project.SystrayFavProjects";

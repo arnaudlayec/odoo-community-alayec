@@ -8,11 +8,10 @@ class ProjectProject(models.Model):
 
     def _get_domain_fav_projects(self, fav_only=True):
         """ Can be overwritten or called by other models """
-        operator = '&' if fav_only else '|'
-        return [
-            ('company_id', '=', self.env.company.id),
-            operator, ('stage_id.fold', '=', False), ('is_favorite', '=', True),
-        ]
+        domain = [('company_id', 'in', self.env.company.ids)]
+        if fav_only:
+            domain += [('is_favorite', '=', True)]
+        return domain
     
     #===== Fields =====
     is_favorite = fields.Boolean(search='_search_is_favorite')
