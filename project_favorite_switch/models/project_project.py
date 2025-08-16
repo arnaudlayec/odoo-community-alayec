@@ -8,19 +8,18 @@ class ProjectProject(models.Model):
 
     def _get_domain_fav_projects(self, fav_only=True):
         """ Can be overwritten or called by other models """
+        operator = '&' if fav_only else '|'
         return [
             ('company_id', '=', self.env.company.id),
-            ('stage_id.fold', '=', False)
-        ] + (
-            [('favorite_user_ids', '=', self.env.uid)] if fav_only else []
-        )
-
+            operator, ('stage_id.fold', '=', False), ('is_favorite', '=', True),
+        ]
+    
     #===== Fields =====
     is_favorite = fields.Boolean(search='_search_is_favorite')
 
     #===== Compute: Refresh `res_users.favorite_project_id` ======
     def _search_is_favorite(self, operator, value):
-        if operator == '==' and value or operator == '!=' and not value:
+        if operator == '=' and value or operator == '!=' and not value:
             new_operator = 'in'
         else:
             new_operator = 'not in'
