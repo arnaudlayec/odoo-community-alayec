@@ -113,10 +113,3 @@ class MrpProduction(models.Model):
             ('workorder_ids', '!=', False)
         ]
     
-    def action_open_productivity_attendance(self):
-        """ Called on click of a Kanban card of a MO
-            => Opens a productivity form
-        """
-        workorder_id = self._context.get('default_workorder_id')
-        workorders = self.workorder_ids.browse(workorder_id) if workorder_id else self.workorder_ids
-        return self.workorder_ids.action_open_productivity_attendance()
