@@ -7,6 +7,11 @@
         <field name="inherit_id" ref="mrp.mrp_production_workorder_form_view_inherit"/>
 
         <field name="arch" type="xml">
+            <!-- Order by date_start -->
+            <xpath expr="//field[@name='time_ids']" position="attributes">
+                <attribute name="default_order">date_start desc</attribute>
+            </xpath>
+
             <!-- Replace `duration` by `duration_hours` -->
             <xpath expr="//field[@name='time_ids']//field[@name='duration']" position="attributes">
                 <attribute name="optional">hide</attribute>
@@ -14,6 +19,19 @@
             <xpath expr="//field[@name='time_ids']//field[@name='duration']" position="after">
                 <field name="duration_hours" widget="float_time" optional="show" sum="1" />
             </xpath>
+
+            <!-- Hide `date_end`, and show `date_start` only on WO details from MO -->
+            <field name="user_id" position="before">
+                <field name="date_start" position="move" />
+            </field>
+            <field name="date_start" position="attributes">
+                <attribute name="string">Date</attribute>
+                <attribute name="widget">date</attribute>
+                <attribute name="invisible">context.get('mrp_attendance')</attribute>
+            </field>
+            <field name="date_end" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
         </field>
     </record>
 

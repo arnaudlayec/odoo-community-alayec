@@ -164,13 +164,6 @@
             <page name="components" position="before">
                 <page name="time_tracking" position="move" />
             </page>
-            <!-- Hide `date_start` and `date_end` -->
-            <field name="date_start" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </field>
-            <field name="date_end" position="attributes">
-                <attribute name="invisible">1</attribute>
-            </field>
 
             <!-- Add `qty_production` -->
             <xpath expr="//field[@name='time_ids']//field[@name='duration']" position="after">
