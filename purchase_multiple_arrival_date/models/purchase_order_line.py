@@ -21,15 +21,8 @@ class PurchaseOrderLine(models.Model):
     )
     
     #===== Compute =====#
-    def _compute_date_planned_arrival(self):
-        """ Compute `date_planned` as per arrival_date
-            Should not be executed on order.line with empty `date_arrival_id`
-            so that draft po have an initial `planned_date`
-        """
-        for line in self:
-            line.date_planned = line.date_arrival_id.date_arrival
-    
     @api.depends('date_arrival_id')
     def _compute_date_arrival_confirmed(self):
+        """ Whether line arrival is confirmed by vendor or not """
         for line in self:
             line.date_arrival_confirmed = bool(line.date_arrival_id)

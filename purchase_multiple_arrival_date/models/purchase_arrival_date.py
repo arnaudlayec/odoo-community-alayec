@@ -69,17 +69,16 @@ class PurchaseArrivalDate(models.Model):
     #===== CRUD =====#
     @api.model_create_multi
     def create(self, vals_list):
-        """ `ir.attachment`
-            Don't store `ir_attachment`.`res_field` for `purchase.arrival.date` attachments
+        """ Don't store `ir_attachment`.`res_field` for `purchase.arrival.date` attachments
             because it throws an access error and we actually don't need it
         """
-        res = super().create(vals_list)
-        for arrival in res:
+        arrivals = super().create(vals_list)
+        for arrival in arrivals:
             arrival.sudo().attachment_ids.write({
                 'res_field': False,
                 'res_id': arrival.id,
             })
-        return res
+        return arrivals
     
     def unlink(self):
         """ Force the refresh of `purchase_order`.`date_arrival_state`
@@ -92,11 +91,11 @@ class PurchaseArrivalDate(models.Model):
         return res
 
     #===== Onchange =====#
-    @api.onchange('date_arrival')
+    @api.onchange('date_arrival', 'order_line')
     def _onchange_date_arrival(self):
         """ Real-time update of po lines `planned_date` in arrival form """
         for arrival in self:
-            arrival.order_line.date_planned = arrival.date_arrival
+            arrival.order_line._origin.date_planned = arrival.date_arrival
 
     @api.onchange('order_id')
     def _onchange_order_id(self):
