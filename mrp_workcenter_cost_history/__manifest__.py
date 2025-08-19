@@ -19,11 +19,11 @@
     'data': [
         # security
         'security/ir.model.access.csv',
+        'security/mrp_timesheet_security.xml',
         # wizard
         'wizard/cost_history.xml',
         # views
         'views/cost_history.xml',
         'views/mrp_workcenter.xml',
-        'views/mrp_workorder.xml',
     ],
 }
