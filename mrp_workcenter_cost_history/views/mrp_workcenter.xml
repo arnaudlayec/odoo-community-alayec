@@ -9,13 +9,19 @@
         <field name="domain">[('workcenter_id', '=', active_id)]</field>
         <field name="target">current</field>
     </record>
-
+    
+    <!-- Workcenter Form -->
     <record id="mrp_workcenter_view" model="ir.ui.view" >
         <field name="name">mrp.workcenter.form.cost_history</field>
         <field name="model">mrp.workcenter</field>
         <field name="inherit_id" ref="mrp.mrp_workcenter_view" />
 
         <field name="arch" type="xml">
+            <!-- Display analytic -->
+            <group name="costing" position="inside">
+                <field name="costs_hour_account_id" />
+            </group>
+
             <div id="costs_hour" position="replace">
                 <field name="currency_id" invisible="1" />
                 <field name="cost_history_ids" invisible="1" />

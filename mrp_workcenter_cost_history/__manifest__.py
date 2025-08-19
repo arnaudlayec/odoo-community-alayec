@@ -24,5 +24,6 @@
         # views
         'views/cost_history.xml',
         'views/mrp_workcenter.xml',
+        'views/mrp_workorder.xml',
     ],
 }
