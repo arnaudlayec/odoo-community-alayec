@@ -47,4 +47,4 @@ class HolidaysAllocation(models.Model):
 
     def _search_description(self, operator, value):
         domain = [('private_name', operator, value), ('leave_manager_id', '=', self.env.user.id)]
-        return super()._search_description() | self.search(domain)
+        return super()._search_description(operator, value) | self.search(domain)
