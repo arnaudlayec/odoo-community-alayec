@@ -75,6 +75,6 @@ class HolidaysRequest(models.Model):
         ]
         leaves = self.search(domain)
         return expression.OR([
-            super()._search_description(),
+            super()._search_description(operator, value),
             [('id', 'in', leaves.ids)]
         ])
