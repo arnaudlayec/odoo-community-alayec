@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from odoo import models, fields, api, _
+from odoo.osv import expression
 
 class HolidaysRequest(models.Model):
     """ Adds accesses for Time Off responsible of employees so they may manage leaves on
@@ -68,5 +69,12 @@ class HolidaysRequest(models.Model):
             leave.sudo().private_name = leave.name
 
     def _search_description(self, operator, value):
-        domain = [('private_name', operator, value), ('employee_ids.leave_manager_id', '=', self.env.user.id)]
-        return super()._search_description() | self.search(domain)
+        domain = [
+            ('private_name', operator, value),
+            ('employee_ids.leave_manager_id', '=', self.env.user.id)
+        ]
+        leaves = self.search(domain)
+        return expression.OR([
+            super()._search_description(),
+            [('id', 'in', leaves.ids)]
+        ])
