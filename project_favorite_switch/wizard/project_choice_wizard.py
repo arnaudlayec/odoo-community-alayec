@@ -89,8 +89,8 @@ class ProjectWizard(models.TransientModel):
         
         # Filter on the project
         if res_model == 'project.project':
-            action_dict['res_id'] = project.id
-        else:
+            action_dict['res_id'] = project.id # direclty opens project's form
+        elif project:
             domain = _resolve_string_to_python(action_dict.get('domain'))
             domain = safe_eval(domain) if isinstance(domain, str) else domain or []
             action_dict['domain'] = expression.AND([
