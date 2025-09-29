@@ -15,6 +15,7 @@
                 
                 <footer>
                     <button type="object" name="button_validate" string="Choose" class="btn btn-primary" />
+                    <button type="object" name="button_all_projects" string="All projects" class="btn btn-success text-uppercase" />
                     <button special="cancel" string="Discard" class="btn-secondary" />
                 </footer>
             </form>
