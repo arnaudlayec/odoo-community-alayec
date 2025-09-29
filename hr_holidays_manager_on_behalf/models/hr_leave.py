@@ -68,5 +68,5 @@ class HolidaysRequest(models.Model):
             leave.sudo().private_name = leave.name
 
     def _search_description(self, operator, value):
-        domain = [('private_name', operator, value), ('leave_manager_id', '=', self.env.user.id)]
+        domain = [('private_name', operator, value), ('employee_ids.leave_manager_id', '=', self.env.user.id)]
         return super()._search_description() | self.search(domain)
