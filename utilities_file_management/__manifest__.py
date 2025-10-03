@@ -15,7 +15,7 @@
         'python': ['pandas']
     },
     'depends': [
-        'base_external_dbsource_mssql',
+        # 'base_external_dbsource_mssql',
         'base_external_dbsource_sqlite',
     ],
     'data': ['security/ir.model.access.csv']
