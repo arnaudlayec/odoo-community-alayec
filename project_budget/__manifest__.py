@@ -9,7 +9,7 @@
     'application': False,
     'installable': True,
     'category': 'Project',
-    'version': '16.0.1.0.0',
+    'version': '16.0.2.1.0',
 
     'depends': [
         'hr_timesheet', # odoo (for form)
@@ -26,7 +26,6 @@
         'views/account_move_budget.xml',
         'views/account_move_budget_line.xml',
         'views/account_analytic_account.xml',
-        'views/res_config_settings.xml',
     ],
     "uninstall_hook": "uninstall_hook",
 }

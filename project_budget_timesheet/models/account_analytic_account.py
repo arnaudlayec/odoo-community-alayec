@@ -5,7 +5,8 @@ from odoo.tools.misc import formatLang
 
 
 class AccountAnalyticAccount(models.Model):
-    _inherit = ['account.analytic.account']
+    _name = 'account.analytic.account'
+    _inherit = ['account.analytic.account', 'account.move.budget.update.mixin']
 
     #===== Fields methods =====#
     def _get_timesheetable_types(self):
@@ -69,8 +70,8 @@ class AccountAnalyticAccount(models.Model):
     def _update_budget_crud(self, method, fields=[]):
         # Compute `project.allocated_hours`
         if self._should_update(method, fields, ['timesheetable']):
-            remove_budget_ids = bool(method == 'unlink') and self.budget_line_ids.ids
-            self.budget_line_ids.project_id._update_allocated_hours(remove_budget_ids)
+            removed_budget_ids = bool(method == 'unlink') and self.budget_line_ids.ids
+            self.budget_line_ids.project_id._update_allocated_hours(removed_budget_ids)
         
         return super()._update_budget_crud(method, fields)
 

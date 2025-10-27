@@ -104,7 +104,6 @@ class AccountMoveBudgetLine(models.Model):
         #     recordset.project_id._compute_budget_line_sum()
         return super()._update_budget_crud(method, fields)
     
-
     #===== Compute =====#
     @api.onchange('project_id')
     def _onchange_project_id(self):

@@ -92,7 +92,7 @@ class TestDepartmentCostHistory(HrEmployeeCostHistory):
         self.employee.department_id = self.department2
 
         # [Test] Employee's hourly_cost aligned to new department & no history in ftuure
-        self.assertEqual(self.employee.hourly_cost, self.department2.department_cost)
+        self.assertEqual(self.employee.hourly_cost, self.department2.hourly_cost)
         self.assertFalse(self.employee.timesheet_cost_history_ids.filtered_domain(
             [("date", ">=", date.today())]
         ))

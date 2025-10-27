@@ -9,7 +9,7 @@
 
         <field name="arch" type="xml">
             <xpath expr="//page[@id='timesheets_tab']/group/group" position="inside">
-                <field name="available_budget" />
+                <field name="remaining_budget" />
             </xpath>
         </field>
     </record>

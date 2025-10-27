@@ -22,7 +22,7 @@ class MrpWorkcenterProductivity(models.Model):
     def _compute_cost(self):
         # build valuation table
         workcenter_costs = defaultdict(dict)
-        for x in self.workcenter_id.sudo().cost_history_ids:
+        for x in self.workcenter_id.sudo().timesheet_cost_history_ids:
             workcenter_costs[x.workcenter_id.id][x.starting_date] = x.hourly_cost
 
         for productivity in self:

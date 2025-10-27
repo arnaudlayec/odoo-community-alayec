@@ -5,7 +5,7 @@ from odoo import models, fields, api, _
 class MrpWorkcenter(models.Model):
     _inherit = ["mrp.workcenter"]
 
-    cost_history_ids = fields.One2many(
+    timesheet_cost_history_ids = fields.One2many(
         comodel_name="hr.employee.timesheet.cost.history",
         inverse_name="workcenter_id",
         copy=False,
@@ -14,4 +14,5 @@ class MrpWorkcenter(models.Model):
         comodel_name='mrp.workorder',
         inverse_name='workcenter_id',
         string='Work Orders',
+        readonly=True,
     )

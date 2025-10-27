@@ -63,3 +63,7 @@ __pycache__/
 .Trashes
 ehthumbs.db
 Thumbs.db
+
+# Poedit (translation) #
+######################
+.mo

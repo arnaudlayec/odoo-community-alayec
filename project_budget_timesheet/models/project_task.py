@@ -36,7 +36,6 @@ class Task(models.Model):
 
         return vals
 
-
     #===== Fields =====#
     analytic_account_id = fields.Many2one(
         domain="""[
@@ -46,11 +45,10 @@ class Task(models.Model):
         ]""",
         group_expand='_read_group_analytic' # for kanban columns
     )
-    available_budget = fields.Float(
-        string='Available Budget',
-        compute='_compute_available_budget',
-        help="[Project budget] - [Planned hours of project's tasks, including this one]. "
-             "Can be negative, in contrary of real budget reservation in below table."
+    remaining_budget = fields.Float(
+        string='Remaining Budget',
+        compute='_compute_remaining_budget',
+        help="[Project budget] - [Planned hours of project's tasks, including this one]"
     )
     
     @api.depends(
@@ -61,22 +59,29 @@ class Task(models.Model):
         'project_id', 'project_id.budget_line_ids',
         'project_id.budget_line_ids.qty_balance',
     )
-    def _compute_available_budget(self):
-        # Calculate available budget at project level
-        project = self.project_id.with_context(analytic_ids=self.analytic_account_id.ids)
-        mapped_budget = project._get_mapped_budget_line(
-            field='qty_balance',
-            groupby=['project_id', 'analytic_account_id']
+    def _compute_remaining_budget(self):
+        # 1. Calculate available budget at project level
+        domain = self.project_id._get_domain_update_allocated_hours(
+            analytic_account_ids=self.analytic_account_id.ids
         )
+        rg_result = self.env['account.move.budget.line'].sudo()._read_group(
+            domain=[('project_id', '!=', False)] + domain,
+            fields=['qty_balance:sum'],
+            groupby=['project_id', 'analytic_account_id'],
+            lazy=False,
+        )
+        mapped_budget = {
+            (x['project_id'][0], x['analytic_account_id'][0]): x['qty_balance']
+            for x in rg_result
+        }
 
-        # Map sibling tasks and already reserved budget
-        domain = project._get_budget_line_domain()
+        # 2. Map sibling tasks and already reserved budget
         mapped_planned_hours = defaultdict(dict)
         for task in self.search(domain):
             key = (task.project_id.id, task.analytic_account_id.id)
             mapped_planned_hours[key][task.id] = task.planned_hours
 
-        # Re-calculate remaining budget on current task(s), excluding it from its siblings
+        # 3. Calculate remaining budget on current task(s), excluding it from its siblings
         for task in self:
             key = (task.project_id.id, task.analytic_account_id.id)
             project_budget = mapped_budget.get(key, 0.0)
@@ -85,11 +90,4 @@ class Task(models.Model):
                 if k != task.id
             ])
             
-            task.available_budget = project_budget - siblings_planned_hours - (task.planned_hours or 0.0)
-
-            # if task.available_budget < 0:
-            #     raise exceptions.UserError(_(
-            #         'A task cannot reserve more budget than available in the project.\n'
-            #         'Project budget: %s.\n Already planned budget: %s.\n This task budget: %s',
-            #         project_budget, siblings_budget, task.planned_hours
-            #     ))
+            task.remaining_budget = project_budget - siblings_planned_hours - (task.planned_hours or 0.0)

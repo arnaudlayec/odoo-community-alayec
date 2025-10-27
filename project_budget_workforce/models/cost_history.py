@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api, _, exceptions
 from odoo.osv import expression
 from odoo.tools import date_utils
 
@@ -9,10 +9,8 @@ class HrEmployeeTimesheetCostHistory(models.Model):
 
     #===== Fields =====#
     analytic_account_id = fields.Many2one(
-        # related-like field to employee's, department's or workcenter's analytic
+        string='Analytic Account',
         comodel_name="account.analytic.account",
-        compute='_compute_analytic_account_id',
-        store=True,
     )
     date_to = fields.Date(
         string='Date To',
@@ -21,33 +19,30 @@ class HrEmployeeTimesheetCostHistory(models.Model):
         readonly=True,
     )
 
-    #===== Compute =====#
-    # TO IMPROVE : we could use a related field to store employee_id, department_id, workcenter_id, etc...
-    # to be agnostic of the model having a cost history and free the module manifest dependencies
+    #===== Constrains =====#
     def _get_fields_related(self):
-        return {
-            'employee_id': 'hr.employee',
-            'department_id': 'hr.department',
-            'workcenter_id': 'mrp.workcenter',
-        }
+        """ :return: like ['employee_id', 'department_id', 'workcenter_id', 'analytic_account_id'] """
+        return [
+            name for name, attrs
+            in self.fields_get().items()
+            if attrs['type'] == 'many2one' and name not in ('create_uid', 'write_uid', 'currency_id')
+        ]
     
-    @api.depends(
-        'employee_id.analytic_account_id',
-        'department_id.analytic_account_id',
-        'workcenter_id.costs_hour_account_id',
-    )
-    def _compute_analytic_account_id(self):
-        for history in self:
-            history.analytic_account_id = (
-                history.department_id.analytic_account_id or
-                history.employee_id.analytic_account_id or
-                history.workcenter_id.costs_hour_account_id
-            )
-
-    @api.depends(
-        'employee_id.timesheet_cost_history_ids.starting_date',
-        'department_id.timesheet_cost_history_ids.starting_date',
-        'workcenter_id.cost_history_ids.starting_date',
+    @api.ondelete(at_uninstall=False)
+    def _unlink_if_related_not_set(self):
+        """ Can only remove lines of `analytic_account_id` """
+        if self._context.get('allow_unlink_cost_history'):
+            return
+        
+        fields = [x for x in self._get_fields_related() if x != 'analytic_account_id']
+        if any(self[field] for field in fields):
+            raise exceptions.ValidationError(_(
+                "Such line cannot be removed by a user."
+            ))
+    
+    #===== Compute =====#
+    @api.depends(lambda self:
+        [x + '.timesheet_cost_history_ids.starting_date' for x in self._get_fields_related()]
     )
     def _compute_date_to(self):
         """ `date_to` is either:
@@ -97,6 +92,8 @@ class HrEmployeeTimesheetCostHistory(models.Model):
         for field in self._get_fields_related():
             if vals[field] and (is_dict and vals[field][0] or vals[field].id):
                 return field
+        
+        return None
     
     #===== Button =====#
     def button_open_details(self):
@@ -112,4 +109,3 @@ class HrEmployeeTimesheetCostHistory(models.Model):
             'name': self[field].name,
             'context': {'display_analytic': True}
         }
-    

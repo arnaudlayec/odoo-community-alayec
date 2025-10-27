@@ -51,8 +51,8 @@
                 <attribute name="optional">hide</attribute>
             </field>
             <field name="duration_expected" position="before">
-                <field name="duration_expected_hours" widget="float_time" sum="Expected duration (h)" />
-                <field name="duration_hours" widget="float_time" sum="Real duration (h)"
+                <field name="duration_expected_hours" widget="float_time" sum="1" />
+                <field name="duration_hours" widget="float_time" sum="1"
                     readonly="1"
                     attrs="{'invisible': [('production_state','=', 'draft')], 'readonly': [('is_user_working', '=', True)]}"
                 />

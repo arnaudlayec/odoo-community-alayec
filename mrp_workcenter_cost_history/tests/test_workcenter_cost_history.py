@@ -43,7 +43,6 @@ class TestWorkcenterCostHistory(SingleTransactionCase):
         })
         cls.workcenter = cls.env['mrp.workcenter'].create({
             'name': 'Test Workcenter 01',
-            'costs_hour_account_id': cls.analytic.id
         })
         cls.workorder = cls.env['mrp.workorder'].create({
             'name': 'Test Workorder 01',
@@ -84,7 +83,7 @@ class TestWorkcenterCostHistory(SingleTransactionCase):
         self.new_workcenter_cost_wizard(self.BIG_COST, self.SMALL_DATE)
         
         self.assertEqual(self.workcenter.costs_hour, self.BIG_COST)
-        self.assertEqual(len(self.workcenter.cost_history_ids), 1)
+        self.assertEqual(len(self.workcenter.timesheet_cost_history_ids), 1)
 
     # ---- Valuation ----
     def _test_cost(self, cost):

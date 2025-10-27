@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!-- Copyright 2024 Moduon Team S.L. <info@moduon.team>
-     License LGPL-3.0 or later (https://www.gnu.org/licenses/lgpl). -->
 <odoo>
 
     <record id="hr_employee_timesheet_cost_view_tree" model="ir.ui.view">

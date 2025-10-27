@@ -12,34 +12,39 @@ class Project(models.Model):
         # store=True
     # )
     
+    @api.depends('budget_line_ids.qty_balance')
+    def _compute_budget_line_sum(self):
+        return super()._compute_budget_line_sum()
+    
     # @api.depends(
     #     'budget_line_ids',
     #     'budget_line_ids.qty_balance',
     #     'budget_line_ids.analytic_account_id',
     #     'budget_line_ids.analytic_account_id.timesheetable',
     # )
-    def _update_allocated_hours(self, remove_budget_ids):
+    def _update_allocated_hours(self, removed_budget_ids):
         # Get sum of `qty_balance` for timesheetable budgets
-        # see module `project_budget`
-        self = self.with_context(timesheetable=True, remove_budget_ids=remove_budget_ids)
-        mapped_budget = self._get_mapped_budget_line(field='qty_balance')
+        rg_result = self.env['account.move.budget.line'].sudo()._read_group(
+            domain=self._get_domain_update_allocated_hours(removed_budget_ids),
+            fields=['qty_balance:sum'],
+            groupby=['project_id'],
+        )
+        mapped_data = {x['project_id'][0]: x['qty_balance'] for x in rg_result}
+
         for project in self:
-            project.allocated_hours = mapped_budget.get(project.id)
+            project.allocated_hours = mapped_data.get(project.id, 0.0)
 
-
-    def _get_budget_line_domain(self):
+    def _get_domain_update_allocated_hours(self, removed_budget_ids=None, analytic_account_ids=None):
         """ Overwrite from module `project_budget` """
-        domain = super()._get_budget_line_domain()
+        domain = [
+            ('project_id', 'in', self._origin.ids),
+            ('analytic_account_id.timesheetable', '=', True),
+        ]
+        
+        if removed_budget_ids:
+            domain += [('id', 'not in', removed_budget_ids)]
 
-        analytic_ids = self._context.get('analytic_ids')
-        if analytic_ids:
-            domain += [('analytic_account_id', 'in', analytic_ids)]
-        
-        if self._context.get('timesheetable'):
-            domain += [('analytic_account_id.timesheetable', '=', True)]
-        
-        remove_budget_ids = self._context.get('remove_budget_ids')
-        if self._context.get('remove_budget_ids'):
-            domain += [('id', 'not in', remove_budget_ids)]
+        if analytic_account_ids:
+            domain += [('analytic_account_id', 'in', analytic_account_ids)]
 
         return domain

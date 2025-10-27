@@ -34,13 +34,13 @@ class ProjectWizard(models.TransientModel):
         action['target'] = 'main' # clears breadcrumb
         return action
 
-    def action_choose_project_and_redirect(self, action_arg, context_keys=['default_project']):
+    def action_choose_project_and_redirect(self, action_arg, context_keys=['default_project_id']):
         """ To be called from a server action attached to a menuitem
             :arg action_arg: is either:
-                1. or a dict of a custom action
-                2. a string of a method of `project.project` returning an action dict, like a
-                   `button_...`
-                3. a string (XMLID) of the original action to open
+                1. a dict: of a custom action
+                2. a string: XMLID of the original action to open
+                3. a string: method of `project.project` returning an action dict,
+                   like `button_...`
             :option context_keys: list of context keys to receive `project_id` as value
 
             :return: An action's dict, either:

@@ -20,19 +20,14 @@
         <field name="inherit_id" ref="analytic.view_account_analytic_account_form" />
 
         <field name="arch" type="xml">
-            <!-- 'Budget' config group and 'Budget only accoutnant' field -->
-            <sheet position="inside">
+            <!-- 'Budget' 'Budget only accountant' -->
+            <field name="code" position="after">
                 <field name="is_project_budget" invisible="1" />
-                
-                <group name="project_budget"
-                    string="Project budgets"
-                    colspan="1"
+                <field name="budget_type" />
+                <field name="budget_only_accountant" widget="boolean_toggle"
                     attrs="{'invisible': [('is_project_budget', '=', False)]}"
-                >
-                    <field name="budget_type" />
-                    <field name="budget_only_accountant" widget="boolean_toggle" />
-                </group>
-            </sheet>
+                />
+            </field>
         </field>
     </record>
 </odoo>

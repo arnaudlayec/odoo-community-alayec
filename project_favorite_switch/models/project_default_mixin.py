@@ -41,7 +41,7 @@ class ProjectDefaultMixin(models.AbstractModel):
         store=False
     )
 
-    def _get_project_id(self, vals={}, record=False, raise_if_not_found=False, return_record=False):
+    def _get_project_id(self, vals={}, record=None, raise_if_not_found=False, return_record=False):
         """ Try to get a `project_id_` from various possible source
             Useful in other situation than here, can be called like:
             `self.env['project.default.mixin']._get_project_id()`

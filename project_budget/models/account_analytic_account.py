@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, exceptions, _
 
 class AccountAnalyticAccount(models.Model):
     """ Configuration on Analytic Account for Project Budget """
@@ -8,11 +8,12 @@ class AccountAnalyticAccount(models.Model):
     _inherit = ['account.analytic.account', 'account.move.budget.update.mixin']
 
     sequence = fields.Integer(
-        # used in account.move.budget.line: budget lines sequence follows analytic account's sequence
+        # used in account.move.budget.line:
+        # budget lines sequence follows analytic account's sequence
     )
     is_project_budget = fields.Boolean(
         compute='_compute_is_project_budget',
-        store=True,
+        search='_search_is_project_budget',
     )
     budget_type = fields.Selection(
         selection=[
@@ -22,7 +23,7 @@ class AccountAnalyticAccount(models.Model):
         string='Budget type',
     )
     budget_only_accountant = fields.Boolean(
-        string='Accountant only?',
+        string='Accountant budget only?',
         default=True,
         help='If checked, projects managers will not be able to select it in budgets.'
     )
@@ -37,19 +38,17 @@ class AccountAnalyticAccount(models.Model):
         return 'unit' if self.budget_type == 'service' else 'amount'
 
     #===== Compute =====#
-    @api.depends('plan_id', 'company_id.analytic_budget_plan_id')
+    @api.depends('budget_type')
     def _compute_is_project_budget(self):
-        """ Configuration per company defining if the analytic account
-            can be used as a project's budget in budget lines
-        """
-        budget_plan = self.company_id.analytic_budget_plan_id
         for analytic in self:
-            analytic.is_project_budget = bool(analytic.plan_id == budget_plan)
-
-    @api.model
+            analytic.is_project_budget = bool(analytic.budget_type)
+    
     def _search_is_project_budget(self, operator, value):
-        budget_plan = self.env.company.analytic_budget_plan_id
-        return [('plan_id', '=', budget_plan.id)]
+        if value not in (True, False) or operator not in ('=', '!='):
+            raise exceptions.UserError(_("Operation not supported."))
+        is_budget = bool(operator == '=' and value) or bool(operator == '!=' and not value)
+        operator = '!=' if is_budget else '='
+        return [('budget_type', operator, False)]
     
     @api.model
     def _search_budget_project_ids(self, operator, value):

@@ -25,15 +25,16 @@
         
         <field name="arch" type="xml">
             <tree position="attributes">
-                <attribute name="create">false</attribute>
                 <attribute name="action">button_open_details</attribute>
                 <attribute name="type">object</attribute>
+                <attribute name="editable">bottom</attribute>
             </tree>
 
-            <field name="department_id" position="before">
+            <field name="hourly_cost" position="before">
                 <field name="analytic_account_id"
                     options="{'no_create_edit': 1}"
                     invisible="not context.get('display_analytic')"
+                    attrs="{'readonly': [('analytic_account_id', '=', False), ('id', '!=', False)]}"
                 />
             </field>
 
@@ -41,12 +42,12 @@
                 <field name="date_to" />
             </field>
 
-            <!-- Make fields optional -->
-            <field name="department_id" position="attributes">
-                <attribute name="optional">show</attribute>
+            <!-- Protect modification of fields when not on analytic line -->
+            <field name="hourly_cost" position="attributes">
+                <attribute name="attrs">{'readonly': [('analytic_account_id', '=', False)]}</attribute>
             </field>
-            <field name="employee_id" position="attributes">
-                <attribute name="optional">show</attribute>
+            <field name="starting_date" position="attributes">
+                <attribute name="attrs">{'readonly': [('analytic_account_id', '=', False)]}</attribute>
             </field>
         </field>
     </record>

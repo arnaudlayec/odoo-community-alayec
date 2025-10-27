@@ -62,5 +62,5 @@ class Task(models.Model):
         
         return vals
 
-    def _get_default_type_id(self, vals):
+    def _get_default_type_id(self, vals={}):
         return vals.get('type_id', self.env.context.get('default_type_id'))

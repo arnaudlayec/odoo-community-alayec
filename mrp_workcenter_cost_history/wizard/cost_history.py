@@ -30,11 +30,11 @@ class HrEmployeeTimesheetCost(models.TransientModel):
         
         # Log the cost in workcenter's history and eliminate/replace any next logs by this one
         domain_bad = [("starting_date", ">=", self.starting_date)]
-        bad_costs = self.workcenter_id.cost_history_ids.filtered_domain(domain_bad)
-        costs = self.workcenter_id.cost_history_ids - bad_costs
+        bad_costs = self.workcenter_id.timesheet_cost_history_ids.filtered_domain(domain_bad)
+        costs = self.workcenter_id.timesheet_cost_history_ids - bad_costs
         self.workcenter_id.sudo().write({
             "costs_hour": self.hourly_cost, # (!) workcenter field is `costs_hour` but wizard's is `hourly_cost`
-            "cost_history_ids": [
+            "timesheet_cost_history_ids": [
                 fields.Command.set(costs.ids),
                 fields.Command.create({
                     "workcenter_id": self.workcenter_id.id,

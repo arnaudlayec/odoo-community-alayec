@@ -57,7 +57,7 @@ class ProjectProject(models.Model):
         fields = self._get_rg_sale_order_fields()
 
         rg_result = self.env['sale.order'].sudo().read_group(
-            domain=[('project_id', 'in', self.ids), ('state', '!=', 'cancel')],
+            domain=[('project_id', 'in', self._origin.ids), ('state', '!=', 'cancel')],
             fields=[field[1] for field in fields],
             groupby=['project_id'],
         )

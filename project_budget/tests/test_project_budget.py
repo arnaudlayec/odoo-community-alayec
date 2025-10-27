@@ -74,9 +74,11 @@ class TestAccountMoveBudgetProject(TestLineTemplate):
         self.budget.template = True
         self.budget.template_default_project = True
 
-        f = Form(self.Project)
-        f.name = 'Project Test 2'
-        project = f.save()
+        project = self.Project.create({
+            'name': 'Project test 2',
+            # 'date_start': '2022-01-01',
+            # 'date': '2023-12-31'
+        })
         self.assertTrue(project.budget_ids)
         self.assertTrue(project.budget_line_ids)
 

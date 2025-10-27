@@ -69,7 +69,6 @@ class Project(models.Model):
                     parent_id._create_child_sequence_code()
                 
                 vals |= {'sequence_code': parent_id.children_sequence_id.next_by_id()}
-                # 'name': parent_id.name if parent_id.name != parent_id.sequence_code else False,
         
         return vals_list
         

@@ -16,7 +16,7 @@ class PurchaseOrder(models.Model):
         comodel_name='purchase.arrival.date',
         inverse_name='order_id',
         domain="[('order_id', '=', id)]",
-        string='Confirmed arrivals',
+        string='Arrival dates',
         context={'display_date_ony': 1},
     )
     date_arrival_state = fields.Selection(

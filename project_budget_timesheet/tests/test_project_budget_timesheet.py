@@ -43,20 +43,14 @@ class TestProjectBudgetTimesheet(TestAccountMoveBudgetProject):
         self.assertEqual(self.project.allocated_hours, self.BUDGET_FIX)
 
     #===== project.task =====#
-    def test_03_available_budget(self):
+    def test_03_remaining_budget(self):
         remaining = self.BUDGET_FIX / 2 # the other half
-        self.assertEqual(self.task1.available_budget, remaining)
-        self.assertEqual(self.task2.available_budget, remaining)
+        self.assertEqual(self.task1.remaining_budget, remaining)
+        self.assertEqual(self.task2.remaining_budget, remaining)
 
-    def test_04_available_budget_with_2_tasks(self):
+    def test_04_remaining_budget_with_2_tasks(self):
         self.task2.planned_hours = self.BUDGET_FIX / 3
         remaining = self.BUDGET_FIX * (1/2 - 1/3)
 
-        self.assertEqual(round(self.task1.available_budget, 2), round(remaining, 2))
-        self.assertEqual(round(self.task2.available_budget, 2), round(remaining, 2))
-
-    # def test_05_budget_raise(self):
-    #     # Test if it raises correctly if task2 tries to take all budget while task1 already has reserved some
-    #     with self.assertRaises(exceptions.UserError):
-    #         self.task2.planned_hours = self.BUDGET_FIX
-    
+        self.assertEqual(round(self.task1.remaining_budget, 2), round(remaining, 2))
+        self.assertEqual(round(self.task2.remaining_budget, 2), round(remaining, 2))

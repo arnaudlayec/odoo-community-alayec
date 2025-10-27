@@ -66,7 +66,7 @@ class TestSaleProjectLink(common.SingleTransactionCase):
     #----- sale.order.line (project analytic) -----#
     def test_05_analytic_order_line(self):
         """ Test if project's analytic is well set automatically on sale order line """
-        self.assertTrue(self.project.analytic_account_id in self.order.order_line.analytic_ids)
+        self.assertTrue(self.project.analytic_account_id in self.order.order_line.analytic_account_ids)
 
         with self.assertRaises(exceptions.ValidationError):
             self.order.order_line._replace_analytic(

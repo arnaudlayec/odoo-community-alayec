@@ -69,6 +69,13 @@
             <field name="balance" position="after">
                 <field name="qty_balance" attrs="{'invisible': [('type', '=', 'amount')]}" optional="show" />
             </field>
+
+            <!-- Fields on the right -->
+            <tree position="inside">
+                <field name="create_date" widget="date" optional="hide" />
+                <field name="write_date" widget="date" optional="hide" />
+                <field name="write_uid" widget="many2one_avatar_user" optional="hide" />
+            </tree>
         </field>
     </record>
     

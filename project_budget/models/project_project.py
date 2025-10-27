@@ -23,7 +23,7 @@ class Project(models.Model):
     )
     budget_id = fields.Many2one(
         comodel_name='account.move.budget',
-        compute='_compute_budget_id'
+        compute='_compute_budget_id',
     )
     
     budget_template_ids = fields.One2many(
@@ -69,28 +69,15 @@ class Project(models.Model):
     @api.depends('budget_line_ids', 'budget_line_ids.balance')
     def _compute_budget_line_sum(self):
         """ Sum the balance of budget lines to show it in project's form smart button """
-        mapped_data = self._get_mapped_budget_line()
-        for project in self:
-            project.budget_line_sum = mapped_data.get(project._origin.id)
-    
-    def _get_mapped_budget_line(self, field='balance', groupby=['project_id']):
-        """ `field` is useful in module `project_budget_timesheet` """
-        lazy = bool(len(groupby) == 1)
-        rg_result = self.env['account.move.budget.line'].sudo().read_group(
-            domain=self._get_budget_line_domain(),
-            fields=[field + ':sum'],
-            groupby=groupby,
-            lazy=lazy
+        rg_result = self.env['account.move.budget.line'].sudo()._read_group(
+            domain=[('project_id', 'in', self._origin.ids)],
+            fields=['balance:sum'],
+            groupby=['project_id'],
         )
-        return {
-            x[groupby[0]][0] if lazy else tuple([x[key] and x[key][0] for key in groupby]): x[field]
-            for x in rg_result
-        }
-    
-    def _get_budget_line_domain(self):
-        """ Overwritten in module `project_budget_timesheet` """
-        return [('project_id', 'in', self.ids)]
-    
+        mapped_data = {x['project_id'][0]: x['balance'] for x in rg_result}
+        for project in self:
+            # project.budget_line_sum = mapped_data.get(project._origin.id, 0.0)
+            project.budget_line_sum = sum(project.budget_line_ids.mapped('balance'))
     
     #===== Compute (budget templates) =====#
     def _compute_budget_template_ids(self):

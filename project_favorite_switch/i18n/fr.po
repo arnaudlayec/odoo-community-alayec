@@ -6,25 +6,29 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-03-06 10:48+0000\n"
-"PO-Revision-Date: 2025-03-06 11:49+0100\n"
+"POT-Creation-Date: 2025-10-25 10:33+0000\n"
+"PO-Revision-Date: 2025-10-25 10:33+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
-"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
-"X-Generator: Poedit 3.5\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: project_favorite_switch
+#: model_terms:ir.ui.view,arch_db:project_favorite_switch.view_project_choice_wizard
+msgid "All projects"
+msgstr "Tous les projets"
 
 #. module: project_favorite_switch
 #. odoo-python
 #: code:addons/project_favorite_switch/models/project_default_mixin.py:0
+#: code:addons/project_favorite_switch/models/project_default_mixin.py:0
 #, python-format
 msgid ""
 "Cannot do this action with no project selected. To access this page or "
-"action, please choose a single project in your favorites and retry. "
-"Context: %s"
+"action, please choose a single project in your favorites and retry. Context:"
+" %s"
 msgstr ""
 "Cette action ne peut être réalisée sans projet sélectionné. Pour ouvrir "
 "cette page ou réaliser cette action, choisissez un unique projet dans vos "
@@ -34,6 +38,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project_favorite_switch.view_project_choice_wizard
 msgid "Choose"
 msgstr "Choisir"
+
+#. module: project_favorite_switch
+#. odoo-python
+#: code:addons/project_favorite_switch/wizard/project_choice_wizard.py:0
+#: code:addons/project_favorite_switch/wizard/project_choice_wizard.py:0
+#, python-format
+msgid "Choose a project"
+msgstr "Choisir un projet"
 
 #. module: project_favorite_switch
 #: model:ir.model.fields,field_description:project_favorite_switch.field_project_choice_wizard__create_uid
@@ -108,9 +120,15 @@ msgstr ""
 #. module: project_favorite_switch
 #. odoo-javascript
 #: code:addons/project_favorite_switch/static/src/project_dropdown/project_dropdown.xml:0
+#: code:addons/project_favorite_switch/static/src/project_dropdown/project_dropdown.xml:0
 #, python-format
 msgid "Projects"
 msgstr "Projets"
+
+#. module: project_favorite_switch
+#: model:ir.model.fields,field_description:project_favorite_switch.field_project_project__is_favorite
+msgid "Show Project on Dashboard"
+msgstr "Afficher le projet sur le tableau de bord"
 
 #. module: project_favorite_switch
 #: model:ir.model,name:project_favorite_switch.model_project_task
@@ -119,6 +137,7 @@ msgstr "Tâche"
 
 #. module: project_favorite_switch
 #. odoo-python
+#: code:addons/project_favorite_switch/wizard/project_choice_wizard.py:0
 #: code:addons/project_favorite_switch/wizard/project_choice_wizard.py:0
 #, python-format
 msgid "Unexpected action after choosing the project (%s)."
