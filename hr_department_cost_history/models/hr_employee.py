@@ -6,13 +6,13 @@ from datetime import date
 class HrEmployee(models.Model):
     _inherit = ['hr.employee']
 
-    hourly_cost = fields.Monetary(compute='_compute_hourly_cost', store=True)
-
-    @api.depends('department_id')
-    def _compute_hourly_cost(self):
+    def write(self, vals):
         """ Align employee's hourly cost to department's when changing its department """
-        self._align_hourly_cost_to_department()
-
+        res = super().write(vals)
+        if 'department_id' in vals:
+            self._align_hourly_cost_to_department()
+        return res
+    
     def _align_hourly_cost_to_department(self, starting_date=None):
         """ [Inspired from OCA `hr_employee_cost_history/wizard/hr_employee_timesheet_cost_wizard.py`]
             Recalculates employee timesheet cost from a given date
@@ -34,11 +34,11 @@ class HrEmployee(models.Model):
             ("employee_id", "in", self.ids),
             ("date", ">=", starting_date),
         ]
-        mapped_timesheet_ids = {
-            x.employee_id.id: x 
-            for x in self.env["account.analytic.line"].sudo().search(domain)
-        }
+        rg_result = self.env['account.analytic.line']._read_group(
+            domain, ['ids:array_agg(id)'], ['employee_id']
+        )
+        mapped_timesheets = {x['employee_id']: x['ids'] for x in rg_result}
         for employee in self:
-            timesheet_ids = mapped_timesheet_ids.get(employee.id)
+            timesheet_ids = mapped_timesheets.get(employee.id)
             if timesheet_ids:
                 timesheet_ids._timesheet_postprocess({"employee_id": employee.id})
