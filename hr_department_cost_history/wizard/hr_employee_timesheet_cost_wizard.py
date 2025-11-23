@@ -12,7 +12,7 @@ class HrEmployeeTimesheetCost(models.TransientModel):
     )
     employee_id = fields.Many2one(
         # either department or employee is required
-        required=False
+        required=False,
     )
 
     def update_employee_cost(self):
@@ -20,7 +20,7 @@ class HrEmployeeTimesheetCost(models.TransientModel):
             * department cost update (new)
             * or default to original
         """
-        if self.department_id.id:
+        if self.department_id.exists():
             return self._update_department_cost()
         
         return super().update_employee_cost()

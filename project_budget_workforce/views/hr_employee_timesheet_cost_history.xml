@@ -6,7 +6,10 @@
         <field name="name">Cost History</field>
         <field name="res_model">hr.employee.timesheet.cost.history</field>
         <field name="view_mode">tree</field>
-        <field name="context">{'display_analytic': True}</field>
+        <field name="context">{
+            'display_analytic': True,
+            'search_default_filter_current': 1,
+        }</field>
     </record>
     <menuitem id="account_move_budget_workforce_menu"
         action="account_move_budget_workforce_act_window"
@@ -49,6 +52,36 @@
             <field name="starting_date" position="attributes">
                 <attribute name="attrs">{'readonly': [('analytic_account_id', '=', False)]}</attribute>
             </field>
+        </field>
+    </record>
+
+    <!-- Search -->
+    <record model="ir.ui.view" id="hr_employee_timesheet_cost_search">
+        <field name="name">hr.employee.timesheet.cost.history.view.search.budget_workforce</field>
+        <field name="model">hr.employee.timesheet.cost.history</field>
+        <field name="inherit_id" ref="hr_department_cost_history.hr_employee_timesheet_cost_search" />
+
+        <field name="arch" type="xml">
+            <search position="inside">
+                <field name="analytic_account_id" />
+
+                <filter
+                    name="filter_current"
+                    string="Current"
+                    domain="[
+                    '|',
+                        ('starting_date', '&lt;=', context_today().strftime('%Y-%m-%d')),
+                        ('date_to', '&gt;=', context_today().strftime('%Y-%m-%d')),
+                    ]"
+                />
+                <filter name="starting_date" string="Date from" date="starting_date" />
+                <filter name="date_to" string="Date to" date="date_to" />
+
+                <group name="groupby">
+                    <filter name="date_to" string="Date from" context="{'group_by': 'date_to:year'}"/>
+                    <filter name="starting_date" string="Date to" context="{'group_by': 'starting_date:year'}"/>
+                </group>
+            </search>
         </field>
     </record>
 

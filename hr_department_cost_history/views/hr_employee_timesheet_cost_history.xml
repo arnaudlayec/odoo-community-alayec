@@ -31,4 +31,16 @@
         <field name="domain">['|', ('employee_id', '=', active_id), ('department_id.member_ids', '=', active_id)]</field>
     </record>
 
+    <!-- Search -->
+    <record model="ir.ui.view" id="hr_employee_timesheet_cost_search">
+        <field name="name">hr.employee.timesheet.cost.history.view.search</field>
+        <field name="model">hr.employee.timesheet.cost.history</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="department_id" />
+                <field name="employee_id" />
+            </search>
+        </field>
+    </record>
+    
 </odoo>

@@ -13,7 +13,7 @@
     'version': '16.0.1.0.0',
 
     'depends': ['hr_timesheet_sheet'],
-    'data': []
+    'data': [],
 }
 
 

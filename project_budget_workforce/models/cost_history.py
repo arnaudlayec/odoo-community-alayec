@@ -28,6 +28,16 @@ class HrEmployeeTimesheetCostHistory(models.Model):
             if attrs['type'] == 'many2one' and name not in ('create_uid', 'write_uid', 'currency_id')
         ]
     
+    @api.constrains(lambda self: self._get_fields_related())
+    def _constrain_only_one_m2o(self):
+        for history in self:
+            defined = [x for x in self._get_fields_related() if history[x].exists()]
+            if len(defined) > 1:
+                raise exceptions.ValidationError(_(
+                    "Only one field can be set amoung those: %s",
+                    defined
+                ))
+    
     @api.ondelete(at_uninstall=False)
     def _unlink_if_related_not_set(self):
         """ Can only remove lines of `analytic_account_id` """

@@ -14,6 +14,7 @@
 
     'depends': [
         'hr_employee_cost_history',
+        'hr_department_cost_history', # for search
         'project_budget_timesheet'
     ],
     'data': [

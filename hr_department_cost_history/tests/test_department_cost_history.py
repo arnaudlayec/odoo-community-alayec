@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+from freezegun import freeze_time
+
 from odoo import Command, exceptions, fields
 from odoo.tests.common import Form, TransactionCase
 
@@ -8,6 +10,7 @@ from odoo.addons.hr_employee_cost_history.tests.test_hr_timesheet import HrEmplo
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
+@freeze_time("2024-02-23", tick=True)
 class TestDepartmentCostHistory(HrEmployeeCostHistory):
 
     DEFAULT_COST = 45.0
@@ -39,7 +42,6 @@ class TestDepartmentCostHistory(HrEmployeeCostHistory):
         wizard_result = wizard.save()
         wizard_result.update_employee_cost()
     
-
     def test_01_department_history(self):
         """ Ensure basic write on Department cost with wizard are kept in history """
         self.new_department_cost_wizard()
@@ -94,5 +96,5 @@ class TestDepartmentCostHistory(HrEmployeeCostHistory):
         # [Test] Employee's hourly_cost aligned to new department & no history in ftuure
         self.assertEqual(self.employee.hourly_cost, self.department2.hourly_cost)
         self.assertFalse(self.employee.timesheet_cost_history_ids.filtered_domain(
-            [("date", ">=", date.today())]
+            [("starting_date", ">=", date.today())]
         ))
