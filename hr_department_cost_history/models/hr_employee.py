@@ -30,15 +30,18 @@ class HrEmployee(models.Model):
         bad_costs.unlink()
         
         # Recompute timesheets
+        AnalyticLine = self.env['account.analytic.line']
         domain = [
+            ("department_id", "in", self.department_id.ids), # don't update cost of former departments
             ("employee_id", "in", self.ids),
             ("date", ">=", starting_date),
         ]
-        rg_result = self.env['account.analytic.line']._read_group(
+        rg_result = AnalyticLine._read_group(
             domain, ['ids:array_agg(id)'], ['employee_id']
         )
-        mapped_timesheets = {x['employee_id']: x['ids'] for x in rg_result}
+        mapped_timesheets = {x['employee_id'][0]: x['ids'] for x in rg_result}
+        print('mapped_timesheets', mapped_timesheets)
         for employee in self:
-            timesheet_ids = mapped_timesheets.get(employee.id)
+            timesheet_ids = mapped_timesheets.get(employee.id, [])
             if timesheet_ids:
-                timesheet_ids._timesheet_postprocess({"employee_id": employee.id})
+                AnalyticLine.browse(timesheet_ids)._timesheet_postprocess({"employee_id": employee.id})
