@@ -40,7 +40,6 @@ class HrEmployee(models.Model):
             domain, ['ids:array_agg(id)'], ['employee_id']
         )
         mapped_timesheets = {x['employee_id'][0]: x['ids'] for x in rg_result}
-        print('mapped_timesheets', mapped_timesheets)
         for employee in self:
             timesheet_ids = mapped_timesheets.get(employee.id, [])
             if timesheet_ids:
