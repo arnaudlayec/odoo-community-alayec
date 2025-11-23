@@ -4,7 +4,6 @@ from odoo import models, fields, api, _, exceptions
 
 class HrEmployeeTimesheetCostHistory(models.Model):
     _inherit = ["hr.employee.timesheet.cost.history"]
-    _order = "starting_date DESC"
 
     #===== Fields =====#
     department_id = fields.Many2one(
