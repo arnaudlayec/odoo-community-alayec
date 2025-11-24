@@ -20,9 +20,13 @@
         <field name="inherit_id" ref="hr_department_cost_history.hr_employee_timesheet_cost_search" />
 
         <field name="arch" type="xml">
-            <search position="inside">
+            <xpath expr="//field[last()]" position="after">
                 <field name="workcenter_id" />
-            </search>
+            </xpath>
+
+            <xpath expr="//filter[last()]" position="after">
+                <filter name="filter_workcenter" string="Workcenters" domain="[('workcenter_id', '!=', False)]" />
+            </xpath>
         </field>
     </record>
     

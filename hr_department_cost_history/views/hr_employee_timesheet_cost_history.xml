@@ -39,6 +39,13 @@
             <search>
                 <field name="department_id" />
                 <field name="employee_id" />
+
+                <filter name="filter_employee" string="Employees" domain="[('employee_id', '!=', False)]" />
+                <filter name="filter_department" string="Departments" domain="[('department_id', '!=', False)]" />
+
+                <group name="groupby">
+                    <filter name="starting_date" string="Date to" context="{'group_by': 'starting_date:year'}"/>
+                </group>
             </search>
         </field>
     </record>

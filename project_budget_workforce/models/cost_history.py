@@ -32,9 +32,9 @@ class HrEmployeeTimesheetCostHistory(models.Model):
     def _constrain_only_one_m2o(self):
         for history in self:
             defined = [x for x in self._get_fields_related() if history[x].exists()]
-            if len(defined) > 1:
+            if len(defined) != 1:
                 raise exceptions.ValidationError(_(
-                    "Only one field can be set amoung those: %s",
+                    "One field (only) must be set amoung those: %s",
                     defined
                 ))
     

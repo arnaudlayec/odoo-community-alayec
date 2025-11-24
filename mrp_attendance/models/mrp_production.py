@@ -22,7 +22,7 @@ class MrpProduction(models.Model):
     )
     production_real_duration_hours = fields.Float(
         string='Real Duration (h)',
-        compute='_compute_production_real_duration'
+        compute='_compute_production_real_duration',
     )
 
 
