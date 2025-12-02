@@ -12,6 +12,7 @@ class AccountAnalyticAccount(models.Model):
         # budget lines sequence follows analytic account's sequence
     )
     is_project_budget = fields.Boolean(
+        string='Is project budget?',
         compute='_compute_is_project_budget',
         search='_search_is_project_budget',
     )
