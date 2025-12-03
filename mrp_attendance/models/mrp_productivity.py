@@ -73,8 +73,10 @@ class MrpWorkcenterProductivity(models.Model):
     @api.depends('duration', 'date_start')
     def _compute_date_end(self):
         for productivity in self:
-            if productivity.date_start and productivity.duration:
-                productivity.date_end = fields.Datetime.add(productivity.date_start, minutes=productivity.duration)
+            productivity.date_end = (
+                bool(productivity.date_start and productivity.duration)
+                and fields.Datetime.add(productivity.date_start, minutes=productivity.duration)
+            )
 
     @api.depends('duration_hours', 'user_id.mrp_time_ids', 'user_id.mrp_time_ids.duration')
     def _compute_hours_today(self):

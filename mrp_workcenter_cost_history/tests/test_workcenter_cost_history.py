@@ -40,6 +40,7 @@ class TestWorkcenterCostHistory(SingleTransactionCase):
         cls.production = cls.env['mrp.production'].create({
             'name': 'Test Production 01',
             'product_id': cls.product.id,
+            'analytic_account_id': cls.analytic.id,
         })
         cls.workcenter = cls.env['mrp.workcenter'].create({
             'name': 'Test Workcenter 01',
@@ -89,7 +90,7 @@ class TestWorkcenterCostHistory(SingleTransactionCase):
     def _test_cost(self, cost):
         self.assertEqual(self.productivity.cost, self.productivity.duration/60 * cost)
         self.assertEqual(
-            self.workorder.wc_analytic_account_line_id.amount,
+            self.workorder.mo_analytic_account_line_id.amount,
             self.productivity.duration/60 * cost
         )
     
