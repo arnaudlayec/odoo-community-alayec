@@ -16,6 +16,7 @@ class MrpWorkcenterProductivity(models.Model):
     cost = fields.Monetary(
         string='Cost',
         compute='_compute_cost',
+        # not stored
     )
 
     @api.depends('date_start', 'date_end') # also triggered by `cost_history` wizard (new `workcenter.costs_hour` history)
