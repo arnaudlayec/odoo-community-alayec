@@ -55,28 +55,28 @@ class ProjectProject(models.Model):
     @api.depends('sale_order_ids', 'sale_order_ids.amount_untaxed', 'sale_order_ids.state')
     def _compute_sale_order_fields(self):
         fields = self._get_rg_sale_order_fields()
-
         rg_result = self.env['sale.order'].sudo().read_group(
             domain=[('project_id', 'in', self._origin.ids), ('state', '!=', 'cancel')],
-            fields=[field[1] for field in fields],
+            fields=[v[0] for v in fields.values()],
             groupby=['project_id'],
         )
-        # reformat rg_result, being able to extend requested fields in `read_group`
         mapped_data = {
-            x['project_id'][0]: {
-                field[0]: x.get(field[2]) for field in fields
-            } for x in rg_result
+            data['project_id'][0]: {k: data.get(v[1]) for k, v in fields.items()}
+            for data in rg_result
         }
         for project in self:
-            for field in fields:
-                project[field[0]] = mapped_data.get(project.id, {}).get(field[0])
+            for k in fields:
+                project[k] = mapped_data.get(project.id, {}).get(k)
     def _get_rg_sale_order_fields(self):
-        """ Can be overritten:
-            0. field of `project.project`
-            1. field of `read_group()`
-            2. field of `rg_result`
+        """ Can be overritten.
+            :return: {
+                field of `project.project`: (
+                    field of `read_group()`,
+                    field of `rg_result`
+                )
+            }
         """
         return {
-            ('sale_order_count', 'project_id', 'project_id_count'),
-            ('sale_order_sum', 'amount_untaxed:sum', 'amount_untaxed')
+            'sale_order_count': ('project_id', 'project_id_count',),
+            'sale_order_sum': ('amount_untaxed:sum', 'amount_untaxed',),
         }
