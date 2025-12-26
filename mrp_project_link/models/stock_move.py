@@ -8,6 +8,7 @@ class StockMove(models.Model):
     project_id = fields.Many2one(
         comodel_name='project.project',
         compute='_compute_project_id',
+        store=True,
     )
 
     @api.depends(lambda self: [x + '.project_id' for x in self._get_fields_project_id()])

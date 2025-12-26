@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Product.product base Tree -->
+    <record model="ir.ui.view" id="product_product_tree_view">
+        <field name="name">product.product.tree.mrp_project_link</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_product_tree_view" />
+        
+        <field name="arch" type="xml">
+            <tree position="inside">
+                <field name="project_ids" widget="many2many_tags" optional="show" />
+            </tree>
+        </field>
+    </record>
+    <!-- Product.product base search -->
+    <record id="product_search_form_view" model="ir.ui.view">
+        <field name="name">product.product.search.mrp_project_link</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_search_form_view"/>
+        
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="project_ids" />
+            </field>
+        </field>
+    </record>
+    
+    <!-- Stock Report (Product) Tree -->
+    <record model="ir.ui.view" id="product_product_stock_tree">
+        <field name="name">product.product.stock.tree.mrp_project_link</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock.product_product_stock_tree" />
+        
+        <field name="arch" type="xml">
+            <button name="%(stock.stock_move_line_action)d" position="before">
+                <field name="project_ids" widget="many2many_tags" optional="show" />
+            </button>
+        </field>
+    </record>
+    <!-- Stock Report (Product) Search -->
+    <record model="ir.ui.view" id="product_search_form_view_stock_report">
+        <field name="name">product.product.search.stock.form.stock.report.mrp_project_link</field>
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="stock.product_search_form_view_stock_report" />
+
+        <field name="arch" type="xml">
+            <searchpanel position="inside">
+                <field name="project_ids" select="multi" />
+            </searchpanel>
+        </field>
+    </record>
+</odoo>

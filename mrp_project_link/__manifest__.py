@@ -23,6 +23,7 @@
         'views/stock_picking.xml',
         'views/stock_move.xml',
         'views/stock_move_line.xml',
+        'views/product_product.xml',
         'views/stock_valuation_layer.xml',
     ]
 }
