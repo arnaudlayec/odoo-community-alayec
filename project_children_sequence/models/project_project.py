@@ -5,6 +5,7 @@ from odoo.osv import expression
 
 class Project(models.Model):
     _inherit = ["project.project"]
+    _rec_names_search = ['name', 'sequence_code']
 
     #====== Fields ======#
     # 2024-11-27: cancel feature of children projects's names following parent's one
