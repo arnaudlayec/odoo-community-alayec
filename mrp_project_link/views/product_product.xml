@@ -8,7 +8,7 @@
         
         <field name="arch" type="xml">
             <tree position="inside">
-                <field name="project_ids" widget="many2many_tags" optional="show" />
+                <field name="project_ids" widget="many2many_tags" optional="hide" />
             </tree>
         </field>
     </record>
@@ -33,7 +33,7 @@
         
         <field name="arch" type="xml">
             <button name="%(stock.stock_move_line_action)d" position="before">
-                <field name="project_ids" widget="many2many_tags" optional="show" />
+                <field name="project_ids" widget="many2many_tags" optional="hide" />
             </button>
         </field>
     </record>
