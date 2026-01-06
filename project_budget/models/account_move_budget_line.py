@@ -96,6 +96,9 @@ class AccountMoveBudgetLine(models.Model):
         readonly=True,
         store=True,
     )
+    balance = fields.Monetary(
+        compute='_compute_debit_credit',
+    )
 
     #===== CRUD =====#
     def _update_budget_crud(self, method, fields=[]):
@@ -121,7 +124,7 @@ class AccountMoveBudgetLine(models.Model):
             line.type = line.analytic_account_id._get_default_line_type() or 'amount'
 
     #===== Compute: valuation =====#
-    @api.depends('standard_price', 'qty_debit', 'qty_credit')
+    @api.depends('standard_price', 'qty_debit', 'qty_credit', 'debit', 'credit')
     def _compute_debit_credit(self):
         for line in self:
             line._compute_debit_credit_one()
