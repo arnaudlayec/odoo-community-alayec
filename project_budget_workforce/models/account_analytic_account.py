@@ -19,13 +19,13 @@ class AccountAnalyticAccount(models.Model):
         self.ensure_one()
 
         # cost history table ensuring unique entry per starting_date
+        fields = ['starting_date', 'date_to', 'hourly_cost']
         analytic_cost_history = {}
-        for x in self.sudo().timesheet_cost_history_ids:
-            analytic_cost_history[x.starting_date] = (
-                x.starting_date,
-                x.date_to,
-                x.hourly_cost,
-            )
+        cost_histories = self.sudo().timesheet_cost_history_ids
+        for x in cost_histories.read(fields):
+            analytic_cost_history[x['starting_date']] = tuple([
+                x[field] for field in fields
+            ])
 
         return self._calculate_total_valuation(
             qty,
