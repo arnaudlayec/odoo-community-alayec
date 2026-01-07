@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, _
+from odoo import models, fields, api, exceptions, _
 
 class MrpWorkcenterProductivity(models.Model):
     _inherit = ["mrp.workcenter.productivity"]
@@ -45,6 +45,15 @@ class MrpWorkcenterProductivity(models.Model):
     date = fields.Date(compute='_compute_date', store=True)
     hours_today = fields.Float(required=True, compute='_compute_hours_today')
 
+    #===== Constrain =====#
+    @api.constrains("duration")
+    def _constrain_duration_zero(self):
+        error = self.filtered(lambda x: not x.duration)
+        if bool(error):
+            raise exceptions.ValidationError(_(
+                "Duration must not be null.",
+            ))
+    
     #===== Compute =====#
     def _close(self):
         """ Cancel this method which is called when closing a workorder (or a MO)
@@ -74,8 +83,10 @@ class MrpWorkcenterProductivity(models.Model):
     def _compute_date_end(self):
         for productivity in self:
             productivity.date_end = (
-                bool(productivity.date_start and productivity.duration)
-                and fields.Datetime.add(productivity.date_start, minutes=productivity.duration)
+                productivity.date_start if not productivity.duration else
+                bool(productivity.date_start) and fields.Datetime.add(
+                    productivity.date_start, minutes=productivity.duration
+                )
             )
 
     @api.depends('duration_hours', 'user_id.mrp_time_ids', 'user_id.mrp_time_ids.duration')
