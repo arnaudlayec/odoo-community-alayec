@@ -106,10 +106,10 @@ class ImportApiCall(models.Model):
     @api.depends('state')
     def _compute_state_text(self):
         states = {
-            "success": "All records imported successfully",
-            "info": "Records imported, some needing user review",
-            "warning": "Some import lines failed or user review is required",
-            "error": "Blocking failure: no record imported",
+            "success": _("All records imported successfully"),
+            "info": _("Records imported, some needing user review"),
+            "warning": _("Some import lines failed or user review is required"),
+            "error": _("Blocking failure: no record imported"),
         }
         for logger in self:
             logger.state_text = states[logger.state]

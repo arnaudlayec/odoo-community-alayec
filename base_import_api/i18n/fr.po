@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-18 22:02+0000\n"
-"PO-Revision-Date: 2026-01-18 23:19+0100\n"
+"POT-Creation-Date: 2026-01-18 23:14+0000\n"
+"PO-Revision-Date: 2026-01-19 00:16+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -71,8 +71,7 @@ msgstr ""
 "\n"
 "            Statut global de l'import: %(state)s\n"
 "\n"
-"            - Enregistrements importés (sans avertissement): "
-"%(success)d\n"
+"            - Enregistrements importés (sans avertissement): %(success)d\n"
 "\n"
 "            - Enregistrements importés (avec avertissement): "
 "%(success_info)d\n"
@@ -125,8 +124,7 @@ msgstr ""
 #. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_form
 msgid "<em>Dynamic content generated from import log lines.</em>"
-msgstr ""
-"<em>Contenu dynamique généré depuis les lignes de log d'import.</em>"
+msgstr "<em>Contenu dynamique généré depuis les lignes de log d'import.</em>"
 
 #. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_form
@@ -134,8 +132,8 @@ msgid ""
 "<em>Logs of previous import (before the button \"Replay import\" was "
 "pressed).</em>"
 msgstr ""
-"<em>Logs de l'import précédent (avant l'appui sur le bouton "
-"\"Rejouer l'import\").</em>"
+"<em>Logs de l'import précédent (avant l'appui sur le bouton \"Rejouer "
+"l'import\").</em>"
 
 #. module: base_import_api
 #: model:ir.ui.menu,name:base_import_api.import_api_menu
@@ -183,6 +181,12 @@ msgid "Active"
 msgstr "Actif"
 
 #. module: base_import_api
+#. odoo-python
+#: code:addons/base_import_api/models/import_api_call.py:0
+msgid "All records imported successfully"
+msgstr "Tous les enregistrements ont été importés avec succès"
+
+#. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_form
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_line_form
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_line_search
@@ -195,6 +199,12 @@ msgstr "Archivé"
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_mixin__message_attachment_count
 msgid "Attachment Count"
 msgstr "Nb. de pièces-jointes"
+
+#. module: base_import_api
+#. odoo-python
+#: code:addons/base_import_api/models/import_api_call.py:0
+msgid "Blocking failure: no record imported"
+msgstr "Erreur bloquante : aucun enregistrement importé"
 
 #. module: base_import_api
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_call__company_id
@@ -295,7 +305,7 @@ msgstr "A un message"
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_call__id
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_line__id
 msgid "ID"
-msgstr "ID"
+msgstr ""
 
 #. module: base_import_api
 #: model:ir.model.fields,help:base_import_api.field_import_api_call__message_needaction
@@ -307,8 +317,7 @@ msgstr "Si coché, de nouveaux messages requièrent votre attention."
 #: model:ir.model.fields,help:base_import_api.field_import_api_call__message_has_error
 #: model:ir.model.fields,help:base_import_api.field_import_api_mixin__message_has_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
-"Si coché, Si coché, certains messages ont une erreur de livraison."
+msgstr "Si coché, Si coché, certains messages ont une erreur de livraison."
 
 #. module: base_import_api
 #: model:ir.model,name:base_import_api.model_import_api_mixin
@@ -338,7 +347,7 @@ msgstr "Enregistrement importé"
 #. module: base_import_api
 #: model:ir.ui.menu,name:base_import_api.import_api_base_menu
 msgid "Imports"
-msgstr "Imports"
+msgstr ""
 
 #. module: base_import_api
 #: model:ir.model.fields,help:base_import_api.field_import_api_line__field
@@ -391,7 +400,7 @@ msgstr "Marquer comme vérifié"
 #. module: base_import_api
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_line__message
 msgid "Message"
-msgstr "Message"
+msgstr ""
 
 #. module: base_import_api
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_call__message_has_error
@@ -415,11 +424,11 @@ msgstr "Modèle"
 
 #. module: base_import_api
 #: model:ir.model.fields.selection,name:base_import_api.selection__import_api_line__state__info
+#: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_line_search
 msgid "Needing review"
 msgstr "Revue requise"
 
 #. module: base_import_api
-#: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_line_search
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_search
 msgid "Needing user review"
 msgstr "Revue requise"
@@ -496,6 +505,13 @@ msgstr ""
 "                ID externe:"
 
 #. module: base_import_api
+#. odoo-python
+#: code:addons/base_import_api/models/import_api_call.py:0
+msgid "Records imported, some needing user review"
+msgstr ""
+"Enregistrements importés, certains nécessitant une revue d'un utilisateur"
+
+#. module: base_import_api
 #: model:ir.model.fields,help:base_import_api.field_import_api_mixin__external_id
 msgid "Reference in the external tool, when synchronized"
 msgstr "Référence dans l'outil externe, quand synchronisé"
@@ -509,6 +525,14 @@ msgstr "Rejouer l'import"
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_form
 msgid "Report"
 msgstr "Rapport"
+
+#. module: base_import_api
+#. odoo-python
+#: code:addons/base_import_api/models/import_api_call.py:0
+msgid "Some import lines failed or user review is required"
+msgstr ""
+"Certaines lignes d'import ont échouées, ou bien la revue d'un utilisateur "
+"est importante"
 
 #. module: base_import_api
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_call__state
@@ -542,12 +566,6 @@ msgid "Unknown model"
 msgstr "Modèle inconnu"
 
 #. module: base_import_api
-#. odoo-python
-#: code:addons/base_import_api/models/import_api_call.py:0
-msgid "Unknown model."
-msgstr "Modèle inconnu"
-
-#. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_search
 msgid "Unverified"
 msgstr "Non vérifié"
@@ -575,8 +593,8 @@ msgstr "Avertissement"
 
 #. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_search
-msgid "Warning (some line failed)"
-msgstr "Avertissement (certaines lignes ont échoué)"
+msgid "Warning (some lines failed)"
+msgstr "Avertissement (certaines lignes ont échouées)"
 
 #. module: base_import_api
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_call__website_message_ids
