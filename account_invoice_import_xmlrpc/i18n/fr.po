@@ -1,0 +1,203 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* account_invoice_import_xmlrpc
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 18.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-18 22:20+0000\n"
+"PO-Revision-Date: 2026-01-18 23:23+0100\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: fr\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.4.2\n"
+
+#. module: account_invoice_import_xmlrpc
+#. odoo-python
+#: code:addons/account_invoice_import_xmlrpc/models/account_move.py:0
+msgid "API call"
+msgstr "Appel d'API"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__message_needaction
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__message_needaction
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__message_needaction
+msgid "Action Needed"
+msgstr "Nécessite une action"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__message_attachment_count
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__message_attachment_count
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__message_attachment_count
+msgid "Attachment Count"
+msgstr "Nombre de pièces jointes"
+
+#. module: account_invoice_import_xmlrpc
+#. odoo-python
+#: code:addons/account_invoice_import_xmlrpc/models/account_move.py:0
+msgid "Cannot confirm the invoice because of empty contact"
+msgstr "La facture ne peut pas être confirmée parce que le contact est manquant"
+
+#. module: account_invoice_import_xmlrpc
+#. odoo-python
+#: code:addons/account_invoice_import_xmlrpc/models/account_move.py:0
+msgid ""
+"Cannot confirm the invoices. Details:\n"
+" %s"
+msgstr ""
+"La facture ne peut pas être confirmée. Détails:\n"
+"%s"
+
+#. module: account_invoice_import_xmlrpc
+#. odoo-python
+#: code:addons/account_invoice_import_xmlrpc/models/account_move.py:0
+msgid ""
+"Cannot create partner. Embedding its data to the invoice, waiting for its creation by an end-user. Details:\n"
+" %s"
+msgstr ""
+"Le contact ne peut pas être créé. Ses données sont ajoutées à la facture, dans l'attente de sa création par un utilisateur final. Détails:\n"
+"%s"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model,name:account_invoice_import_xmlrpc.model_res_partner
+msgid "Contact"
+msgstr ""
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__external_id
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__external_id
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__external_id
+msgid "External ID"
+msgstr "ID externe"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__message_follower_ids
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__message_follower_ids
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__message_follower_ids
+msgid "Followers"
+msgstr "Abonnés"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__message_partner_ids
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__message_partner_ids
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__message_partner_ids
+msgid "Followers (Partners)"
+msgstr "Abonnés (Partenaires)"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__has_message
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__has_message
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__has_message
+msgid "Has Message"
+msgstr "A un message"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_move__message_needaction
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_payment__message_needaction
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_res_partner__message_needaction
+msgid "If checked, new messages require your attention."
+msgstr "Si coché, de nouveaux messages demandent votre attention."
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_move__message_has_error
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_payment__message_has_error
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_res_partner__message_has_error
+msgid "If checked, some messages have a delivery error."
+msgstr "Si coché, certains messages ont une erreur de livraison."
+
+#. module: account_invoice_import_xmlrpc
+#. odoo-python
+#: code:addons/account_invoice_import_xmlrpc/models/account_move.py:0
+msgid "Invoice not imported because it already exists (ID %d number %s)"
+msgstr "Facture non importée parce qu'elle existe déjà (ID %d numéro %s)"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__message_is_follower
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__message_is_follower
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__message_is_follower
+msgid "Is Follower"
+msgstr "Est un abonné"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model,name:account_invoice_import_xmlrpc.model_account_move
+msgid "Journal Entry"
+msgstr "Pièce comptable"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__message_has_error
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__message_has_error
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__message_has_error
+msgid "Message Delivery error"
+msgstr "Erreur d'envoi du message"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__message_ids
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__message_ids
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__message_ids
+msgid "Messages"
+msgstr ""
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__message_needaction_counter
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__message_needaction_counter
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__message_needaction_counter
+msgid "Number of Actions"
+msgstr "Nombre d'actions"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__message_has_error_counter
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__message_has_error_counter
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__message_has_error_counter
+msgid "Number of errors"
+msgstr "Nombre d'erreurs"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_move__message_needaction_counter
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_payment__message_needaction_counter
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_res_partner__message_needaction_counter
+msgid "Number of messages requiring action"
+msgstr "Nombre de messages nécessitant une action"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_move__message_has_error_counter
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_payment__message_has_error_counter
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_res_partner__message_has_error_counter
+msgid "Number of messages with delivery error"
+msgstr "Nombre de messages avec des erreurs d'envoi"
+
+#. module: account_invoice_import_xmlrpc
+#. odoo-python
+#: code:addons/account_invoice_import_xmlrpc/models/account_move.py:0
+msgid "Partner updated when importing external invoice %s by API."
+msgstr "Le contact a été mis à jour lors de l'import de la facture %s par API."
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model,name:account_invoice_import_xmlrpc.model_account_payment
+msgid "Payments"
+msgstr "Paiements"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_move__external_id
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_payment__external_id
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_res_partner__external_id
+msgid "Reference in the external tool, when synchronized"
+msgstr "Référent dans l'outil externe, quand synchronisé"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_move__website_message_ids
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_account_payment__website_message_ids
+#: model:ir.model.fields,field_description:account_invoice_import_xmlrpc.field_res_partner__website_message_ids
+msgid "Website Messages"
+msgstr "Messages du site web"
+
+#. module: account_invoice_import_xmlrpc
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_move__website_message_ids
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_account_payment__website_message_ids
+#: model:ir.model.fields,help:account_invoice_import_xmlrpc.field_res_partner__website_message_ids
+msgid "Website communication history"
+msgstr "Historique de communication du site web"

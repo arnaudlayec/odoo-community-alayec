@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_import_api_call,base.import.api.call,model_import_api_call,base_import_api.group_import_api_user,1,1,1,1
+access_import_api_call_line,base.import.api.line,model_import_api_line,base_import_api.group_import_api_user,1,1,1,1

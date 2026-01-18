@@ -1,0 +1,105 @@
+{
+    "config": {
+        "company": 1, // required, Odoo ID, res.company
+        "single_line": /false, // boolean
+        "account": 3, // Odoo ID, account.account
+        "taxes": [1, 2], // Odoo IDs, account.tax
+        "label": "Force invoice line description",
+        "product": 1, // Odoo ID, product.product
+    },
+    "data": [
+        {
+            "type": "in_invoice" or "in_refund",  // "in_invoice" by default
+            "journal": {"code": "PUR"},  // use only if you want to force a specific journal
+            "currency": {
+                // One of the following
+                // Menu: Invoicing/Configuration/Currency
+                "iso": "EUR",
+                "currency_symbol": "€",
+                "country_code": "FR", // Menu: Contacts/Configuration/Countries, field "code"
+            },
+            
+            "date": "2015-10-08", // Accounting date. Must be a string
+            "date_due": "2015-11-07",
+
+            // Field only if invoice has 1 line only
+            "date_start": "2015-10-01", // For services over a period of time
+            "date_end": "2015-10-31",
+            "description": "TGV Paris-Lyon", // To set the same description on all invoice lines
+
+            "amount_untaxed": 10.0,
+            "amount_tax": 2.0, // Provide amount_untaxed OR amount_tax
+            "amount_total": 12.0, // Total with taxes, must always be provided
+            
+            "partner": {
+                "vat": "FR25499247138",
+                "ref": "CUSTOMER0001",
+                "email": "support@browserstack.com",
+                "name": "Capitaine Train",
+                "street": "27 rue Henri Rolland",
+                "street2": "ZAC des cactus",
+                "street3": "ZAC des cactus",
+                "city": "Villeurbanne",
+                "zip": "69100",
+                "country_code": "FR", // Menu: Contacts/Configuration/Countries, field "code"
+                "state_code": /false, // Menu: Contacts/Configuration/States, field "code"
+                "phone": "+33 4 72 42 24 42",
+                "mobile": "+33 6 42 12 42 12",
+            },
+
+            "company": {"vat": "FR12123456789"}, // Rarely set in invoices
+                // Only used to check we are not importing the invoice
+                // in the wrong company by mistake
+            "invoice_number": "I1501243", // Invoice ref. in source system
+            "note": "Note embedded in the document",
+            "origin": "Origin note",
+
+            "lines": [{
+                "product": {
+                    // One or the other
+                    "code": "GZ250", // Product reference
+                    "barcode": "4123456000021",
+                },
+
+                "name": "Gelierzucker Extra 250g",
+                "price_unit": 1.45, // price_unit without taxes
+                "discount": 10.0,  // for 10% discount
+                "qty": 2.0,
+                "price_subtotal": 2.61, // As calculated by the external system
+                    // Not required, but needed
+                    // to be able to generate adjustment lines when decimal
+                    // precision is not high enough in Odoo
+
+                "uom": {"unece_code": "C62"}, // Menu: Sale>Configuraton>Units of measure, field "UNECE Code"
+
+                "taxes": [{
+                    // required
+                    "amount_type": "percent", // "fixed" or "percent"
+                    "amount": 20.0,
+                    // optional
+                    "unece_type_code": "VAT",
+                    "unece_categ_code": "S",
+                    "unece_due_date_code": "432",
+                }],
+
+                // date_start and date_end on lines override the global value
+                "date_start": "2015-10-01",
+                "date_end": "2015-10-31",
+            }],
+
+            "payments": [{
+                // see account.payment
+            }],
+
+            // Optional fields
+            "attachments": {"file1.pdf": base64data1, "file2.pdf": base64data2},
+            "chatter_msg": ["Notes added in chatter of the invoice"]
+        },
+        {
+            // 2nd invoice
+        },
+        {
+            // ...
+        }
+    ]
+}

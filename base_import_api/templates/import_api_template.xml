@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- Import banner -->
+    <template id="import_api_banner">
+        <div>
+            <div name="import_api_banner" role="alert" class="alert alert-info"
+                invisible="not id or not external_id"
+            >
+                Record created or updated by an external source (API).
+                External ID: <field name="external_id" class="fw-bold" />.
+
+                Creation date and user: <field name="create_date" class="fw-bold" />,
+                <field name="create_uid" widget="res_partner_many2one" class="fw-bold" />.
+                
+                <t t-if="write_uid">
+                    Last update date and user: <field name="write_date" class="fw-bold" />,
+                    <field name="write_uid" widget="res_partner_many2one" class="fw-bold" />.
+                </t>
+            </div>
+        </div>
+    </template>
+
+</odoo>

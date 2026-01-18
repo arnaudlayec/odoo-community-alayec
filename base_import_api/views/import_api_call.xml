@@ -1,0 +1,269 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<odoo>
+    <record id="base_import_api_call_list" model="ir.ui.view">
+        <field name="name">import.api.call.list</field>
+        <field name="model">import.api.call</field>
+        <field name="arch" type="xml">
+            <list create="0" delete="0">
+                <field name="model" />
+                <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
+                <field name="create_date" decoration-bf="1" />
+                <field name="create_uid" widget="res_partner_many2one" />
+                <field name="line_ids" widget="x2many_counter" />
+                <field name="state"
+                    widget="badge"
+                    decoration-success="state == 'success'"
+                    decoration-info="state == 'info'"
+                    decoration-warning="state == 'warning'"
+                    decoration-danger="state == 'error'"
+                />
+                <field name="verified" widget="boolean_toggle" invisible="state == 'success'" />
+            </list>
+        </field>
+    </record>
+
+    <record id="base_import_api_call_form" model="ir.ui.view">
+        <field name="name">import.api.call.form</field>
+        <field name="model">import.api.call</field>
+        <field name="arch" type="xml">
+            <form create="0" delete="0">
+                <header>
+                    <button name="action_replay"
+                        string="Replay import"
+                        type="object"
+                        class="oe_highlight"
+                        icon="fa-refresh"
+                    />
+                    <button name="action_toggle_verified"
+                        string="Mark as verified"
+                        type="object"
+                        class="btn btn-success"
+                        invisible="verified"
+                        icon="fa-check"
+                    />
+                    <button name="action_toggle_verified"
+                        string="Mark as unverified"
+                        type="object"
+                        class="btn btn-warning"
+                        invisible="not verified"
+                        icon="fa-times"
+                    />
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box" />
+                    
+                    <field name="active" invisible="1" />
+                    <widget
+                        name="web_ribbon"
+                        title="Archived"
+                        bg_color="bg-danger"
+                        invisible="active"
+                    />
+                    
+                    <div class="oe_title">
+                        <h1>
+                            <field name="display_name" />
+                        </h1>
+                    </div>
+                    
+                    <group name="main">
+                        <group name="main_left">
+                            <field name="create_date" decoration-bf="1" />
+                            <field name="create_uid" widget="res_partner_many2one" />
+                            <field name="company_id" groups="base.group_multi_company" />
+                        </group>
+                        <group name="main_right">
+                            <label for="state" />
+                            <div name="state">
+                                <field name="state"
+                                    widget="badge"
+                                    decoration-success="state == 'success'"
+                                    decoration-info="state == 'info'"
+                                    decoration-warning="state == 'warning'"
+                                    decoration-danger="state == 'error'"
+                                />
+                                <field name="state_text" nolabel="1" />
+                            </div>
+
+                            <field name="verified" widget="boolean_toggle" />
+                        </group>
+                    </group>
+                    
+                    <notebook name="lines">
+                        <page name="payload" string="Payload">
+                            <group name="payload" col="12">
+                                <group name="payload_left" colspan="4">
+                                    <label for="config" />
+                                    <field
+                                        name="config"
+                                        widget="code"
+                                        options="{'mode': 'python'}"
+                                        nolabel="1" colspan="2"
+                                    />
+                                </group>
+                                <group name="payload_right" colspan="8">
+                                    <label for="data" />
+                                    <field
+                                        name="data"
+                                        widget="code"
+                                        options="{'mode': 'python'}"
+                                        nolabel="1" colspan="2"
+                                    />
+                                </group>
+                            </group>
+                        </page>
+                        <page name="report" string="Report">
+                            <em>Dynamic content generated from import log lines.</em>
+                            <field
+                                name="report"
+                                widget="code"
+                                options="{'mode': 'python'}"
+                                nolabel="1" colspan="2"
+                            />
+                        </page>
+                        <page name="lines" string="Import logs">
+                            <field name="line_ids" widget="x2many_counter" />
+                        </page>
+                        <page name="lines" string="Previous logs" invisible="not archived_line_ids">
+                            <em>Logs of previous import (before the button "Replay import" was pressed).</em>
+                            <field name="archived_line_ids" />
+                        </page>
+                    </notebook>
+                </sheet>
+                <chatter reload_on_follower="True"/>
+            </form>
+        </field>
+    </record>
+
+    <record id="base_import_api_call_search" model="ir.ui.view">
+        <field name="name">import.api.call.search</field>
+        <field name="model">import.api.call</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="model" />
+                <field name="create_date" />
+                <field name="create_uid" />
+                <field name="config" />
+                <field name="data" />
+
+                <separator />
+                <filter
+                    name="state_success"
+                    domain="[('state', '=', 'success')]"
+                    string="Success"
+                />
+                <filter
+                    name="state_info"
+                    domain="[('state', '=', 'info')]"
+                    string="Needing user review"
+                />
+                <filter
+                    name="state_warning"
+                    domain="[('state', '=', 'warning')]"
+                    string="Warning (some lines failed)"
+                />
+                <filter
+                    name="state_error"
+                    domain="[('state', '=', 'error')]"
+                    string="Error (blocking failure)"
+                />
+                <separator />
+                <filter
+                    string="Verified"
+                    name="verified"
+                    domain="[('verified', '=', True)]"
+                />
+                <filter
+                    string="Unverified"
+                    name="unverified"
+                    domain="[('verified', '=', False)]"
+                />
+                <separator />
+                <filter
+                    string="Archived"
+                    name="inactive"
+                    domain="[('active', '=', False)]"
+                />
+
+                <group name="groupby">
+                    <filter
+                        name="logger_state"
+                        string="State"
+                        context="{'group_by': 'state'}"
+                    />
+                    <filter
+                        name="create_date"
+                        string="Creation date"
+                        context="{'group_by': 'create_date'}"
+                    />
+                    <filter
+                        name="create_uid"
+                        string="Creation user"
+                        context="{'group_by': 'create_uid'}"
+                    />
+                    <filter
+                        name="model"
+                        string="Model"
+                        context="{'group_by': 'model'}"
+                    />
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Action called from tree view -->
+    <record model="ir.actions.server" id="action_server_toggle_verified">
+        <field name="name">Toggle verified</field>
+        <field name="model_id" ref="base_import_api.model_import_api_call"/>
+        <field name="state">code</field>
+        <field name="code">model.action_toggle_verified()</field>
+        <field name="binding_model_id" ref="model_import_api_call" />
+        <field name="binding_type">action</field>
+    </record>
+
+    <!-- Actions for menu-items -->
+    <record
+        model="ir.actions.act_window"
+        id="import_api_call_action"
+    >
+        <field name="name">API calls</field>
+        <field name="res_model">import.api.call</field>
+        <field name="view_mode">list,form</field>
+    </record>
+    <record
+        model="ir.actions.act_window"
+        id="import_api_line_action"
+    >
+        <field name="name">API calls lines</field>
+        <field name="res_model">import.api.line</field>
+        <field name="view_mode">list,form</field>
+    </record>
+
+    <!-- Menu items, from top -->
+    <menuitem
+        id="import_api_menu"
+        name="API Imports"
+        groups="base_import_api.group_import_api_user"
+        sequence="90"
+        web_icon="base_import_api,static/description/icon.png"
+    >
+        <menuitem
+            id="import_api_base_menu"
+            name="Imports"
+            sequence="10"
+        >
+            <menuitem
+                id="import_api_call_menu"
+                action="base_import_api.import_api_call_action"
+                sequence="10"
+                />
+            <menuitem
+                id="import_api_call_line_menu"
+                action="base_import_api.import_api_line_action"
+                sequence="20"
+            />
+        </menuitem>
+    </menuitem>
+
+</odoo>
