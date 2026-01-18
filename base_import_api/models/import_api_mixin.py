@@ -20,6 +20,7 @@ class ImportApiMixin(models.AbstractModel):
     )
 
     #===== API Endpoint =====#
+    @api.model
     def import_api(self, payload:dict) -> dict:
         """ `payload` expected format:
             {
@@ -45,10 +46,12 @@ class ImportApiMixin(models.AbstractModel):
         logger._finish()
         return logger._get_api_response()
 
+    @api.model
     def _run_import_api(self, data, config):
         """ TO INHERITE """
         pass
     
+    @api.model
     def _get_import_config_default(self):
         """ Can be inherited """
         return {
@@ -90,6 +93,8 @@ class ImportApiMixin(models.AbstractModel):
                     options=item.get('options', {}),
                 )
         return res
+
+    @api.model
     def _get_view_items(self):
         return {
             "form": [{
@@ -110,6 +115,8 @@ class ImportApiMixin(models.AbstractModel):
                 "options": {"name": "external_id"}
             }],
         }
+    
+    @api.model
     def _get_view_add(self, res, View, arch, all_models, xpath, template='', element='', options={}):
         """ Add template or fields in 'tree', 'form', 'search', ... views
             Either pass args:

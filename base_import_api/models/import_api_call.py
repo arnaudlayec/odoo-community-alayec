@@ -71,6 +71,7 @@ class ImportApiCall(models.Model):
     )
 
     #===== Compute =====#
+    @api.depends("model", "create_date")
     def _compute_display_name(self):
         for logger in self:
             if not logger.model in self.env:
@@ -119,6 +120,7 @@ class ImportApiCall(models.Model):
             logger.verified = bool(logger.state == 'success')
     
     #===== Logics =====#
+    @api.model
     def _init(self, model, payload):
         """ Create logger and add subscribers """
         logger = self.create({
