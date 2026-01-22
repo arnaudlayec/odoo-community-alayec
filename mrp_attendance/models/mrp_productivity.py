@@ -44,15 +44,6 @@ class MrpWorkcenterProductivity(models.Model):
     )
     date = fields.Date(compute='_compute_date', store=True)
     hours_today = fields.Float(required=True, compute='_compute_hours_today')
-
-    #===== Constrain =====#
-    @api.constrains("duration")
-    def _constrain_duration_zero(self):
-        error = self.filtered(lambda x: not x.duration)
-        if bool(error):
-            raise exceptions.ValidationError(_(
-                "Duration must not be null.",
-            ))
     
     #===== Compute =====#
     def _close(self):
