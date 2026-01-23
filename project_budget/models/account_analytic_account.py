@@ -6,6 +6,9 @@ class AccountAnalyticAccount(models.Model):
     """ Configuration on Analytic Account for Project Budget """
     _name = 'account.analytic.account'
     _inherit = ['account.analytic.account', 'account.move.budget.update.mixin']
+    # native: 
+    # _order = 'plan_id, name'
+    _order = 'plan_id, sequence, code, name'
 
     sequence = fields.Integer(
         # used in account.move.budget.line:
