@@ -127,4 +127,6 @@ class AccountMove(models.Model):
                 "invoice": {"recordset": self},
                 "memo": wizard._get_communication(self.line_ids),
             })
+            if not parsed_pay.get("partner") and self.partner_id:
+                parsed_pay["partner"] = {"recordset": self.partner_id}
         self.env["account.payment"]._run_import_api(payments_data, config)

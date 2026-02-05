@@ -33,12 +33,12 @@ class AccountInvoiceImport(models.TransientModel):
             vals["name"] = parsed_inv["name"]
 
         # addresses (invoice & delivery)
-        for type in ["invoice", "delivery"]:
-            self._substitute_invoice_addresses(parsed_inv, vals, type, import_config)
+        for address_type in ["invoice", "delivery"]:
+            self._substitute_invoice_addresses(parsed_inv, vals, address_type, import_config)
         
         return vals
     
-    def _substitute_invoice_addresses(self, parsed_inv, vals, type, import_config):
+    def _substitute_invoice_addresses(self, parsed_inv, vals, address_type, import_config):
         """ Add support for `address_delivery` and `address_invoice` keys
             in `parsed_inv`.
             
@@ -47,29 +47,29 @@ class AccountInvoiceImport(models.TransientModel):
                 (delivery|invoice) address data are lost.
         """
         address_field = (
-            "partner_shipping_id" if type == "delivery" else
-            "partner_id" if type == "invoice" else None
+            "partner_shipping_id" if address_type == "delivery" else
+            "partner_id" if address_type == "invoice" else None
         )
-        address_dict = parsed_inv.get("address_" + type)
+        address_dict = parsed_inv.get("address_" + address_type)
         bdio = self.env["business.document.import"]
         partner = self.env["res.partner"].browse(vals.get("partner_id"))
         if not address_dict or not partner:
             return
 
         matched_address = bdio._match_partner_address(
-            address_dict, partner, type, parsed_inv["chatter_msg"],
+            address_dict, partner, address_type, parsed_inv["chatter_msg"],
             raise_exception=False,
         )
         if not matched_address: # not found (and so, != partner)
             address_dict.update({
-                "type": type,
+                "type": address_type,
                 "parent_id": partner.id,
             })
             new_address = bdio._create_or_update_partner(
-                matched_address, parsed_inv, import_config, "address_" + type
+                matched_address, parsed_inv, import_config, "address_" + address_type
             )
             if new_address:
                 vals[address_field] = new_address.id
-        elif matched_address.id != partner.address_get([type]).get(type):
+        elif matched_address.id != partner.address_get([address_type]).get(address_type):
             vals[address_field] = matched_address.id
         # else, this is OK to let Odoo choose default addresses on invoice

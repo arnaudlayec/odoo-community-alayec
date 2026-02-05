@@ -63,7 +63,6 @@ class ImportApiCall(models.Model):
     )
     date_last_call = fields.Datetime(
         string="Last import date",
-        default=lambda self: self.env.cr.now(), # like create_date
     )
     line_ids = fields.One2many(
         comodel_name='import.api.line',
@@ -89,8 +88,11 @@ class ImportApiCall(models.Model):
     @api.depends("model", "create_date")
     def _compute_display_name(self):
         for logger in self:
-            date = format_datetime(self.env, logger.create_date)
-            logger.display_name = "[%s] %s" % (logger.model_description, date)
+            name = logger.model_description
+            if logger.date_last_call:
+                date = format_datetime(self.env, logger.date_last_call)
+                name = "[%s] %s" % (name, date)
+            logger.display_name = name
 
     @api.depends("model")
     def _compute_model_description(self):
@@ -156,6 +158,7 @@ class ImportApiCall(models.Model):
             'config': payload.get('config', {}),
             'data': payload.get('data', {}),
             'model': model,
+            "date_last_call": self.env.cr.now(), # like create_date
         })
         # followers
         group = self.env.ref("base_import_api.group_import_api_user")
