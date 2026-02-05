@@ -7,13 +7,14 @@
     'license': "AGPL-3",
     "website": "https://www.akretion.com",
     "depends": ["base_business_document_import"],
+    "external_dependencies": {"python": ["markdown"]},
     "data": [
         # security
         "security/base_import_api_security.xml",
         "security/ir.model.access.csv",
         # views
         "views/import_api_call.xml",
-        "views/import_api_call_line.xml",
+        "views/import_api_line.xml",
         # templates
         'templates/import_api_template.xml',
     ],

@@ -3,7 +3,9 @@
 from odoo import models, fields, api, Command, exceptions, _
 from odoo.tools import format_datetime, html2plaintext
 from markupsafe import Markup
+from collections import defaultdict
 
+import json
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -12,12 +14,14 @@ class ImportApiCall(models.Model):
     _inherit = ['mail.thread']
     _description = 'API call logger'
     _rec_name = 'display_name'
+    _order = "date_last_call DESC"
 
     #===== Fields =====#
     company_id = fields.Many2one(
         comodel_name='res.company',
         string='Company',
         readonly=True,
+        default=lambda self: self.env.company.id,
     )
     active = fields.Boolean(default=True)
     state = fields.Selection(
@@ -26,82 +30,101 @@ class ImportApiCall(models.Model):
             ('info', "Info"),
             ('warning', "Warning"),
             ('error', "Error"),
+            ('verified', "Verified"),
         ],
-        default="success",
         compute='_compute_state',
+        default="error",
         store=True,
+        tracking=True,
     )
     state_text = fields.Char(
         string='State (description)',
         compute='_compute_state_text',
     )
-    verified = fields.Boolean(
-        string='Verified',
-        compute='_compute_verified',
-        store=True,
-        readonly=False,
+    model = fields.Char(string='Model')
+    model_description = fields.Char(
+        compute="_compute_model_description",
     )
-    model = fields.Char(string='Model', readonly=True)
     config = fields.Json(
         string='Config payload',
         help='Received config in JSON payload',
+        default='{}',
     )
     data = fields.Json(
         string='Data payload',
         help='Received data in JSON payload',
+        default='{}',
     )
-    report = fields.Text(
+    report = fields.Html(
         string='Detailed report',
         help='Using Markdown syntax for formatting',
         compute='_compute_report',
         readonly=True,
     )
+    date_last_call = fields.Datetime(
+        string="Last import date",
+        default=lambda self: self.env.cr.now(), # like create_date
+    )
     line_ids = fields.One2many(
         comodel_name='import.api.line',
         inverse_name='logger_id',
-        string='Log lines',
+        string='Log lines details',
         readonly=True,
     )
     # for view
-    archived_line_ids = fields.One2many(
-        related='line_ids',
-        string='Previous logs',
-        context={"active_test": False},
-        domain=[("active", "=", "False")],
+    line_count = fields.Integer(
+        string="Log lines",
+        compute='_compute_counts',
+    )
+    previous_line_count = fields.Integer(
+        string="Previous import log lines",
+        compute='_compute_counts',
+    )
+    record_count = fields.Integer(
+        string="Imported records",
+        compute="_compute_counts",
     )
 
     #===== Compute =====#
     @api.depends("model", "create_date")
     def _compute_display_name(self):
         for logger in self:
-            if not logger.model in self.env:
-                logger.display_name = _("Unknown model")
-            else:
-                model = self.env[logger.model]._description
-                date = format_datetime(self.env, logger.create_date)
-                logger.display_name = f"[{model}] {date}"
+            date = format_datetime(self.env, logger.create_date)
+            logger.display_name = "[%s] %s" % (logger.model_description, date)
 
-    @api.depends('line_ids.record_id', 'line_ids.message')
+    @api.depends("model")
+    def _compute_model_description(self):
+        for logger in self:
+            if not logger.model in self.env:
+                logger.model_description = _("Unknown model")
+            else:
+                logger.model_description = _(logger.env[logger.model]._description)
+
+    @api.depends('line_ids.record_id', 'line_ids.message', 'line_ids.verified')
     def _compute_state(self):
-        """ Compute `state` as per line_ids.state
-            *WIHTOUT* moving `state` at a lower level than already set
-        """
+        """ Compute `state` as per line_ids.state & verified """
         for logger in self:
             lines = logger.line_ids.filtered(lambda x: x.state != 'global')
             states = set(lines.mapped('state'))
 
             # all lines failed
-            if states == {"error"}:
-                logger.state = 'error'
+            if not bool(lines) or states == {"error"}:
+                state = 'error'
             # some line failed
-            elif logger.state != 'error' and bool("error" in states):
-                logger.state = 'warning'
+            elif bool("error" in states):
+                state = 'warning'
             # all lines imported, some with message
-            elif logger.state not in ('error', 'warning') and bool("info" in states):
-                logger.state = 'info'
+            elif bool("info" in states):
+                state = 'info'
             # defaut: all lines imported, no review needed
-            elif logger.state not in ('error', 'warning', 'info'):
-                logger.state = 'success'
+            else:
+                state = 'success'
+            
+            # 'verified': overrides the previous one
+            if lines and state in ("error", "warning", "info") and self._get_is_verified():
+                state = 'verified'
+            
+            logger.state = state
     
     @api.depends('state')
     def _compute_state_text(self):
@@ -110,14 +133,19 @@ class ImportApiCall(models.Model):
             "info": _("Records imported, some needing user review"),
             "warning": _("Some import lines failed or user review is required"),
             "error": _("Blocking failure: no record imported"),
+            "verified": _("Some issues, but all verified by a user"),
         }
         for logger in self:
             logger.state_text = states[logger.state]
 
-    @api.depends('state')
-    def _compute_verified(self):
+    @api.depends("line_ids", "line_ids.active", "line_ids.record_id",)
+    def _compute_counts(self):
         for logger in self:
-            logger.verified = bool(logger.state == 'success')
+            logger.line_count = len(logger.line_ids)
+
+            all_lines = logger.with_context(active_test=False).line_ids
+            logger.previous_line_count = len(all_lines.filtered(lambda x: not x.active))
+            logger.record_count = len(set(all_lines.filtered("record_ref").mapped("record_id")))
     
     #===== Logics =====#
     @api.model
@@ -135,140 +163,286 @@ class ImportApiCall(models.Model):
         return logger
     
     def _finish(self):
-        """ Notify subscribers """
-        self.message_post(
-            body=Markup(self.report),
-        )
-    
-    def _reset(self):
-        self.line_ids.active = False
+        """ Update lines without `record_id` & notify followers """
+        lines = self.line_ids.filtered(lambda x: not x.record_id and x.external_ref)
+        external_refs = lines.mapped("external_ref")
+        domain = [
+            ("external_ref", "in", external_refs),
+            ("create_date", ">=", self.date_last_call), # to ignore already existing records 
+        ]
+        records = self.env[self.model].search(domain)
+        mapped_refs = {
+            x["external_ref"]: x["id"]
+            for x in records.read(["external_ref"])
+        }
+        for line in lines:
+            line.record_id = mapped_refs.get(line.external_ref)
+        # Chatter msg to followers
+        report = Markup(self._get_report_headers("html"))
+        self.message_post(body=report)
+
     
     #===== Lines =====#
     def _add_line(
-        self, message, vals={}, field='', value=None,
-        flush=None, record=None,
+        self, message='', parsed_data={}, field='', value=None, flush=False, line_vals={}
     ):
+        """ :arg `flush`: should be used only if record is not created """
         vals = {
             "logger_id": self.id,
-            "external_id": vals.get("external_id"),
-            "record_id": record.id if record else False,
+            "external_ref": parsed_data.get("external_ref"),
             'message': message,
             'field': field,
-            'value': value or vals.get(field),
-        }
+            'value': value or parsed_data.get(field),
+            'model': self.model,
+        } | line_vals
+
         line = self.env['import.api.line'].create(vals)
         _logger.info(f"[API import] {line._display()}")
         
-        if isinstance(flush, bool) and flush:
-            self._flush_lines(vals)
+        if flush:
+            self._flush_lines(parsed_data)
         
         return line
     
-    def _flush_lines(self, vals, record=None):
+    def _add_line_success(self, parsed_data, record=None, chatter_msg=[]):
+        line_vals = {
+            "message": (
+                _("%s created", record._description if record else _("Record"))
+                + (_(", ID %d", record.id) if record else "")
+            ),
+            "model": record._name if record else self.model,
+            "record_id": record and record.id,
+            "state": "success",
+            "verified": True,
+        }
+        if chatter_msg:
+            line_vals["message"] += "\n" + chatter_msg.pop()
+        self._add_line(parsed_data=parsed_data, line_vals=line_vals)
+    
+    def _flush_lines(self, parsed_data):
         """ Must be call at the end of record import work.
-            It flushes `chatter_msg` in logs.line_ids,
-            setting `record_id`
+            It flushes `chatter_msg` in logs.line_ids.
+            If no warning, it logs 1 empty line (='success')
+             to save `record_id`
         """
-        for message in vals.get("chatter_msg", []):
-            self._add_line(html2plaintext(message), vals, record=record)
-        vals["chatter_msg"] = []
+        chatter_msg = parsed_data.get("chatter_msg", [])
+        if chatter_msg:
+            for message in chatter_msg:
+                message = message.strip()
+                if message:
+                    self._add_line(html2plaintext(message), parsed_data)
+            parsed_data["chatter_msg"] = []
+        else:
+            # 'success' records: create an empty log line to keep it trace
+            external_ref = parsed_data.get("external_ref")
+            if external_ref:
+                lines = self.line_ids.filtered(
+                    lambda x: x.external_ref == external_ref
+                )
+                if not lines:
+                    self._add_line_success(parsed_data)
 
     #===== Report =====#
     @api.depends('line_ids.record_id', 'line_ids.message')
     def _compute_report(self):
         for logger in self:
-            logger.report = logger._generate_report()
+            logger.report = Markup(logger._generate_report('html'))
     
-    def _generate_report(self, format='markdown'):
-        """ :option format: None or Markdown """
+    def _generate_report(self, format='html'):
+        """ :option format: 'html' or 'markdown' (default) """
         if not self.line_ids:
             return _("No report available.")
         else:
             return self._get_report_headers(format) + self._get_report_lines(format)
     
-    def _get_report_headers(self, format):
-        res = self._get_external_id_by_state()
-        report = _("""
-            # Import of %(model_description)s (%(res_model)s)\n
-            \n
-            ## Summary\n
-            Global state of import: %(state)s\n
-            - Imported records (with no message): %(success)d\n
-            - Imported records (with message): %(success_info)d\n
-            - Failed records: %(failed)d\n
-            \n
-        """,
-            model_description=self.env[self.model]._description if self.model in self.env else False,
-            res_model=self.model,
-            state=self.state_text,
-            success=len(res['success']),
-            success_info=len(res['info']),
-            failed=len(res['error']),
-        )
-        if res['global']:
-            lines = self.line_ids.filtered(lambda x: x.state == 'global')
+    def _get_report_headers(self, format='markdown'):
+        report_data = self._get_report_data()
+        report = ""
+        for model, mapped_lines in report_data.items():
             report += _(
-                "## Global messages\n %s",
-                "\n" . join(lines.mapped("message"))
-            )
-        return report
-    
-    def _get_report_lines(self, format):
-        report = ''
-        sections = dict(self._fields['state']._description_selection(self.env))
-        for line_state, subtitle in sections.items():
-            lines = self.line_ids.filtered(lambda x: x.external_id and x.state == line_state)
-            report += _("""
-                ## %(subtitle)s\n
-                External IDs: %(external_ids)s\n
-                \n
-            """, 
-                subtitle=subtitle,
-                external_ids=' ' . join(lines.mapped("external_id")),
+                "# Import of %(model_description)s (%(res_model)s)\n"
+                "## Summary\n\n"
+                "* %(success)d successful record(s), imported with no message\n"
+                "* %(info)d imported record(s), with needed review\n"
+                "* %(failed)d import(s) failed\n",
+                model_description=(
+                    self.env[model]._description
+                    if model in self.env else _("Unknown model")
+                ),
+                res_model=model,
+                success=len(set(mapped_lines['success'].mapped("external_ref"))),
+                info=len(set(mapped_lines['info'].mapped("external_ref"))),
+                failed=len(set(mapped_lines['error'].mapped("external_ref"))),
             )
 
-            for line in lines.filtered('message'):
-                report += " - " + line._display() + "\n"
-        return report
+            if mapped_lines['global']:
+                report += _(
+                    "## Global messages\n%s",
+                    "\n" . join(mapped_lines["global"].mapped("message"))
+                )
+            
+        return _convert_markdown(report, format)
     
+    def _get_report_lines(self, format='markdown'):
+        report = ''
+        sections = dict(self.line_ids._fields['state']._description_selection(self.env))
+        for line_state, subtitle in sections.items():
+            lines = self.line_ids.filtered(lambda x: x.external_ref and x.state == line_state)
+            if lines:
+                report += _(
+                    "### %(subtitle)s\n"
+                    "External IDs: %(external_refs)s\n\n", 
+                    subtitle=subtitle,
+                    external_refs=' ' . join(set(lines.mapped("external_ref"))),
+                )
+
+                for line in lines.filtered('message'):
+                    report += " - " + line._display() + "\n"
+        return _convert_markdown(report, format)
+
     #===== API response =====#
     def _get_api_response(self) -> dict:
         """ Prepare data the returned by the API """
-        res = self._get_external_id_by_state()
+        report_data = self._get_report_data()
+        mapped_ids, to_review, failed = {}, {}, {}
+        for model, mapped_lines in report_data.items():
+            mapped_ids[model] = {
+                line.external_ref: line.record_id
+                for lines in mapped_lines.values()
+                for line in lines
+                if line.external_ref and line.record_id
+            }
+            to_review[model] = list(set(mapped_lines["info"].mapped("external_ref")))
+            failed[model] = list(set(mapped_lines["error"].mapped("external_ref")))
+
         response = {
             'logger_id': self.id, # technical ID of API call (storing log details in Odoo)
             'state': self.state, # values: 'success', 'info', 'warning', 'error'
             'state_text': self.state_text, # same as 'state' but in natural language
-            'report': self.report,
-            'mapped_ids': {
-                external_id: record_id
-                for x in res.values()
-                for external_id, record_id in x.items()
-            },
-            'to_review': list(res['info'].keys()),
-            'failed': list(res['error'].keys()),
+            'report': self._generate_report("plain"),
+            'mapped_ids': mapped_ids,
+            'to_review': to_review,
+            'failed': failed,
         }
         _logger.debug(f"[API import] Response: {response}")
         return response
     
-    def _get_external_id_by_state(self):
-        res = {state[0]: {} for state in self.line_ids._fields['state'].selection}
-        for line in self.line_ids.read(["state", "external_id", "record_id"]):
-            res[line['state']][line['external_id']] = line['record_id']
+    def _get_report_data(self):
+        """ :return: like
+            {
+                "account.move": {
+                    "success": recordset of import.api.line,
+                    "info": ...,
+                    "error": ...,
+                },
+                "res.partner": {
+                    ...
+                },
+                "account.payment": {
+                    ...
+                }
+            }
+        """
+        self.ensure_one()
+        Line = self.env["import.api.line"]
+        states_default = {state: Line for state, _ in Line._fields['state'].selection}
+        res = {}
+        for line in self.line_ids:
+            res.setdefault(line.model, states_default.copy())
+            res[line.model][line.state] |= line
         return res
-
+    
     #===== Button =====#
-    def action_toggle_verified(self):
+    def action_toggle_verified_all(self):
         for logger in self:
-            logger.verified = not logger.verified
+            lines = logger.line_ids
+            if logger._get_is_verified():
+                lines.verified = False
+            else:
+                lines.verified = True
+    def _get_is_verified(self):
+        self.ensure_one()
+        lines = self.line_ids
+        if not lines:
+            return False
+        return not bool(lines.filtered(lambda x: x.state != 'success' and not x.verified))
     
     def action_replay(self):
         for logger in self:
             if not logger.model in self.env:
                 raise exceptions.ValidationError(_("Unknown model"))
-            logger._reset()
+            self.line_ids.active = False
+            self.date_last_call = fields.Datetime.now()
             Model = self.env[logger.model]
-            Model.import_api({
-                'config': logger.config,
-                'data': logger.data,
+            Model.import_api(
+                payload_arg={
+                    'config': json.loads(logger.config or ''),
+                    'data': json.loads(logger.data or ''),
+                },
+                logger=logger,
+            )
+    
+    def action_open_lines(self):
+        """ Smart button to log lines """
+        context_add = {"default_logger_id": self.id}
+        if self._context.get("previous_line"):
+            context_add.update({
+                "search_default_inactive": True,
+                "active_test": False,
             })
+        
+        xml_id = "base_import_api.import_api_line_action"
+        action = self.env.ref(xml_id).read([])[0]
+        action.update({
+            "context": self._context | context_add,
+            "domain": [("logger_id", "=", self.id)],
+        })
+        return action
+    
+    def action_open_records(self):
+        """ Smart button to imported records """
+        lines = self.with_context(active_test=False).line_ids
+        action = {
+            'name': _("Imported %(model_descr)s", model_descr = self.model_description),
+            'type': 'ir.actions.act_window',
+            'res_model': self.model,
+            'view_mode': 'list,form',
+            'context': self._context,
+            'domain': [("id", "in", lines.mapped("record_id"))]
+        }
+        return action
+
+def _convert_markdown(text, output_format):
+    if output_format == 'markdown':
+        return text
+    else:
+        try:
+            from markdown import Markdown
+        except ImportError:
+            _logger.error(
+                "Cannot convert report in HTML because of missing "
+                "python dependency 'markdown'."
+            )
+            return text
+        
+        # patch Markdown to support 'plain'
+        # https://stackoverflow.com/questions/761824/python-how-to-convert-markdown-formatted-text-to-text
+        if output_format == "plain":
+            from io import StringIO
+            def unmark_element(element, stream=None):
+                if stream is None:
+                    stream = StringIO()
+                if element.text:
+                    stream.write(element.text)
+                for sub in element:
+                    unmark_element(sub, stream)
+                if element.tail:
+                    stream.write(element.tail)
+                return stream.getvalue()
+            Markdown.output_formats["plain"] = unmark_element
+        
+        md = Markdown(output_format=output_format, extensions=["sane_lists", "nl2br"])
+        if output_format == "plain":
+            md.stripTopLevelTags = False
+        
+        return md.convert(text)

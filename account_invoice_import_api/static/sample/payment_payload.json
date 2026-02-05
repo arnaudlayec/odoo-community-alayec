@@ -1,0 +1,46 @@
+// Format: JSON
+// Comments should be removed
+{
+    "config": {
+        "payment_bank_create": true
+    },
+    "data": [ // Note: 'data' key is a list of dict
+        {
+            "external_ref": 111,
+            "payment_type": "inbound", // or 'outbound'
+            "partner_type": "customer", // or "supplier", Optionnal, guessed from `payment_type`
+
+            "partner": {}, // same field as `account.move`. Can be different than the invoice's
+            "currency": {}, // same as `account.move`
+            "journal": {}, // same as `account.move`
+
+            // Only required if 'journal' has more than 1 payment method
+            // for the 'payment_type'
+            // If so, 1 or both of 'code' and 'unece_code' can be provided
+            "payment_method": {
+                "code": "manual", // Other examples: 'fr_lcr', 'manual', 'sepa_credit_transfer'
+                "unece_code": 24,
+            },
+
+            // Optional
+            "invoice": {
+                "name": "INV/2026/00001",
+                "invoice_number": "25F06061"
+            },
+
+            "amount": 10.00,
+            "date": "2025-01-01",
+            "memo": "Label", // Text appearing on bank transfer
+            "iban": "FR7630001007941234567890185",
+            "bic": "BDFEFR2LCCB",
+
+            // Optional fields
+            "note": "Notes added in chatter",
+            "origin": "MyExternalSoftware",
+            "attachments": {"file1.pdf": base64data1, "file2.pdf": base64data2},
+        },
+        {
+            // ...
+        }
+    ]
+}

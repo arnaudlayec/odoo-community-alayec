@@ -29,7 +29,7 @@ Where:
 - `config`: dict of keys:
    - converted to `import_config` for method `account.invoice.import/import_config()`
      (not needed if partner is always matched or created)
-   - see for example: `account.move/_get_import_config_default()`
+   - see for example: `account.move/_get_api_config_default()`
    - plus some configurable keys
 - `data`:
    - a list of vals like `parsed_inv` in `account.invoice.import/import_config()`

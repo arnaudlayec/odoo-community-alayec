@@ -149,7 +149,7 @@ msgstr "Appel d'API"
 #. module: base_import_api
 #: model:ir.model,name:base_import_api.model_import_api_call
 msgid "API call logger"
-msgstr "Logger d'appel d'API"
+msgstr "Logger d'appel API"
 
 #. module: base_import_api
 #: model:ir.actions.act_window,name:base_import_api.import_api_call_action
@@ -244,7 +244,7 @@ msgstr "Utilisateur de création"
 #. module: base_import_api
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_call__data
 msgid "Data payload"
-msgstr "Données transmise"
+msgstr "Données transmises"
 
 #. module: base_import_api
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_call__report
@@ -327,7 +327,7 @@ msgstr "Mixin d'API d'import"
 #. module: base_import_api
 #: model:res.groups,name:base_import_api.group_import_api_user
 msgid "Import API user"
-msgstr "Utilisateur d'import par API"
+msgstr "Utilisateur des imports par API"
 
 #. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_form
@@ -523,8 +523,8 @@ msgstr "Rejouer l'import"
 
 #. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_form
-msgid "Report"
-msgstr "Rapport"
+msgid "Last report"
+msgstr "Dernier rapport"
 
 #. module: base_import_api
 #. odoo-python

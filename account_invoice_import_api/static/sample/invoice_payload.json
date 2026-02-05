@@ -1,22 +1,28 @@
+// Format: JSON
+// Comments should be removed
 {
     "config": {
-        "company": 1, // required, Odoo ID, res.company
-        "single_line": /false, // boolean
+        "single_line": false, // boolean
+        "label": "Force invoice line description",
+        "company": 1, // Odoo ID, res.company
         "account": 3, // Odoo ID, account.account
         "taxes": [1, 2], // Odoo IDs, account.tax
-        "label": "Force invoice line description",
-        "product": 1, // Odoo ID, product.product
+        "product": 1 // Odoo ID, product.product
     },
-    "data": [
+    "data": [ // Note: 'data' key is a list of dict
         {
-            "type": "in_invoice" or "in_refund",  // "in_invoice" by default
+            "name": "I1501243", // If given, it will replace Odoo invoice sequence
+            "invoice_number": "I1501243", // Invoice ref. in source system (optional if 'name' is used)
+            "external_ref": 9543, // Technical ID of the invoice in external system's database
+
+            "type": "in_invoice",  // "in_invoice". Values: 'entry', 'out_invoice', 'out_refund', 'in_invoice', 'in_refund', 'out_receipt', 'in_receipt'
             "journal": {"code": "PUR"},  // use only if you want to force a specific journal
             "currency": {
                 // One of the following
                 // Menu: Invoicing/Configuration/Currency
                 "iso": "EUR",
                 "currency_symbol": "€",
-                "country_code": "FR", // Menu: Contacts/Configuration/Countries, field "code"
+                "country_code": "FR" // Menu: Contacts/Configuration/Countries, field "code"
             },
             
             "date": "2015-10-08", // Accounting date. Must be a string
@@ -26,14 +32,17 @@
             "date_start": "2015-10-01", // For services over a period of time
             "date_end": "2015-10-31",
             "description": "TGV Paris-Lyon", // To set the same description on all invoice lines
-
-            "amount_untaxed": 10.0,
-            "amount_tax": 2.0, // Provide amount_untaxed OR amount_tax
+            
             "amount_total": 12.0, // Total with taxes, must always be provided
+            "amount_untaxed": 10.0, // Provide amount_untaxed OR amount_tax
+            "amount_tax": 2.0,
+            // Note: amounts must be float or integer, no string
             
             "partner": {
-                "vat": "FR25499247138",
+                "external_ref": 1354732,
+                "is_company": true,
                 "ref": "CUSTOMER0001",
+                "vat": "FR25499247138",
                 "email": "support@browserstack.com",
                 "name": "Capitaine Train",
                 "street": "27 rue Henri Rolland",
@@ -42,26 +51,40 @@
                 "city": "Villeurbanne",
                 "zip": "69100",
                 "country_code": "FR", // Menu: Contacts/Configuration/Countries, field "code"
-                "state_code": /false, // Menu: Contacts/Configuration/States, field "code"
+                "state_code": false, // Menu: Contacts/Configuration/States, field "code"
                 "phone": "+33 4 72 42 24 42",
-                "mobile": "+33 6 42 12 42 12",
+                "mobile": "+33 6 42 12 42 12"
+            },
+            "address_delivery": {
+                // If given, it will be saved within the addresses of "partner"
+                // and set on the invoice as `shipping_partner_id`
+                // Mandatory fields
+                "name": "Résidence secondaire",
+                "country_code": "FR",
+            	// Optional fields
+                "street": "27 rue Henri Rolland",
+                "street2": "ZAC des cactus",
+                "street3": "",
+                "city": "Villeurbanne",
+                "zip": "69100",
+                "state_code": false,
+                // Other optional
+                "email": "support@browserstack.com",
+                "phone": "+33 4 72 42 24 42",
+                "mobile": "+33 6 42 12 42 12"
+            },
+            "address_invoice": {
+                // Same keys than for "address_delivery"
+                // If given, it will replace the `partner_id` on the invoice
             },
 
-            "company": {"vat": "FR12123456789"}, // Rarely set in invoices
-                // Only used to check we are not importing the invoice
-                // in the wrong company by mistake
-            "invoice_number": "I1501243", // Invoice ref. in source system
-            "note": "Note embedded in the document",
-            "origin": "Origin note",
-
             "lines": [{
+                "description": "Gelierzucker Extra 250g", // Custom name
                 "product": {
                     // One or the other
                     "code": "GZ250", // Product reference
-                    "barcode": "4123456000021",
+                    "barcode": "4123456000021"
                 },
-
-                "name": "Gelierzucker Extra 250g",
                 "price_unit": 1.45, // price_unit without taxes
                 "discount": 10.0,  // for 10% discount
                 "qty": 2.0,
@@ -79,12 +102,12 @@
                     // optional
                     "unece_type_code": "VAT",
                     "unece_categ_code": "S",
-                    "unece_due_date_code": "432",
+                    "unece_due_date_code": "432"
                 }],
 
                 // date_start and date_end on lines override the global value
                 "date_start": "2015-10-01",
-                "date_end": "2015-10-31",
+                "date_end": "2015-10-31"
             }],
 
             "payments": [{
@@ -92,8 +115,12 @@
             }],
 
             // Optional fields
+            "note": "Notes added in chatter of the invoice",
+            "origin": "MyExternalSoftware",
             "attachments": {"file1.pdf": base64data1, "file2.pdf": base64data2},
-            "chatter_msg": ["Notes added in chatter of the invoice"]
+            "company": {"vat": "FR12123456789"} // Rarely set in invoices
+                // Only used to check we are not importing the invoice
+                // in the wrong company by mistake
         },
         {
             // 2nd invoice
