@@ -106,7 +106,7 @@
                 <filter
                     name="state_info"
                     domain="[('state', '=', 'info')]"
-                    string="Informative note"
+                    string="Information"
                 />
                 <filter
                     name="state_warning"
