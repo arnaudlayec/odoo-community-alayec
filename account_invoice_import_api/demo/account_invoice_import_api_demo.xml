@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="demo_import_api_logger_invoice" model="import.api.call">
+            <field name="model">account.move</field>
+            <field name="config">
+{
+    // This payload key holds configuration for both:
+    // 1. API behavior (module `account_invoice_import_api`)
+    // 2. Dict `import_config` of module `account_invoice_import`
+
+    // 1. API:
+    // Invoices
+    "invoices_confirm": true,
+        // If false: invoice are imported as draft only
+        // If true:  try to validate invoices right after import
+    
+    // CONTACTS
+    "contact_create_on_the_fly": true,
+        // If false: the invoice will be created in draft and a warning will be raised in
+        // the import. It will embed contact data so that a user can manually create the
+        // contact from the invoice
+    "contact_update_on_the_fly": true,
+        // If true: if the contact data are matched with an existing one, they will be
+        // erased with transmitted data
+    "contact_update_do_not_erase": true,
+        // if true and if `contact_update_on_the_fly` is true, the contact will be updated
+        // *ONLY IF* they were not modified manually in Odoo (based on `write_uid`, i.e. last
+        // user who modified the contact)
+
+    // PAYMENTS
+    "payment_bank_create": true,
+        // If different than None, it overrides company"s
+        // setting `invoice_import_create_bank_account`
+    
+    // PRODUCTS
+    // "product_create": false, // ROADMAP
+        // Currently no other mode than `false` is supported
+
+    
+    // 2. `import_config` dict for module `account_invoice_import` (as of Feb-2026):
+    // Note: IDs will be converted into Odoo records when put inside
+    // the var `import_config` for methods of `account_invoice_import`
+    "single_line": false, // boolean
+    "label": "Force invoice line description",
+    "company": 1, // Odoo ID, res.company
+    "journal": 2, // Odoo ID, account.journal
+    "account": 3, // Odoo ID, account.account
+    "taxes": [1, 2], // Odoo IDs, account.tax
+    "product": 1 // Odoo ID, product.product
+}
+            </field>
+            <field name="data">
+[
+    {
+        "external_ref": 9543,
+            // Technical ID of the invoice in external system"s database
+            // Should always be provided, assumption is made than
+            // 1 external record == 1 Odoo record
+        "name": "I1501243",
+            // If given, it will replace Odoo invoice sequence
+        "invoice_number": "I1501243",
+            // Invoice ref. in source system
+            // Only relevant if "name" is not used
+        "origin": "My External Software",
+
+        // Optional fields
+        "attachments": {"file1.pdf": "TXkgYXR0YWNobWVudA==", "file2.pdf": "TXkgYXR0YWNobWVudA=="},
+        "note": "Notes added in chatter of the invoice",
+        "company": {"vat": "FR12123456789"}, // Rarely set in invoices
+            // Only used to check we are not importing the invoice
+            // in the wrong company by mistake (feature of module `account_invoice_import`)
+        
+        "type": "in_invoice",
+            // Values: "entry", "out_invoice", "out_refund", "in_invoice",
+            // "in_refund", "out_receipt", "in_receipt"
+        "journal": {
+            // Use only if you want to force a specific journal
+            // Else, the 1st sale or purchase journal will be selected by default
+            "code": "BILL"
+        },
+        "currency": {
+            // Menu for values: Invoicing/Configuration/Currency
+            // One of the above
+            "iso": "USD",
+            "currency_symbol": "€",
+            "country_code": "FR" // Menu: Contacts/Configuration/Countries, field "code"
+        },
+        
+        "date": "2015-10-08", // Accounting date. Must be a string
+        "date_due": "2015-11-07",
+
+        "amount_total": 3.13, // Total with taxes, must always be provided
+        "amount_untaxed": 2.61, // Provide amount_untaxed OR amount_tax
+        "amount_tax": 0.52, // Note: amounts must be float or integer, no string   
+            // Highly recommended module: account_invoice_check_total   
+        
+        "partner": {
+            "external_ref": 1354732,
+            "is_company": true,
+            "ref": "CUSTOMER0001",
+            "vat": "FR25499247138",
+            "email": "support@browserstack.com",
+            "name": "Capitaine Train",
+            "street": "27 rue Henri Rolland",
+            "street2": "",
+            "street3": "",
+            "city": "Villeurbanne",
+            "zip": "69100",
+            "country_code": "FR",
+                // Menu for values: Contacts/Configuration/Countries, field "code"
+            "state_code": false,
+                // Menu for values: Contacts/Configuration/States, field "code"
+            "phone": "+33 4 99 99 99 99",
+            "mobile": "+33 6 99 99 99 99"
+                // Highly recommended module: base_business_document_import_phone
+        },
+        "address_delivery": {
+            // If given, it will be saved within the addresses of "partner"
+            // and set on the invoice as `shipping_partner_id`
+
+            // Mandatory fields
+            "external_ref": 678131,
+            "name": "Résidence secondaire",
+            "country_code": "FR",
+
+            // Optional fields
+            "street": "ZAC des cactus",
+            "street2": "",
+            "street3": "",
+            "city": "Soleil en plage",
+            "zip": "13000",
+            "state_code": false,
+
+            // Other optional
+            "email": "support@browserstack.com",
+            "phone": "+33 4 99 99 99 99",
+            "mobile": "+33 6 99 99 99 99"
+        },
+        "address_invoice": {
+            // Same keys than for "address_delivery"
+            // If given, it will replace the `partner_id` on the invoice
+        },
+
+        // Below keys are only used if the invoice has a single line
+        "date_start": "2015-10-01", // For services over a period of time
+        "date_end": "2015-10-31",
+        "description": "TGV Paris-Lyon", // To set the same description on all invoice lines
+
+        "lines": [{
+            "name": "Gelierzucker Extra 250g", // Custom name
+            "product": {
+                // One or the other
+                "code": "GZ250", // Product reference
+                "barcode": "4123456000021"
+            },
+            "price_unit": 1.45, // unit price without taxes
+            "discount": 10.0,  // for 10% discount
+            "qty": 2.0,
+            "price_subtotal": 2.61, // As calculated by the external system (without taxes)
+                // Optionnal
+                // Needed to be able to generate adjustment lines when decimal
+                // precision is not high enough in Odoo
+
+            "uom": {"unece_code": "C62"},
+                // Menu for values: Sale/Configuraton/Units of measure, field "UNECE Code"
+
+            "taxes": [{
+                // required
+                "amount_type": "percent", // "fixed" or "percent"
+                "amount": 20.0,
+
+                // optional
+                "unece_type_code": "VAT",
+                "unece_categ_code": "S",
+                "unece_due_date_code": "432"
+            }],
+
+            // date_start and date_end on lines override the global value
+            "date_start": "2015-10-01",
+            "date_end": "2015-10-31"
+        }],
+
+        "payments": [
+            // See "account.payment" example, except:
+            // "invoice": not to be given, will be set to the just imported invoice
+            // "origin": if not given, will be set the same than invoice's
+            // "partner": same
+        ]
+    },
+    {
+        // 2nd invoice
+    },
+    {
+        // ...
+    }
+]
+            </field>
+        </record>
+    </data>
+</odoo>

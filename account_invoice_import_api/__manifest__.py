@@ -6,9 +6,11 @@
     'license': "AGPL-3",
     "website": "https://www.akretion.com",
     "depends": ["account_invoice_import", "base_import_api"],
-    # recommended modules: `account_invoice_check_total`
-    # and `base_business_document_import_phone`
     "data": [],
+    'demo': [
+        'demo/account_invoice_import_api_demo.xml',
+        'demo/account_payment_import_api_demo.xml',
+    ],
     "installable": True,
     "auto_install": False,
     "application": False,

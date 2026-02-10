@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, models, Command, _
+from odoo import api, models, exceptions, _
+from odoo.tools.misc import format_amount
 
 class AccountInvoiceImport(models.TransientModel):
     """ This inheritance was designed so it could be natively
@@ -21,8 +22,11 @@ class AccountInvoiceImport(models.TransientModel):
 
     @api.model
     def _prepare_create_invoice_vals(self, parsed_inv, import_config):
-        """ Add management of additionnal `parsed_inv` data keys
-            to invoice `vals`
+        """ Add support of additionnal parsed keys:
+            - name
+            - external_ref
+            - address_invoice
+            - address_delivery
         """
         vals = super()._prepare_create_invoice_vals(parsed_inv, import_config)
         
@@ -38,6 +42,7 @@ class AccountInvoiceImport(models.TransientModel):
         
         return vals
     
+    @api.model
     def _substitute_invoice_addresses(self, parsed_inv, vals, address_type, import_config):
         """ Add support for `address_delivery` and `address_invoice` keys
             in `parsed_inv`.
@@ -51,25 +56,119 @@ class AccountInvoiceImport(models.TransientModel):
             "partner_id" if address_type == "invoice" else None
         )
         address_dict = parsed_inv.get("address_" + address_type)
+        address_dict.setdefault("chatter_msg", [])
+        address_dict["logger"] = import_config.get("logger")
         bdio = self.env["business.document.import"]
         partner = self.env["res.partner"].browse(vals.get("partner_id"))
         if not address_dict or not partner:
             return
-
+        
         matched_address = bdio._match_partner_address(
-            address_dict, partner, address_type, parsed_inv["chatter_msg"],
+            address_dict,
+            partner,
+            address_type,
+            address_dict["chatter_msg"],
             raise_exception=False,
         )
         if not matched_address: # not found (and so, != partner)
+            address_dict.setdefault("chatter_msg", [])
             address_dict.update({
                 "type": address_type,
                 "parent_id": partner.id,
             })
             new_address = bdio._create_or_update_partner(
-                matched_address, parsed_inv, import_config, "address_" + address_type
+                matched_address, address_dict, import_config
             )
             if new_address:
                 vals[address_field] = new_address.id
         elif matched_address.id != partner.address_get([address_type]).get(address_type):
             vals[address_field] = matched_address.id
         # else, this is OK to let Odoo choose default addresses on invoice
+
+    @api.model
+    def _post_process_invoice(self, parsed_inv, import_config, invoice):
+        """ 1. Fiscal position refresh (taxes & accounts replacement)
+            2. Checks about total amount for customer invoice too
+            3. Invoice posting
+        """
+        # 1. Playing a final refresh fiscal position is required to
+        #    ensure good taxes & account
+        invoice.action_update_fpos_values()
+        # Recall the guessed fiscal position on the partner, for next time
+        delivery_partner = self.env['res.partner'].browse(
+            invoice.partner_shipping_id.id
+            or invoice.partner_id.address_get(['delivery'])['delivery']
+        )
+        if delivery_partner and not delivery_partner.property_account_position_id:
+            delivery_partner.property_account_position_id = invoice.fiscal_position_id
+
+        res = super()._post_process_invoice(parsed_inv, import_config, invoice)
+        if not parsed_inv.get("type", "").startswith("out"):
+            return res
+
+        invoice_confirm = import_config.get('invoice_confirm')
+        logger = import_config.get("logger")
+
+        # 2. On customer invoice, there must be exact match of amounts between
+        #    Odoo and the source system. For instance, wrong fiscal position guessing
+        #    or writing by the external system might lead to wrong taxes on invoice line.
+        # This must be advertised and invoice won't be confirmed even with config
+        #    "invoice_confirm", the same for vendor bill but without trying to force
+        #    taxe total or create adjustment line.
+        if parsed_inv["currency_rec"].compare_amounts(
+            invoice.amount_total, parsed_inv["amount_total"]
+        ):
+            msg = _(
+                "The total amount of the imported invoice is "
+                " %(real_amount_total)s whereas the total amount computed "
+                "by Odoo is %(current_amount_total)s. It is the "
+                "consequence of a difference between the total tax amount of "
+                "the invoice (%(real_amount_tax)s) and the total tax amount "
+                "computed by Odoo (%(current_amount_tax)s). "
+                "This is often caused by wrong or missing taxes in invoice lines "
+                "due to a failure to find the tax in Odoo that correspond to the tax "
+                "of the imported invoice. The source of the error can be a wrongly "
+                "guessed fiscal position, a missing configuration of taxes on products, "
+                " or missing configuration of Default Taxes on the partner "
+                "(if there are no products on invoice lines).",
+                real_amount_total=format_amount(
+                    self.env, parsed_inv["amount_total"], invoice.currency_id
+                ),
+                current_amount_total=format_amount(
+                    self.env, invoice.amount_total, invoice.currency_id
+                ),
+                real_amount_tax=format_amount(
+                    self.env,
+                    parsed_inv["amount_total"] - parsed_inv["amount_untaxed"],
+                    invoice.currency_id,
+                ),
+                current_amount_tax=format_amount(
+                    self.env, invoice.amount_tax, invoice.currency_id
+                ),
+            )
+            if invoice_confirm:
+                msg = _("The invoice has been left unposted.\n") + msg
+            logger._add_line_warning(msg, parsed_inv, invoice, field="amount_total")
+
+        # 3. Posting
+        elif invoice_confirm:
+            if not invoice.partner_id:
+                logger._add_line_warning(
+                    _("Cannot confirm the invoice because of empty contact"),
+                    parsed_inv, field="partner",
+                )
+            else:
+                try:
+                    invoice.action_post()
+                except exceptions.ValidationError as e:
+                    logger._add_line_warning(
+                        _("Cannot confirm the invoices. Details:\n %s", e),
+                        parsed_inv, flush=True,
+                    )
+        
+        # 4. Payments
+        payments_data = parsed_inv.get("payments")
+        if payments_data:
+            invoice._import_payments_data(payments_data, import_config)
+        
+        return res

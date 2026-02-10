@@ -1,16 +1,14 @@
 
-This module helps importing to Odoo account move from other systems (like other ERP), using
-the Odoo standard XML-RPC API and fully relying on data-treatment methods of `account_invoice_import`.
+This module helps importing invoices in Odoo from other systems (like other ERP). It rely on
+the Odoo standard XML-RPC API and on data-treatment methods of module OCA `account_invoice_import`.
 
-The use-case it was designed for is the import of customer purchases from an external e-commerce
-into Odoo invoices, for a company needing to start Odoo with accounting but slowly transitionning its
-e-commerce to Odoo.
+The use-case it was designed for is the import of individual customers purchases from an external
+e-commerce website into Odoo invoices (B2C). This company needed to start using Odoo only with
+accounting, while slowly transitionning its inventory, logistics and e-commerce to Odoo.
 
-Beside import of invoices, this module also handle (compared to OCA module `account_invoice_import`):
-- payment import
-- creation of contact on-the-fly at invoice import,
-  and if needed its delivery and invoice addresses
-- delivery address on the invoice
-- Additionnal fields on `res.partner`:
-    - `title`
-    - `street3`, if available (see OCA module `partner_address_street3`)
+To manage B2C use-cases, this module adds additional import possibilities and features
+on top of `account_invoice_import` functionalities:
+- import of invoices' payments
+- on-the-fly creation of contact at invoice or payment import
+- different delivery and invoice addresses on the invoice
+- import of additionnal fields on `res.partner` like `title`

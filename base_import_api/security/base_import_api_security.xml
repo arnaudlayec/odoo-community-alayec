@@ -23,7 +23,7 @@
     <record id="base.user_admin" model="res.users">
         <field
             name="groups_id"
-            eval="[(4,ref('base_import_api.group_import_api_user'))]"
+            eval="[(4,ref('base_import_api.group_import_api_manager'))]"
         />
     </record>
 </data>

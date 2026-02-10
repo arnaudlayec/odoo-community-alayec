@@ -36,16 +36,17 @@ class ImportApiLine(models.Model):
         selection=[
             ('global', "Global line"),
             ('success', "Success"),
-            ('info', "Needing review"),
+            ('info', "Information"),
+            ('warning', "Imported with defect"),
             ('error', "Not imported"),
         ],
-        compute='_compute_state_verified',
+        compute='_compute_state',
         default='error',
         store=True,
     )
     verified = fields.Boolean(
         string='Verified',
-        compute='_compute_state_verified',
+        compute='_compute_verified',
         default=False,
         store=True,
         readonly=False,
@@ -91,17 +92,24 @@ class ImportApiLine(models.Model):
             )
 
     @api.depends('record_id', 'message')
-    def _compute_state_verified(self):
+    def _compute_state(self):
+        manual_states = ["warning", "success"]
         for line in self:
+            # computed
             if not line.external_ref:
                 line.state == 'global'
             elif not line.record_id:
                 line.state = 'error'
-            elif line.message and line.state != "success": # from _add_line_success
-                line.state = 'info'
-            else:
-                line.state = 'success'
-            
+            # 'warning' and 'success' can be manually written
+            elif line.state not in manual_states:
+                if line.message:
+                    line.state = 'info'
+                else:
+                    line.state = 'success'
+    
+    @api.depends("state")
+    def _compute_verified(self):
+        for line in self:
             line.verified = bool(line.state == "success")
     
     #===== Logics =====#

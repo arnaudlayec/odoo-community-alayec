@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <record id="demo_import_api_logger_payment" model="import.api.call">
+            <field name="model">account.payment</field>
+            <field name="config">
+{
+    // API config
+    "payment_confirm": true
+        // If false: leave imported payments and invoice `payment_state`
+        //  in "in_process" state.
+    "payment_bank_create": null,
+        // Values: true, false, null (null equals Python's None)
+        // Is passed as arg `create_if_not_found` of `_match_partner_bank`
+        //  and controls whether to create bank account on partner when
+        //  it is not matched to a known one.
+        // If None, it fallbacks to company's setting
+        //  `invoice_import_create_bank_account`.
+}
+            </field>
+            <field name="data">
+[
+    {
+        "external_ref": 111,
+        "payment_type": "outbound", // "inbound", "outbound"
+
+        "partner_type": "supplier", // "customer", "supplier"
+            // Should not be given, because guessed from `payment_type`
+            // Distinguish in wich menu "Customers/Payments" or "Vendors/Payments"
+            // the payment will appear.
+            // customer: Receive money from invoice or send money to refund it
+            // supplier: Send money to pay a bill or receive money to refund it
+
+        "invoice": {
+            // One or the other
+            // If the "partner" key is given, it will help in matching the invoice to the partner ones
+            "name": "I1501243",
+            "invoice_number": "I1501243"
+        },
+        "journal": {
+            // Required
+            "code": "BNK1"
+        },
+        "payment_method": {
+            // Should be given if 'journal' has more than 1 payment method
+            // for the 'payment_type'.
+            // If so, 1 or both of 'code' and 'unece_code' can be provided
+            "code": "manual", // 'fr_lcr', 'manual', 'sepa_credit_transfer'
+            "unece_code": 24, // 30
+        },
+        
+        "partner": {},
+            // Same specifications than "partner" key of invoice.
+            // If not given, will be set the same than the invoice.
+            // Can be different than the invoice too.
+            // If new, will be created on the fly.
+        "currency": {
+            // Same specifications than "currency" key of invoice.
+            // If not given, fallbacks to the invoice one
+            "iso": "USD"
+        },
+        
+        "amount": 10.00,
+        "date": "2015-11-01", // Payment date
+        "memo": "Label", // Text displayed / to display for instance in the bank transfer
+        "iban": "FR7630001007941234567890185",
+            // Optionnal, if relevant
+            // Can be created on the fly (c.f. config "payment_bank_create")
+        "bic": "BDFEFR2LCCB", // Optionnal, if relevant
+        
+        "note": "Note to appear on the payment's chatter"
+            // Not recommended, can be missed by the user
+            // One should prefer "note" on the invoice
+    }
+]
+            </field>
+        </record>
+    </data>
+</odoo>

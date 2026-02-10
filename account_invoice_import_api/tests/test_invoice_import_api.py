@@ -48,10 +48,10 @@ class TestInvoiceImportXmlRpc(TestInvoiceImport):
         }
         response = Move.import_api(payload)
         # fetch back records & logger for tests
-        record_ids = response.get("mapped_ids", {}).get("account.move", {})
-        records = Move.browse(record_ids.values())
+        invoice_ids = response.get("records", {}).get("account.move", {}).get("mapping", {}).values()
+        invoices = Move.browse(invoice_ids)
         logger = self.env['import.api.call'].browse(response.get("logger_id"))
-        return records, logger
+        return invoices, logger
 
     def test_import_invoice(self):
         """ Test account.move creation & validation """
@@ -72,7 +72,7 @@ class TestInvoiceImportXmlRpc(TestInvoiceImport):
     def test_import_partner(self):
         """ Test partner:
             1. try move validation without partner creation
-            2. partner creation (`invoices_confirm`)
+            2. partner creation (`invoice_confirm`)
             3. partner match without erasing (`contact_update_do_not_erase`)
         """
         # 1. no creation: save partner data
@@ -82,7 +82,7 @@ class TestInvoiceImportXmlRpc(TestInvoiceImport):
                 "external_ref": "EXT0001",
                 "partner": {"street": street},
             },
-            config={"invoices_confirm": False, "contact_create_on_the_fly": True},
+            config={"invoice_confirm": False, "contact_create_on_the_fly": True},
         )
         self.assertFalse(invoice.partner_id)
         self.assertTrue(invoice.import_partner_data["street"], street)
@@ -92,7 +92,7 @@ class TestInvoiceImportXmlRpc(TestInvoiceImport):
         parsed_inv = {"partner": {"name": name1, "email": "address@company.com"}}
         invoice, _ = self._import(
             parsed_inv=dict(parsed_inv) | {"external_ref": "EXT0002"},
-            config={"invoices_confirm": True, "contact_update_on_the_fly": False},
+            config={"invoice_confirm": True, "contact_update_on_the_fly": False},
         )
         self.assertEqual(invoice.partner_id.name, name1)
 
@@ -109,15 +109,16 @@ class TestInvoiceImportXmlRpc(TestInvoiceImport):
         """
         config = {
             "contact_create_on_the_fly": True,
-            "invoices_confirm": False,
+            "invoice_confirm": True,
             "payment_bank_create": True,
             'payment_state': 'paid',
         }
         parsed_inv = {
+            "external_ref": 73189,
             "partner": {"name": "Wood Corner"},
             "payments": [
                 {
-                    "external_ref": 20,
+                    "external_ref": 456178,
                     "payment_type": "inbound",
                     "partner": {"name": "Richard Bank"},
                     "journal": {"code": self.journal.code},
@@ -129,6 +130,4 @@ class TestInvoiceImportXmlRpc(TestInvoiceImport):
             ]
         }
         invoice, _ = self._import(parsed_inv, config)
-        payment = self.env["account.payment"].search_read([], ["memo", "partner_id", "invoice_ids"])
-        print("payment", payment)
-        self.assertEqual(invoice.payment_state, "in_payment")
+        self.assertEqual(invoice.payment_state, "paid")

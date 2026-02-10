@@ -5,6 +5,7 @@ from odoo.tools.misc import str2bool
 
 from lxml import etree
 import json
+import re
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -36,7 +37,8 @@ class ImportApiMixin(models.AbstractModel):
         if isinstance(payload_arg, dict):
             payload = payload_arg
         elif isinstance(payload_arg, str):
-            payload = json.loads(payload_arg)
+            pattern = re.compile('//.+') # to remove JSON comments
+            payload = json.loads(pattern.sub('', payload_arg))
         else:
             raise exceptions.ValidationError(_(
                 "Payload must a be a JSON string or a Python dict, %s given.",
@@ -60,7 +62,7 @@ class ImportApiMixin(models.AbstractModel):
                 )
 
         logger._finish()
-        return logger._get_api_response()
+        return logger._get_api_response(config)
 
     @api.model
     def _run_import_api(self, data, config):
@@ -88,6 +90,7 @@ class ImportApiMixin(models.AbstractModel):
     def _get_api_config_default(self):
         """ Can be inherited """
         return {
+            "api_report_format": "plain",
             "api_raise_exception": False,
             'origin': _("API call"),
             "company": self.env.company.id,

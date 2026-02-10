@@ -9,7 +9,7 @@
                 create="False" import="False" open_form_view="True"
             >
                 <header>
-                    <button type="object" name="action_toggle_verified" string="Toggle verified"/>
+                    <button type="object" name="action_toggle_verified" string="Verified / Unverify"/>
                 </header>
                 
                 <field name="logger_id"
@@ -35,7 +35,8 @@
                     widget="badge"
                     decoration-success="state == 'success'"
                     decoration-info="state == 'info'"
-                    decoration-danger="state == 'error'"
+                    decoration-warning="state == 'warning'"
+                    decoration-danger="state in ['error', 'global']"
                 />
                 <field name="verified" widget="boolean_toggle" />
             </list>
@@ -105,7 +106,12 @@
                 <filter
                     name="state_info"
                     domain="[('state', '=', 'info')]"
-                    string="Needing review"
+                    string="Informative note"
+                />
+                <filter
+                    name="state_warning"
+                    domain="[('state', '=', 'warning')]"
+                    string="With defect"
                 />
                 <filter
                     name="state_error"
@@ -170,7 +176,7 @@
 
     <!-- Action called from tree view -->
     <record model="ir.actions.server" id="action_server_toggle_verified">
-        <field name="name">Toggle verified</field>
+        <field name="name">Verified / Unverify</field>
         <field name="model_id" ref="base_import_api.model_import_api_line"/>
         <field name="state">code</field>
         <field name="code">model.action_toggle_verified()</field>

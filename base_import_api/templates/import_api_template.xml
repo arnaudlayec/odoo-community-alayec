@@ -12,7 +12,7 @@
                 Import date on <field name="create_date" class="fw-bold" />
                 by <field name="create_uid" class="fw-bold" />.
                 
-                <div t-if="write_uid">
+                <div invisible="create_date == write_date">
                     Last update on <field name="write_date" class="fw-bold" />
                     by <field name="write_uid" class="fw-bold" />.
                 </div>

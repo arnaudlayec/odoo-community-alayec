@@ -1,5 +1,9 @@
 
 
+DRAFT
+==
+
+réconcilier les paiements LCLCB
 déplacer l'interface au niveaux des commandes plutôt que des factures clients.
 
 - prérequis : import en masse des articles

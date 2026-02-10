@@ -1,41 +1,24 @@
 
 For a user
 ==========
+
+Imported records have a top-warning banner informing users the record was imported.
+
 A new main-menu "API Import" helps in:
 - viewing API calls history
-- modify the payload and replay the import directly from Odoo (mostly for debugging)
 - investigating issues, thanks to logging of import message
 - mark *API calls* as *Reviewed*
-
-Moreover, imported records will have a warning banner telling users the record was imported
-(see *Configuration*).
+- for API admins, modify the payload and replay the import directly from Odoo (mostly for debugging)
 
 For a developper
 ================
-- exemple of how to use XML-RPC from an external system are given in the module `base_import_api`
-- to import invoices, call the `import_api` method of model `account.move` with a user in the group
-  `base_import_api.group_import_api_user`
-- to import payements: same by targetting the model `account.payment`
 
-Input data format (payload)
-===========================
-The method `import_api` accepts 1 argument `payload` like this.
-{
-    "config": {...},
-    "data": [{...}],
-}
+To format the data in the proper JSON format, see `base_import_api` specifications.
+They also explain how to interprete the API response.
 
-Where:
-- `config`: dict of keys:
-   - converted to `import_config` for method `account.invoice.import/import_config()`
-     (not needed if partner is always matched or created)
-   - see for example: `account.move/_get_api_config_default()`
-   - plus some configurable keys
-- `data`:
-   - a list of vals like `parsed_inv` in `account.invoice.import/import_config()`
-   - see for example: `fallback_parse_pdf_invoice()`
-   - plus `external_id` key
+This module adds the endpoint `import_api` on the 2 models:
+- `account.move`: to import invoices, customers & suppliers,
+  shipping and invoicing addresses and payments (e.g. Paypal, credit card).
+- `account.payment`: to import payments *after* the invoices (e.g. bank transfer, checks, cash)
 
-Output data format (response)
-=============================
-See for example: `import.api.call/_get_api_response()`
+Please review demo data for full documentation on configurations and data specifications.

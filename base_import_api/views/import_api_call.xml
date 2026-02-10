@@ -11,7 +11,7 @@
                 <field name="date_last_call" decoration-bf="1" />
                 <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                 <field name="create_uid" widget="res_partner_many2one" optional="hide" />
-                <field name="line_count" />
+                <field name="to_verify_line_count" decoration-warning="to_verify_line_count &gt; 0" />
                 <field name="record_count" />
                 <field name="state"
                     widget="badge"
@@ -35,6 +35,7 @@
                         type="object"
                         class="oe_highlight"
                         icon="fa-refresh"
+                        groups="base_import_api.group_import_api_manager"
                     />
                     <button name="action_toggle_verified_all"
                         string="Mark as all verified"
@@ -49,6 +50,16 @@
                         class="btn btn-warning"
                         invisible="line_count == 0 or state in ['info', 'warning', 'error']"
                         icon="fa-times"
+                    />
+
+                    <button name="action_reset"
+                        string="Delete records"
+                        type="object"
+                        class="btn btn-danger"
+                        icon="fa-trash"
+                        invisible="record_count == 0"
+                        confirm="This will really remove from Odoo database all records imported by this API call. Are you sure?"
+                        groups="base_import_api.group_import_api_manager"
                     />
                 </header>
                 <sheet>
@@ -75,7 +86,7 @@
                             icon="fa-list"
                             invisible="line_count == 0"
                         >
-                            <field name="line_count" widget="statinfo"/>
+                            <field name="to_verify_line_count" widget="statinfo"/>
                         </button>
 
                         <button
@@ -105,7 +116,7 @@
                     
                     <group name="main">
                         <group name="main_left">
-                            <label for="model" groups="base_import_api.group_import_api_manager"/>
+                            <label for="model" groups="base_import_api.group_import_api_manager" />
                             <div name="model" groups="base_import_api.group_import_api_manager">
                                 <field name="model" class="oe_inline" />
                                 <span name="model_description" class="mx-3">
@@ -271,7 +282,7 @@
         id="import_api_menu"
         name="API Imports"
         groups="base_import_api.group_import_api_user"
-        sequence="90"
+        sequence="450"
         web_icon="base_import_api,static/description/icon.png"
     >
         <menuitem
