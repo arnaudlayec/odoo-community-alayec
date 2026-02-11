@@ -433,10 +433,10 @@ class ImportApiCall(models.Model):
         default_key = {"mapping": {}} | {state: [] for state, _ in states}
         for line in self.line_ids:
             res.setdefault(line.model, default_key.copy())
-            if line.record_ref:
-                res[line.model][line.state].append(line.record_ref)
+            if line.external_ref:
+                res[line.model][line.state].append(line.external_ref)
             if line.record_id:
-                res[line.model]["mapping"][line.record_ref] = line.record_id
+                res[line.model]["mapping"][line.external_ref] = line.record_id
         return res
 
     #===== Button =====#

@@ -330,7 +330,7 @@ msgstr "Si coché, certains messages ont une erreur de livraison."
 #. module: base_import_api
 #: model:res.groups,name:base_import_api.group_import_api_manager
 msgid "Import API manager"
-msgstr "Gestionnaire des imports par API"
+msgstr "Administrateur"
 
 #. module: base_import_api
 #: model:ir.model,name:base_import_api.model_import_api_mixin
@@ -340,7 +340,7 @@ msgstr "Mixin d'API d'import"
 #. module: base_import_api
 #: model:res.groups,name:base_import_api.group_import_api_user
 msgid "Import API user"
-msgstr "Utilisateur des imports par API"
+msgstr "Utilisateur"
 
 #. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_line_search
