@@ -97,4 +97,4 @@ class AccountMove(models.Model):
 
     def _postprocess_import_api(self):
         journals = self.preferred_payment_method_line_id.journal_id
-        journals._auto_reconcile_journal()
+        journals._auto_reconcile()
