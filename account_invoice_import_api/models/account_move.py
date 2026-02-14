@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, exceptions, _
+from odoo import models, api, fields, exceptions, _
 
 import logging
 _logger = logging.getLogger(__name__)
@@ -9,6 +9,7 @@ class AccountMove(models.Model):
     _name = 'account.move'
     _inherit = ['account.move', 'import.api.mixin']
 
+    @api.model
     def _get_api_config_default(self):
         """ Specifications in demo data """
         return super()._get_api_config_default() | {
@@ -25,10 +26,12 @@ class AccountMove(models.Model):
             # 'product_create': False, # ROADMAP
         }
 
+    @api.model
     def _run_import_api(self, data, config):
         """ Largely inspired from `account.invoice.import.import_invoices()` """
         aii = self.env['account.invoice.import']
         bdio = self.env["business.document.import"]
+        invoices = self.env["account.move"]
         logger = config["logger"]
 
         for parsed_inv in data:
@@ -70,14 +73,18 @@ class AccountMove(models.Model):
                 continue
 
             # Create invoice
-            aii.create_invoice(
+            invoices |= aii.create_invoice(
                 parsed_inv,
                 config,
                 origin=parsed_inv.get("origin", config.get("origin")),
             )
 
+        invoices._postprocess_import_api()
+
     def _import_payments_data(self, payments_data, config):
-        """ Import payments of a just imported invoice """
+        """ Import payments of a just imported invoice
+            (called at invoice post-process)
+        """
         Payment = self.env["account.payment"]
         for pay_dict in payments_data:
             pay_dict["invoice"] = {"recordset": self}
@@ -87,3 +94,7 @@ class AccountMove(models.Model):
 
             if payments:
                 self.preferred_payment_method_line_id = fields.first(payments).payment_method_line_id
+
+    def _postprocess_import_api(self):
+        self.matched_payment_ids._postprocess_import_api()
+    

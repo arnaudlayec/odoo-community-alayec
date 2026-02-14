@@ -14,6 +14,7 @@ class AccountPayment(models.Model):
         return self.env["account.move"]._get_api_config_default()
     
     def _run_import_api(self, data, config):
+        payments = self.env["account.payment"]
         logger = config["logger"]
         existing_external_refs = {
             x["external_ref"]: x["id"]
@@ -36,13 +37,17 @@ class AccountPayment(models.Model):
                 continue
             
             # Create payment
-            payments = self.create_payment(
+            payment = self.create_payment(
                 pay_dict,
                 config,
                 config["origin"]
             )
+            payments |= payment
             if external_ref:
-                existing_external_refs[external_ref] = fields.first(payments).id
+                existing_external_refs[external_ref] = fields.first(payment).id
+
+        if self._context.get("import_api_model") != "account.move":
+            payments._postprocess_import_api()
 
     def create_payment(self, pay_dict, config, origin):
         pay_dict = self._pre_process_import_pay_dict(pay_dict, config)
@@ -54,7 +59,7 @@ class AccountPayment(models.Model):
         if payments:
             payments._post_process_import_payment(pay_dict, config, origin)
         return payments
-    
+
     def _import_invoice_payment(self, invoice, wizard_vals, pay_dict, config):
         """ Payment creation logic, sticking Odoo UI process
             using the wizard `account.payment.register`
@@ -240,8 +245,9 @@ class AccountPayment(models.Model):
     def _post_process_import_payment(self, pay_dict, config, origin):
         """ Possible hook """
         self.external_ref = pay_dict.get("external_ref")
-
-        if config.get("payment_confirm"):
+        
+        invoice = pay_dict["invoice"]["recordset"]
+        if config.get("payment_confirm") and invoice.state == "posted":
             self.action_validate()
 
         bdio = self.env["business.document.import"]
@@ -256,3 +262,13 @@ class AccountPayment(models.Model):
                     )
                 )
             )
+
+    def _postprocess_import_api(self):
+        """ Bank statement lines might have been imported *before* the
+            invoice. In such case, we want to re-play auto-reconcile models
+        """
+        lines = self.env['account.bank.statement.line'].search([
+            ('journal_id', 'in', self.ids),
+            ('is_reconciled', '=', False),
+        ])
+        lines._auto_reconcile()

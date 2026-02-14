@@ -87,70 +87,53 @@ class AccountInvoiceImport(models.TransientModel):
 
     @api.model
     def _post_process_invoice(self, parsed_inv, import_config, invoice):
-        """ 1. Fiscal position refresh (taxes & accounts replacement)
-            2. Checks about total amount for customer invoice too
-            3. Invoice posting
-        """
-        # 1. Playing a final refresh fiscal position is required to
-        #    ensure good taxes & account
-        invoice.action_update_fpos_values()
-        # Recall the guessed fiscal position on the partner, for next time
-        delivery_partner = self.env['res.partner'].browse(
-            invoice.partner_shipping_id.id
-            or invoice.partner_id.address_get(['delivery'])['delivery']
-        )
-        if delivery_partner and not delivery_partner.property_account_position_id:
-            delivery_partner.property_account_position_id = invoice.fiscal_position_id
-
-        res = super()._post_process_invoice(parsed_inv, import_config, invoice)
-        if not parsed_inv.get("type", "").startswith("out"):
-            return res
-
         invoice_confirm = import_config.get('invoice_confirm')
         logger = import_config.get("logger")
 
-        # 2. On customer invoice, there must be exact match of amounts between
-        #    Odoo and the source system. For instance, wrong fiscal position guessing
-        #    or writing by the external system might lead to wrong taxes on invoice line.
-        # This must be advertised and invoice won't be confirmed even with config
-        #    "invoice_confirm", the same for vendor bill but without trying to force
-        #    taxe total or create adjustment line.
-        if parsed_inv["currency_rec"].compare_amounts(
-            invoice.amount_total, parsed_inv["amount_total"]
-        ):
-            msg = _(
-                "The total amount of the imported invoice is "
-                " %(real_amount_total)s whereas the total amount computed "
-                "by Odoo is %(current_amount_total)s. It is the "
-                "consequence of a difference between the total tax amount of "
-                "the invoice (%(real_amount_tax)s) and the total tax amount "
-                "computed by Odoo (%(current_amount_tax)s). "
-                "This is often caused by wrong or missing taxes in invoice lines "
-                "due to a failure to find the tax in Odoo that correspond to the tax "
-                "of the imported invoice. The source of the error can be a wrongly "
-                "guessed fiscal position, a missing configuration of taxes on products, "
-                " or missing configuration of Default Taxes on the partner "
-                "(if there are no products on invoice lines).",
-                real_amount_total=format_amount(
-                    self.env, parsed_inv["amount_total"], invoice.currency_id
-                ),
-                current_amount_total=format_amount(
-                    self.env, invoice.amount_total, invoice.currency_id
-                ),
-                real_amount_tax=format_amount(
-                    self.env,
-                    parsed_inv["amount_total"] - parsed_inv["amount_untaxed"],
-                    invoice.currency_id,
-                ),
-                current_amount_tax=format_amount(
-                    self.env, invoice.amount_tax, invoice.currency_id
-                ),
-            )
-            if invoice_confirm:
-                msg = _("The invoice has been left unposted.\n") + msg
-            logger._add_line_warning(msg, parsed_inv, invoice, field="amount_total")
+        res = super()._post_process_invoice(parsed_inv, import_config, invoice)
+        if parsed_inv.get("type", "").startswith("out"):
+            # On customer invoice, there must be exact match of amounts between
+            #    Odoo and the source system. For instance, wrong fiscal position guessing
+            #    or writing by the external system might lead to wrong taxes on invoice line.
+            # This must be advertised and invoice won't be confirmed even with config
+            #    "invoice_confirm", the same for vendor bill but without trying to force
+            #    taxe total or create adjustment line.
+            if parsed_inv["currency_rec"].compare_amounts(
+                invoice.amount_total, parsed_inv["amount_total"]
+            ):
+                msg = _(
+                    "The total amount of the imported invoice is "
+                    " %(real_amount_total)s whereas the total amount computed "
+                    "by Odoo is %(current_amount_total)s. It is the "
+                    "consequence of a difference between the total tax amount of "
+                    "the invoice (%(real_amount_tax)s) and the total tax amount "
+                    "computed by Odoo (%(current_amount_tax)s). "
+                    "This is often caused by wrong or missing taxes in invoice lines "
+                    "due to a failure to find the tax in Odoo that correspond to the tax "
+                    "of the imported invoice. The source of the error can be a wrongly "
+                    "guessed fiscal position, a missing configuration of taxes on products, "
+                    " or missing configuration of Default Taxes on the partner "
+                    "(if there are no products on invoice lines).",
+                    real_amount_total=format_amount(
+                        self.env, parsed_inv["amount_total"], invoice.currency_id
+                    ),
+                    current_amount_total=format_amount(
+                        self.env, invoice.amount_total, invoice.currency_id
+                    ),
+                    real_amount_tax=format_amount(
+                        self.env,
+                        parsed_inv["amount_total"] - parsed_inv["amount_untaxed"],
+                        invoice.currency_id,
+                    ),
+                    current_amount_tax=format_amount(
+                        self.env, invoice.amount_tax, invoice.currency_id
+                    ),
+                )
+                if invoice_confirm:
+                    msg = _("The invoice has been left unposted.\n") + msg
+                logger._add_line_warning(msg, parsed_inv, invoice, field="amount_total")
 
-        # 3. Posting
+        # Posting the invoice
         elif invoice_confirm:
             if not invoice.partner_id:
                 logger._add_line_warning(
@@ -166,7 +149,7 @@ class AccountInvoiceImport(models.TransientModel):
                         parsed_inv, flush=True,
                     )
         
-        # 4. Payments
+        # Import invoice's payments
         payments_data = parsed_inv.get("payments")
         if payments_data:
             invoice._import_payments_data(payments_data, import_config)

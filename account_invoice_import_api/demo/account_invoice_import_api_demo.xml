@@ -162,8 +162,11 @@
                 // Needed to be able to generate adjustment lines when decimal
                 // precision is not high enough in Odoo
 
-            "uom": {"unece_code": "C62"},
-                // Menu for values: Sale/Configuraton/Units of measure, field "UNECE Code"
+            "uom": {
+                "name": "",
+                "unece_code": "C62"
+                    // Menu for values: Sale/Configuraton/Units of measure, field "UNECE Code"
+            },
 
             "taxes": [{
                 // required
