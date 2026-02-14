@@ -267,8 +267,4 @@ class AccountPayment(models.Model):
         """ Bank statement lines might have been imported *before* the
             invoice. In such case, we want to re-play auto-reconcile models
         """
-        lines = self.env['account.bank.statement.line'].search([
-            ('journal_id', 'in', self.ids),
-            ('is_reconciled', '=', False),
-        ])
-        lines._auto_reconcile()
+        self.journal_id._auto_reconcile()

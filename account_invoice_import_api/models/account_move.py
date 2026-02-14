@@ -96,5 +96,5 @@ class AccountMove(models.Model):
                 self.preferred_payment_method_line_id = fields.first(payments).payment_method_line_id
 
     def _postprocess_import_api(self):
-        self.matched_payment_ids._postprocess_import_api()
-    
+        journals = self.preferred_payment_method_line_id.journal_id
+        journals._auto_reconcile_journal()
