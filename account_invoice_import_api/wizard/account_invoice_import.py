@@ -131,10 +131,11 @@ class AccountInvoiceImport(models.TransientModel):
                 )
                 if invoice_confirm:
                     msg = _("The invoice has been left unposted.\n") + msg
+                    invoice_confirm = False # don't post
                 logger._add_line_warning(msg, parsed_inv, invoice, field="amount_total")
 
         # Posting the invoice
-        elif invoice_confirm:
+        if invoice_confirm:
             if not invoice.partner_id:
                 logger._add_line_warning(
                     _("Cannot confirm the invoice because of empty contact"),
