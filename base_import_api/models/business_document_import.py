@@ -62,7 +62,8 @@ class BusinessDocumentImport(models.AbstractModel):
     def _prepare_partner_vals(self, partner_dict, chatter_msg={}, raise_exception=True):
         """ Convert partner's parsed data to vals for ORM methods.
             Generic: compatible with all partner kind (company, individual,
-            address). Example:
+            address).
+
             :arg partner_dict: {"country_code": "FR", "state_code": "49"}
             :return: vals={"country_id": 33, "state_id": 412}
         """
@@ -97,7 +98,7 @@ class BusinessDocumentImport(models.AbstractModel):
             record = self.env[model].search(domain)
             if record:
                 vals[rpo_field] = fields.first(record).id
-            
+
         return vals
 
     @api.model
@@ -132,6 +133,7 @@ class BusinessDocumentImport(models.AbstractModel):
             # create
             if partner_vals.get("name"):
                 partner = self.env['res.partner'].create(partner_vals)
+                self._update_partner_fiscal_position(partner)
                 logger._add_line_success(partner_dict, partner, capture_msg=True)
                 bdio.post_create_or_update(partner_dict, partner)
             else:
@@ -152,9 +154,16 @@ class BusinessDocumentImport(models.AbstractModel):
                         vals_update[field] = value
                 if vals_update:
                     partner.update(vals_update)
+                    if "country_id" in vals_update:
+                        self._update_partner_fiscal_position(partner)
                     partner.message_post(body=Markup(_(
                         "Partner info updated when importing external invoice %s by API.",
                         partner_dict.get("external_ref", ""),
                     )))
 
         return partner
+    
+    def _update_partner_fiscal_position(self, partner):
+        fpos = self.env["account.fiscal.position"]._get_fiscal_position(partner)
+        if partner.property_account_position_id != fpos:
+            partner.property_account_position_id = fpos

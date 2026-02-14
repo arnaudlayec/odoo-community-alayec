@@ -146,9 +146,11 @@
                     
                     <notebook name="lines">
                         <page name="report" string="Last report">
-                            <em>This content is dynamic. It is generated from log lines.</em>
+                            <field name="report_display" widget="boolean_toggle" />
+                            <em>Check to display the full report. It is a dynamic content generated from log lines.</em>
                             <field
                                 name="report"
+                                invisible="not report_display"
                                 widget="html"
                                 nolabel="1" colspan="2"
                                 class="mt-3"

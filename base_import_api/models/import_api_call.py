@@ -72,7 +72,12 @@ class ImportApiCall(models.Model):
         string='Log lines details',
         readonly=True,
     )
-    # for view
+    # -- ui fields --
+    report_display = fields.Boolean(
+        string="Display report",
+        default=False,
+        store=False,
+    )
     line_count = fields.Integer(
         string="Log lines",
     )
@@ -92,6 +97,17 @@ class ImportApiCall(models.Model):
              "because it catches duplicates (like previsouly imported records "
              "having identical External Refs. than the ones imported by this API call).",
     )
+
+    #===== CRUD =====#
+    @api.model_create_multi
+    def create(self, vals_list):
+        """ Automatically add followers """
+        loggers = super().create(vals_list)
+
+        group = self.env.ref("base_import_api.group_import_api_user")
+        loggers.message_subscribe(group.users.partner_id.ids)
+
+        return loggers
 
     #===== Compute =====#
     @api.depends("model", "create_date")
@@ -173,18 +189,14 @@ class ImportApiCall(models.Model):
     #===== Logics =====#
     @api.model
     def _init(self, model, payload):
-        """ Create logger and add subscribers """
-        logger = self.create({
+        """ Create logger """
+        return self.create({
             'company_id': self.env.company.id,
             'config': payload.get('config', {}),
             'data': payload.get('data', {}),
             'model': model,
             "date_last_call": self.env.cr.now(), # like create_date
         })
-        # followers
-        group = self.env.ref("base_import_api.group_import_api_user")
-        logger.message_subscribe(group.users.partner_id.ids)
-        return logger
     
     def _finish(self):
         """ 1. Set `record_id` on lines with created records
@@ -206,7 +218,7 @@ class ImportApiCall(models.Model):
 
         # Notify to followers
         report = Markup(self._generate_report("html", with_body=False))
-        self.message_post(body=report)
+        self.message_post(body=report, subtype_xmlid="mail.mt_comment")
 
     def _get_lines_by_model(self):
         lines_by_model = {}
@@ -472,48 +484,25 @@ class ImportApiCall(models.Model):
             Model.import_api(payload_arg, logger)
     
     def action_reset(self):
-        lines = self.with_context(active_test=False).line_ids.sorted("model")
+        lines = self.with_context(active_test=False).line_ids
         mapped_ids = self._get_reset_record_ids(lines)
         for model, ids in mapped_ids.items():
-            _logger.info("===== Model to reset: %s =====" % model)
-            if not model in self.env:
-                _logger.warning("Skipping %s: not existing anymore", model)
-                continue
-
             Model = self.env[model]
-            records = Model.browse(ids).exists()
-            if not records:
-                _logger.warning("Skipping %s: no imported records to reset", model)
-                continue
-            else:
-                _logger.info("%d imported records to reset" % len(records))
-
-            # reset one by one
-            reset_method = self._get_reset_method
-            for record in records:
-                _logger.debug("Deleting %s" % record.display_name)
-                reset_method(record)
+            Model.browse(list(ids)).exists().unlink()
 
     @api.model
     def _get_reset_record_ids(self, lines):
         """ Extension point, e.g. for reordering logic:
             reset 1 model before the other
+
+            :return: {"account.move": {1, 2, ...}, {"res.partner": {1, 2, ...}, ...}
         """
         mapped_ids = {}
         for line in lines.read(["model", "record_id"]):
-            if line["model"] and line["record_id"]:
+            if line["model"] in self.env and line["record_id"]:
                 record_ids = mapped_ids.setdefault(line["model"], set())
                 record_ids.add(line["record_id"])
         return mapped_ids
-
-    @api.model
-    def _get_reset_method(self, record):
-        """ Extension point for pre-processing before unlink
-            Example: `button_draft` on `account.move`, then unlink
-        """
-        if record._name == "account.move" and record.state == "posted":
-            record.button_draft()
-        record.unlink()
     
     def action_open_lines(self):
         """ Smart button to log lines """

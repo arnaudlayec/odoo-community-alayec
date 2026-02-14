@@ -32,7 +32,7 @@ class ImportApiMixin(models.AbstractModel):
             }
             :arg logger: for `action_replay`
         """
-        self = self.with_context(import_api=self._name) # can be useful for for inheritance
+        self = self.with_context(import_api_model=self._name) # can be useful for for inheritance
 
         if isinstance(payload_arg, dict):
             payload = payload_arg
