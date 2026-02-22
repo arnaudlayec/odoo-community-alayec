@@ -6,14 +6,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 18.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-02-10 15:59+0000\n"
-"PO-Revision-Date: 2026-02-10 15:59+0000\n"
+"POT-Creation-Date: 2026-02-22 22:12+0000\n"
+"PO-Revision-Date: 2026-02-22 23:16+0100\n"
 "Last-Translator: \n"
 "Language-Team: \n"
+"Language: fr\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: \n"
-"Plural-Forms: \n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"X-Generator: Poedit 3.4.2\n"
 
 #. module: base_import_api
 #. odoo-python
@@ -27,7 +29,8 @@ msgid ""
 msgstr ""
 "\n"
 "* %(success)d enregistrement(s) réussi(s), importé(s) sans information\n"
-"* %(warning)d enregistrement(s) importé(s) avec défaut, nécessitant la revue d'un utilisateur\n"
+"* %(warning)d enregistrement(s) importé(s) avec défaut, nécessitant la "
+"revue d'un utilisateur\n"
 "* %(info)d enregistrement(s) importé(s) avec une simple note d'information\n"
 "* %(failed)d import(s) échoué(s)\n"
 
@@ -120,10 +123,40 @@ msgstr ""
 
 #. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_form
-msgid "<em>This content is dynamic. It is generated from log lines.</em>"
+msgid ""
+"<em invisible=\"not data or data_display\">\n"
+"                                        Payload data was hidden to optimize "
+"the loading time of this page,\n"
+"                                        and it can be displayed back by "
+"toggling the above input.\n"
+"                                    </em>"
 msgstr ""
-"<em>Ce contenu est dynamique. Il est généré depuis les \"messages "
-"d'import\".</em>"
+"<em invisible=\"not data or data_display\">\n"
+"                                        Les données transmises ont été "
+"cachées pour réduire le temps de chargement de cette page.\n"
+"                                        Elles peuvent être affichées en "
+"activant le bouton ci-dessus.\n"
+"                                    </em>"
+
+#. module: base_import_api
+#: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_form
+msgid ""
+"<em invisible=\"report_display\" class=\"d-block\">\n"
+"                                This report is a formatted content "
+"dynamically generated\n"
+"                                from log lines. It was hidden to optimize "
+"the loading time of this page, and\n"
+"                                can be displayed back by toggling the above "
+"input.\n"
+"                            </em>"
+msgstr ""
+"<em invisible=\"not data or data_display\">\n"
+"                                        Ce rapport est un contenu formaté "
+"dynamiquement depuis les messages d'appel par API d'import.\n"
+"                                        Il a été caché pour réduire le "
+"temps de chargement de cette page, et peut être affiché en activant le "
+"bouton ci-dessus.\n"
+"                                    </em>"
 
 #. module: base_import_api
 #: model:ir.ui.menu,name:base_import_api.import_api_menu
@@ -260,6 +293,16 @@ msgid "Display Name"
 msgstr "Nom d'affichage"
 
 #. module: base_import_api
+#: model:ir.model.fields,field_description:base_import_api.field_import_api_call__data_display
+msgid "Display payload data"
+msgstr "Afficher les données transmises"
+
+#. module: base_import_api
+#: model:ir.model.fields,field_description:base_import_api.field_import_api_call__report_display
+msgid "Display report"
+msgstr "Afficher le rapport"
+
+#. module: base_import_api
 #: model:ir.model.fields.selection,name:base_import_api.selection__import_api_call__state__error
 msgid "Error"
 msgstr "Erreur"
@@ -273,7 +316,7 @@ msgstr "Erreur (échec bloquant)"
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_line__external_ref
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_mixin__external_ref
 msgid "External Ref."
-msgstr ""
+msgstr "Réf. Externe"
 
 #. module: base_import_api
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_line__field
@@ -328,19 +371,9 @@ msgid "If checked, some messages have a delivery error."
 msgstr "Si coché, certains messages ont une erreur de livraison."
 
 #. module: base_import_api
-#: model:res.groups,name:base_import_api.group_import_api_manager
-msgid "Import API manager"
-msgstr "Administrateur"
-
-#. module: base_import_api
 #: model:ir.model,name:base_import_api.model_import_api_mixin
 msgid "Import API mixin"
 msgstr "Mixin d'API d'import"
-
-#. module: base_import_api
-#: model:res.groups,name:base_import_api.group_import_api_user
-msgid "Import API user"
-msgstr "Utilisateur"
 
 #. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_line_search
@@ -431,12 +464,17 @@ msgstr "Détails des messages d'import"
 #. module: base_import_api
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_call__to_verify_line_count
 msgid "Log lines to verify"
-msgstr "Messages à vérifier"
+msgstr "Messages d'import à vérifier"
 
 #. module: base_import_api
 #: model:ir.module.category,description:base_import_api.module_category_api_import
 msgid "Manage data import by API"
 msgstr "Gérer l'import des données par API"
+
+#. module: base_import_api
+#: model:res.groups,name:base_import_api.group_import_api_manager
+msgid "Manager"
+msgstr "Gestionnaire des imports par API"
 
 #. module: base_import_api
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_form
@@ -538,8 +576,8 @@ msgstr "ID Odoo"
 msgid ""
 "Odoo records with an External Ref. imported by this API call. It can be "
 "higher than the exact number of really imported records, because it catches "
-"duplicates (like previsouly imported records having identical External Refs."
-" than the ones imported by this API call)."
+"duplicates (like previsouly imported records having identical External "
+"Refs. than the ones imported by this API call)."
 msgstr ""
 "Enregistrements Odoo dont la \"Ref. Externe\" a été importée pendant cet "
 "appel API. Ce nombre peut être supérieur au nombre d'enregistrements "
@@ -554,8 +592,8 @@ msgid ""
 "Partially successful imports: some records had defect during import or some "
 "failed."
 msgstr ""
-"Imports partiellement réussis : des enregistrements n'ont pas été importé ou"
-" ont des erreurs à résoudre."
+"Imports partiellement réussis : des enregistrements n'ont pas été importé "
+"ou ont des erreurs à résoudre."
 
 #. module: base_import_api
 #. odoo-python
@@ -686,6 +724,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:base_import_api.base_import_api_call_line_search
 msgid "Unverified"
 msgstr "Non-vérifié"
+
+#. module: base_import_api
+#: model:res.groups,name:base_import_api.group_import_api_user
+msgid "User"
+msgstr "Utilisateur des imports par API"
 
 #. module: base_import_api
 #: model:ir.model.fields,help:base_import_api.field_import_api_call__report
