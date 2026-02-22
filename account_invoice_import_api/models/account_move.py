@@ -14,16 +14,17 @@ class AccountMove(models.Model):
         """ Specifications in demo data """
         return super()._get_api_config_default() | {
             # INVOICES
-            'invoice_confirm': True,
+            "invoice_confirm": True,
+            "account_reconcile": None,
             # CONTACTS
-            'contact_create_on_the_fly': True,
-            'contact_update_on_the_fly': True,
-            'contact_update_do_not_erase': True,
+            "contact_create_on_the_fly": True,
+            "contact_update_on_the_fly": True,
+            "contact_update_do_not_erase": True,
             # PAYMENTS
             "payment_confirm": True,
             "payment_bank_create": None,
             # PRODUCTS
-            # 'product_create': False, # ROADMAP
+            # "product_create": False, # ROADMAP
         }
 
     @api.model
@@ -79,7 +80,8 @@ class AccountMove(models.Model):
                 origin=parsed_inv.get("origin", config.get("origin")),
             )
 
-        invoices._postprocess_import_api()
+        if config["account_reconcile"]:
+            invoices._postprocess_import_api()
 
     def _import_payments_data(self, payments_data, config):
         """ Import payments of a just imported invoice

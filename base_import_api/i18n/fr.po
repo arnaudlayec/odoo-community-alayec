@@ -431,7 +431,7 @@ msgstr "Détails des messages d'import"
 #. module: base_import_api
 #: model:ir.model.fields,field_description:base_import_api.field_import_api_call__to_verify_line_count
 msgid "Log lines to verify"
-msgstr "Messages d'import à vérifier"
+msgstr "Messages à vérifier"
 
 #. module: base_import_api
 #: model:ir.module.category,description:base_import_api.module_category_api_import

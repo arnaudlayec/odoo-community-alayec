@@ -55,7 +55,7 @@ class AccountInvoiceImport(models.TransientModel):
             "partner_shipping_id" if address_type == "delivery" else
             "partner_id" if address_type == "invoice" else None
         )
-        address_dict = parsed_inv.get("address_" + address_type)
+        address_dict = parsed_inv.get("address_" + address_type, {})
         address_dict.setdefault("chatter_msg", [])
         address_dict["logger"] = import_config.get("logger")
         bdio = self.env["business.document.import"]

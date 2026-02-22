@@ -4,6 +4,7 @@ from odoo import models, fields, api, exceptions, _
 from odoo.tools import format_datetime, html2plaintext
 from markupsafe import Markup
 
+import copy
 import json
 import re
 
@@ -74,7 +75,12 @@ class ImportApiCall(models.Model):
     )
     # -- ui fields --
     report_display = fields.Boolean(
-        string="Display report",
+        string="Display last report",
+        default=False,
+        store=False,
+    )
+    data_display = fields.Boolean(
+        string="Display payload data",
         default=False,
         store=False,
     )
@@ -442,11 +448,11 @@ class ImportApiCall(models.Model):
         self.ensure_one()
         res = {}
         states = self.env["import.api.line"]._fields['state'].selection
-        default_key = {"mapping": {}} | {state: [] for state, _ in states}
+        default_key = {"mapping": {}} | {state: set() for state, _ in states}
         for line in self.line_ids:
-            res.setdefault(line.model, default_key.copy())
+            res.setdefault(line.model, copy.deepcopy(default_key))
             if line.external_ref:
-                res[line.model][line.state].append(line.external_ref)
+                res[line.model][line.state].add(line.external_ref)
             if line.record_id:
                 res[line.model]["mapping"][line.external_ref] = line.record_id
         return res

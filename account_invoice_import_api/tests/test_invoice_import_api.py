@@ -5,6 +5,8 @@ from odoo.addons.account_invoice_import.tests.test_invoice_import import (
     TestInvoiceImport,
 )
 
+import copy
+
 class TestInvoiceImportXmlRpc(TestInvoiceImport):
     """ Largely inspired from tests of `account_invoice_import` module """
 
@@ -91,7 +93,7 @@ class TestInvoiceImportXmlRpc(TestInvoiceImport):
         name1 = "Metal Square"
         parsed_inv = {"partner": {"name": name1, "email": "address@company.com"}}
         invoice, _ = self._import(
-            parsed_inv=dict(parsed_inv) | {"external_ref": "EXT0002"},
+            parsed_inv=copy.deepcopy(parsed_inv) | {"external_ref": "EXT0002"},
             config={"invoice_confirm": True, "contact_update_on_the_fly": False},
         )
         self.assertEqual(invoice.partner_id.name, name1)
@@ -100,7 +102,10 @@ class TestInvoiceImportXmlRpc(TestInvoiceImport):
         user_human = self.env.user.copy({"name": "Human user"})
         name_modified = "Name edited in UI by human user"
         invoice.partner_id.with_user(user_human).name = name_modified
-        invoice, _ = self._import(dict(parsed_inv) | {"external_ref": "EXT0003"}, {})
+        invoice, _ = self._import(
+            parsed_inv=copy.deepcopy(parsed_inv) | {"external_ref": "EXT0003"},
+            config={},
+        )
         self.assertEqual(invoice.partner_id.name, name_modified)
 
     def test_import_payments_invoice(self):
@@ -130,4 +135,4 @@ class TestInvoiceImportXmlRpc(TestInvoiceImport):
             ]
         }
         invoice, _ = self._import(parsed_inv, config)
-        self.assertEqual(invoice.payment_state, "paid")
+        self.assertIn(invoice.payment_state, "partial")

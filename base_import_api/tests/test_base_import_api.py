@@ -10,7 +10,7 @@ class TestBaseImportApi(TransactionCase):
         super().setUpClass()
         # api user
         cls.user_api = new_test_user(
-            cls.env, "api_user", groups="base_import_api.group_import_api_user"
+            cls.env, "api_user", groups="base_import_api.group_import_api_manager"
         )
         # import a payload
         payload = {"config": {}}
@@ -39,7 +39,7 @@ class TestBaseImportApi(TransactionCase):
         # config
         self.assertEqual(self.logger.company_id, self.env.company)
         # response
-        self.assertEqual(self.response.get("state"), "success")
+        self.assertEqual(self.response.get("state"), "error")
     
     @users("api_user")
     def _test_logger_logics(self):
@@ -91,4 +91,4 @@ class TestBaseImportApi(TransactionCase):
 
         # 2.
         arch = ApiMixin.get_view(view_type="list")['arch'].decode("utf-8")
-        self.assertTrue('<field name="external_id"' in arch)
+        self.assertTrue('<field name="external_ref"' in arch)

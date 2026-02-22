@@ -46,7 +46,7 @@ class AccountPayment(models.Model):
             if external_ref:
                 existing_external_refs[external_ref] = fields.first(payment).id
 
-        if self._context.get("import_api_model") != "account.move":
+        if self._context.get("import_api_model") != "account.move" and config["account_reconcile"]:
             payments._postprocess_import_api()
 
     def create_payment(self, pay_dict, config, origin):

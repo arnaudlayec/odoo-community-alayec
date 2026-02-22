@@ -146,8 +146,15 @@
                     
                     <notebook name="lines">
                         <page name="report" string="Last report">
-                            <field name="report_display" widget="boolean_toggle" />
-                            <em>Check to display the full report. It is a dynamic content generated from log lines.</em>
+                            <field name="report_display" widget="boolean_toggle" nolabel="1" />
+                            <label for="report_display" />
+
+                            <em invisible="report_display" class="d-block">
+                                This report is a formatted content dynamically generated from log lines.
+                                It was hidden to optimize the loading time of this page, and
+                                can be displayed back by toggling the above input.
+                            </em>
+
                             <field
                                 name="report"
                                 invisible="not report_display"
@@ -168,9 +175,17 @@
                                     />
                                 </group>
                                 <group name="payload_right" colspan="8">
-                                    <label for="data" />
+                                    <field name="data_display" widget="boolean_toggle" nolabel="1" />
+                                    <label for="data_display" />
+
+                                    <em invisible="not data or data_display">
+                                        Payload data was hidden to optimize the loading time of this page,
+                                        and it can be displayed back by toggling the above input.
+                                    </em>
+
                                     <field
                                         name="data"
+                                        invisible="not data_display"
                                         widget="code"
                                         options="{'mode': 'python'}"
                                         nolabel="1" colspan="2"
