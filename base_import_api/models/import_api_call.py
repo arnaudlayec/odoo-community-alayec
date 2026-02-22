@@ -127,11 +127,14 @@ class ImportApiCall(models.Model):
 
     @api.depends("model")
     def _compute_model_description(self):
+        models_descr = {
+            model["model"]: model["name"]
+            for model in self.env["ir.model"].sudo().search_read([], ["model", "name"])
+        }
         for logger in self:
-            if not logger.model in self.env:
-                logger.model_description = _("Unknown model")
-            else:
-                logger.model_description = _(logger.env[logger.model]._description)
+            logger.model_description = models_descr.get(
+                logger.model, _("Unknown model")
+            )
 
     @api.depends('line_ids.record_id', 'line_ids.message', 'line_ids.verified')
     def _compute_state(self):
@@ -278,7 +281,7 @@ class ImportApiCall(models.Model):
         """
         kwargs["state"] = "success"
         message = (
-            _("%s created", record._description if record else _("Record"))
+            _("Record created")
             + (_(", ID %d", record.id) if record else "")
         )
         self._add_line(message, parsed_dict, record, capture_msg, *args, **kwargs,)
@@ -330,6 +333,10 @@ class ImportApiCall(models.Model):
             return _("No report available.")
         else:
             report = f"# {self.display_name}\n"
+            models_descr = {
+                model["model"]: model["name"]
+                for model in self.env["ir.model"].sudo().search_read([], ["model", "name"])
+            }
 
             # Global lines
             global_lines = self.line_ids.filtered(lambda x: x.state == "global")
@@ -345,10 +352,7 @@ class ImportApiCall(models.Model):
                 # Title (new model)
                 report += _(
                     "## %(model_description)s (%(res_model)s)\n",
-                    model_description=(
-                        self.env[model]._description
-                        if model in self.env else _("Unknown model")
-                    ),
+                    model_description=models_descr.get(model, _("Unknown model")),
                     res_model=model,
                 )
 
