@@ -29,15 +29,15 @@ class AccountMoveBudgetLine(models.Model):
         'timesheet_cost_history_ids.hourly_cost',
         'timesheet_cost_history_ids.starting_date'
     )
-    def _compute_debit_credit(self):
+    def _compute_debit_credit_balance(self):
         """ Overwrite only for @api.depends() """
-        return super()._compute_debit_credit()
+        return super()._compute_debit_credit_balance()
     
-    def _compute_debit_credit_one(self):
+    def _compute_debit_credit_balance_one(self):
         """ Overwrite to add dated-valuation logic as per `timesheet_cost_history_ids` """
         self.ensure_one()
         if self.type != 'workforce':
-            return super()._compute_debit_credit_one()
+            return super()._compute_debit_credit_balance_one()
         
         _value_workforce = self.sudo().analytic_account_id._value_workforce
         self.debit = _value_workforce(self.qty_debit,   self.budget_id.date_from, self.budget_id.date_to)

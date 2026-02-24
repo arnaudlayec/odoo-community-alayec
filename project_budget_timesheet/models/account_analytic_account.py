@@ -20,7 +20,7 @@ class AccountAnalyticAccount(models.Model):
         """
         # Get budgets per projects
         mapped_budgets = {}
-        if self._context.get('display_analytic_budget') == True:
+        if self._context.get('display_analytic_budget'):
             project_id_ = self.env['project.default.mixin']._get_project_id()
             if project_id_:
                 rg_result = self.env['account.move.budget.line'].sudo().read_group(

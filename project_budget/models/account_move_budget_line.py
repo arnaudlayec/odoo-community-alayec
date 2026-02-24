@@ -73,12 +73,12 @@ class AccountMoveBudgetLine(models.Model):
 
     # debit & credit: h->€
     debit = fields.Monetary(
-        compute='_compute_debit_credit',
+        compute='_compute_debit_credit_balance',
         store=True,
         readonly=False
     )
     credit = fields.Monetary(
-        compute='_compute_debit_credit',
+        compute='_compute_debit_credit_balance',
         store=True,
         readonly=False
     )
@@ -92,12 +92,9 @@ class AccountMoveBudgetLine(models.Model):
     )
     qty_balance = fields.Float(
         string='Balance (qty)',
-        compute="_compute_debit_credit",
+        compute="_compute_store_balance",
         readonly=True,
         store=True,
-    )
-    balance = fields.Monetary(
-        compute='_compute_debit_credit',
     )
 
     #===== CRUD =====#
@@ -125,18 +122,22 @@ class AccountMoveBudgetLine(models.Model):
 
     #===== Compute: valuation =====#
     @api.depends('standard_price', 'qty_debit', 'qty_credit', 'debit', 'credit')
-    def _compute_debit_credit(self):
+    def _compute_debit_credit_balance(self):
         for line in self:
-            line._compute_debit_credit_one()
-            line.qty_balance = line.qty_debit - line.qty_credit
-            line.balance = line.debit - line.credit
+            line._compute_debit_credit_balance_one()
     
-    def _compute_debit_credit_one(self):
+    @api.depends("qty_debit", "qty_credit")
+    def _compute_store_balance(self):
+        super()._compute_store_balance()
+        for line in self:
+            line.qty_balance = line.qty_debit - line.qty_credit
+    
+    def _compute_debit_credit_balance_one(self):
+        """ Inherited in `project_budget_workforce` """
         self.ensure_one()
         if self.type == 'unit':
             self.debit = self.qty_debit * self.standard_price
             self.credit = self.qty_credit * self.standard_price
-
 
     #===== Button ======#
     def button_open_budget_line_form(self):
