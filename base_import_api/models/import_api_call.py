@@ -201,8 +201,8 @@ class ImportApiCall(models.Model):
         """ Create logger """
         return self.create({
             'company_id': self.env.company.id,
-            'config': payload.get('config', {}),
-            'data': payload.get('data', {}),
+            'config': json.dumps(payload.get("config") or {}, indent=4),
+            'data': json.dumps(payload.get("data") or [], indent=4),
             'model': model,
             "date_last_call": self.env.cr.now(), # like create_date
         })
@@ -452,13 +452,13 @@ class ImportApiCall(models.Model):
         self.ensure_one()
         res = {}
         states = self.env["import.api.line"]._fields['state'].selection
-        default_key = {"mapping": {}} | {state: set() for state, _ in states}
+        default_key = {"mapping": {}} | {state: [] for state, _ in states}
         for line in self.line_ids:
-            res.setdefault(line.model, copy.deepcopy(default_key))
-            if line.external_ref:
-                res[line.model][line.state].add(line.external_ref)
+            model_key = res.setdefault(line.model, copy.deepcopy(default_key))
+            if line.external_ref and not line.external_ref in model_key[line.state]:
+                model_key[line.state].append(line.external_ref)
             if line.record_id:
-                res[line.model]["mapping"][line.external_ref] = line.record_id
+                model_key["mapping"][line.external_ref] = line.record_id
         return res
 
     #===== Button =====#
@@ -481,9 +481,11 @@ class ImportApiCall(models.Model):
             if not logger.model in self.env:
                 raise exceptions.ValidationError(_("Unknown model"))
             pattern = re.compile('//.+') # to remove JSON comments
+            config = pattern.sub('', logger.config or '')
+            data = pattern.sub('', logger.data or '')
             payload_arg = {
-                "config": json.loads(pattern.sub('', logger.config or '')),
-                "data": json.loads(pattern.sub('', logger.data or ''))
+                "config": json.loads(config) if config else {},
+                "data": json.loads(data) if data else [],
             }
             payload_arg["config"]["api_raise_exception"] = True # since actionned by user
 

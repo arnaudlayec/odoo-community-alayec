@@ -8,10 +8,10 @@ class TestBaseImportApi(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        # api user
-        cls.user_api = new_test_user(
-            cls.env, "api_user", groups="base_import_api.group_import_api_manager"
-        )
+        # users
+        group_name = "base_import_api.group_import_api_manager"
+        cls.user_api = new_test_user(cls.env, "api_user", groups=group_name)
+        cls.human_user = new_test_user(cls.env, "Human User", groups=group_name)
         # import a payload
         payload = {"config": {}}
         cls.response = cls.env['import.api.mixin'].with_user(cls.user_api).import_api(payload)
@@ -42,7 +42,7 @@ class TestBaseImportApi(TransactionCase):
         self.assertEqual(self.response.get("state"), "error")
     
     @users("api_user")
-    def _test_logger_logics(self):
+    def test_logger_logics(self):
         """ Test logger's:
             - flush lines
             - state & verified computation
@@ -51,27 +51,22 @@ class TestBaseImportApi(TransactionCase):
             - report & tranpose of chatter_msg
         """
         # flushed lines
-        self.assertEqual(len(self.logger.line_ids), 1)
-        self.assertEqual(self.parsed_inv["chatter_msg"], {})
+        self.assertEqual(self.logger.line_ids.message, "Test message")
 
-        # state & verified
-        self.assertEqual(self.logger.state, 'success') # all lines imported
-        self.assertTrue(self.logger.verified)
-        self.logger._add_line("Global error") # non-imported line
-        self.assertEqual(self.logger.state, 'warning')
-        self.assertFalse(self.logger.verified)
-        self.logger._toggle_verified()
-        self.assertTrue(self.logger.verified)
+        # verified
+        self.assertEqual(self.logger.state, "error") # none line imported
+        self.logger.line_ids.action_toggle_verified()
+        self.assertEqual(self.logger.state, "verified")
 
         # init & finish
         message = self.env['mail.message'].search(
             [('model', '=', 'import.api.call'), ('res_id', '=', self.logger.id)],
         )
-        self.assertTrue(self.user_api.partner_id in message.partner_ids)
+        self.assertIn(self.human_user.partner_id, message.notified_partner_ids)
 
         # replay
-        self.logger._replay()
-        lines = self.with_context(active_test=False).logger.line_ids
+        self.logger.action_replay()
+        lines = self.logger.with_context(active_test=False).line_ids
         self.assertEqual(set(lines.mapped('active')), {False})
 
         # report
