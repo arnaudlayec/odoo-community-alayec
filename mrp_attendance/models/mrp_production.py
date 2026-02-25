@@ -5,8 +5,14 @@ from odoo import models, fields, api, _
 class MrpProduction(models.Model):
     _inherit = ["mrp.production"]
 
-
     #===== Fields =====#
+    allow_productivity = fields.Boolean(
+        string="Allow times entries",
+        default=False,
+        compute='_compute_allow_productivity',
+        store=True,
+        readonly=False,
+    )
     user_logged_timed = fields.Boolean(
         compute='_compute_user_logged_timed',
         search='_search_user_logged_timed',
@@ -24,7 +30,6 @@ class MrpProduction(models.Model):
         string='Real Duration (h)',
         compute='_compute_production_real_duration',
     )
-
 
     #===== Native ORM methods overwritte =====#
     @api.model
@@ -66,6 +71,13 @@ class MrpProduction(models.Model):
         return bool(domain_part) and domain_part[0][2]
     
     #===== Compute =====#
+    @api.depends("state")
+    def _compute_allow_productivity(self):
+        """ End times entries when closing the MO """
+        for mo in self:
+            if mo.state in ["done", "cancel"]:
+                mo.allow_productivity = False
+    
     @api.depends('workorder_ids.time_ids.user_id')
     def _compute_user_logged_timed(self):
         production_ids = self._get_mo_user_logged_time()
@@ -109,7 +121,7 @@ class MrpProduction(models.Model):
     #===== Action =====#
     def _get_domain_mo_attendance(self):
         return [
-            ('state', 'in', ['confirmed', 'progress', 'to_close']),
+            ('allow_productivity', '=', True),
             ('workorder_ids', '!=', False)
         ]
     

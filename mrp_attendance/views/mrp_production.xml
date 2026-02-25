@@ -22,7 +22,7 @@
     <menuitem id="menu_mrp_attendance_root" parent="mrp.menu_mrp_root" sequence="13" name="Times">
         <menuitem id="menu_mrp_attendance_report" action="action_mrp_attendence_productivity_report" />
         <menuitem id="menu_mrp_attendance_tree" action="action_mrp_attendence_productivity_tree" />
-        <menuitem id="menu_mrp_attendance_kiosk" action="hr_attendance.hr_attendance_action_kiosk_mode" name="Kiosk mode" />
+        <menuitem id="menu_mrp_attendance_kiosk" action="hr_attendance.hr_attendance_action_kiosk_mode" />
     </menuitem>
 
     <!-- Add Loss in Configuration -->
@@ -37,6 +37,19 @@
         sequence="150"
     />
 
+    <!-- MO form view: add 'allow_productivity' -->
+    <record id="mrp_production_form_view" model="ir.ui.view">
+        <field name="name">mrp.production.form</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+        
+        <field name="arch" type="xml">
+            <field name="user_id" position="after">
+                <field name="allow_productivity" widget="boolean_toggle" />
+            </field>
+        </field>
+    </record>
+    
     <!-- MO tree view: replace 'min' field by 'hours' fields -->
     <record id="mrp_production_tree_view" model="ir.ui.view">
         <field name="name">mrp.production.tree</field>
