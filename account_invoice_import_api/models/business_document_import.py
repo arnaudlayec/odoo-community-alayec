@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import api, models
+from odoo import api, models, _
 from odoo.osv import expression
 
 class BusinessDocumentImport(models.AbstractModel):

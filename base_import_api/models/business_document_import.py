@@ -133,7 +133,6 @@ class BusinessDocumentImport(models.AbstractModel):
             # create
             if partner_vals.get("name"):
                 partner = self.env['res.partner'].create(partner_vals)
-                self._update_partner_fiscal_position(partner)
                 logger._add_line_success(partner_dict, partner, capture_msg=True)
                 bdio.post_create_or_update(partner_dict, partner)
             else:
@@ -154,16 +153,9 @@ class BusinessDocumentImport(models.AbstractModel):
                         vals_update[field] = value
                 if vals_update:
                     partner.update(vals_update)
-                    if "country_id" in vals_update:
-                        self._update_partner_fiscal_position(partner)
                     partner.message_post(body=Markup(_(
                         "Partner info updated when importing external invoice %s by API.",
                         partner_dict.get("external_ref", ""),
                     )))
 
         return partner
-    
-    def _update_partner_fiscal_position(self, partner):
-        fpos = self.env["account.fiscal.position"]._get_fiscal_position(partner)
-        if partner.property_account_position_id != fpos:
-            partner.property_account_position_id = fpos
