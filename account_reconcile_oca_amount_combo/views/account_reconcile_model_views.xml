@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright 2026 Arnaud Layec <arnaud.layec@akretion.com>
+     License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl). -->
+<odoo>
+
+    <record id="account_reconcile_model_form_inherit" model="ir.ui.view">
+        <field name="name">account.reconcile.model.form.inherit.combo</field>
+        <field name="model">account.reconcile.model</field>
+        <field name="inherit_id" ref="account_reconcile_model_oca.account_reconcile_model_form"/>
+        <field name="arch" type="xml">
+
+            <!-- ── 1. Insert combo_amount_mode toggle just below rule_type ── -->
+            <xpath expr="//field[@name='rule_type']" position="after">
+                <field name="combo_amount_mode"
+                       attrs="{'invisible': [('rule_type', '!=', 'invoice_matching')]}"
+                       widget="boolean_toggle"/>
+            </xpath>
+
+            <!-- ── 2. Replace past_months_limit with combo_days_range ── -->
+            <xpath expr="//field[@name='past_months_limit']" position="replace">
+                <!-- Standard field: shown when combo mode is OFF -->
+                <field name="past_months_limit"
+                       attrs="{'invisible': [
+                           '|',
+                           ('rule_type', '!=', 'invoice_matching'),
+                           ('combo_amount_mode', '=', True)
+                       ]}"/>
+                <!-- Combo field: shown when combo mode is ON -->
+                <field name="combo_days_range"
+                       attrs="{'invisible': [
+                           '|',
+                           ('rule_type', '!=', 'invoice_matching'),
+                           ('combo_amount_mode', '=', False)
+                       ]}"
+                       string="Range of Days"/>
+            </xpath>
+
+            <!-- ── 3. Replace unique_matching with combo_max_invoices ── -->
+            <xpath expr="//field[@name='unique_matching']" position="replace">
+                <!-- Standard field: shown when combo mode is OFF -->
+                <field name="unique_matching"
+                       attrs="{'invisible': [
+                           '|',
+                           ('rule_type', '!=', 'invoice_matching'),
+                           ('combo_amount_mode', '=', True)
+                       ]}"/>
+                <!-- Combo field: shown when combo mode is ON -->
+                <field name="combo_max_invoices"
+                       attrs="{'invisible': [
+                           '|',
+                           ('rule_type', '!=', 'invoice_matching'),
+                           ('combo_amount_mode', '=', False)
+                       ]}"
+                       string="Maximum Number of Invoices/Bills to Look For"/>
+            </xpath>
+
+            <!-- ── 4. Hide match_partner in combo mode ── -->
+            <xpath expr="//field[@name='match_partner']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [
+                        '|',
+                        ('rule_type', '!=', 'invoice_matching'),
+                        ('combo_amount_mode', '=', True)
+                    ]}
+                </attribute>
+            </xpath>
+
+            <!-- ── 5. Hide match_same_currency in combo mode ── -->
+            <xpath expr="//field[@name='match_same_currency']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [
+                        '|',
+                        ('rule_type', '!=', 'invoice_matching'),
+                        ('combo_amount_mode', '=', True)
+                    ]}
+                </attribute>
+            </xpath>
+
+            <!-- ── 6. Hide match_total_amount + param in combo mode ── -->
+            <xpath expr="//field[@name='match_total_amount']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [
+                        '|',
+                        ('rule_type', '!=', 'invoice_matching'),
+                        ('combo_amount_mode', '=', True)
+                    ]}
+                </attribute>
+            </xpath>
+            <xpath expr="//field[@name='match_total_amount_param']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [
+                        '|',
+                        ('rule_type', '!=', 'invoice_matching'),
+                        ('combo_amount_mode', '=', True),
+                        ('match_total_amount', '=', False)
+                    ]}
+                </attribute>
+            </xpath>
+
+            <!-- ── 7. Hide allow_payment_tolerance and its children in combo mode ── -->
+            <xpath expr="//field[@name='allow_payment_tolerance']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [
+                        '|',
+                        ('rule_type', '!=', 'invoice_matching'),
+                        ('combo_amount_mode', '=', True)
+                    ]}
+                </attribute>
+            </xpath>
+
+            <!-- ── 8. Hide matching_order in combo mode ── -->
+            <xpath expr="//field[@name='matching_order']" position="attributes">
+                <attribute name="attrs">
+                    {'invisible': [
+                        '|',
+                        ('rule_type', '!=', 'invoice_matching'),
+                        ('combo_amount_mode', '=', True)
+                    ]}
+                </attribute>
+            </xpath>
+
+            <!-- ── 9. Hide the partner mapping tab entirely in combo mode ── -->
+            <xpath expr="//page[contains(@string, 'Partner Mapping') or contains(@string, 'Association')]"
+                   position="attributes">
+                <attribute name="attrs">{'invisible': [('combo_amount_mode', '=', True)]}</attribute>
+            </xpath>
+
+        </field>
+    </record>
+
+</odoo>
