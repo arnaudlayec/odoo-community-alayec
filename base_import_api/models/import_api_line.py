@@ -47,7 +47,6 @@ class ImportApiLine(models.Model):
     verified = fields.Boolean(
         string='Verified',
         compute='_compute_verified',
-        default=False,
         store=True,
         readonly=False,
     )

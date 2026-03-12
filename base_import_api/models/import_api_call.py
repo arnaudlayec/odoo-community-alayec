@@ -213,6 +213,7 @@ class ImportApiCall(models.Model):
         """
         # Set record_id
         for model, lines in self._get_lines_by_model().items():
+            lines = lines.filtered(lambda x: not x.record_id)
             external_refs = lines.mapped("external_ref")
             domain = [
                 ("external_ref", "in", external_refs),
@@ -386,7 +387,7 @@ class ImportApiCall(models.Model):
                                 report += _(
                                     "### External Refs of \"%(state)s\" records\n"
                                     "%(external_refs)s\n\n",
-                                    state=state,
+                                    state=_(state),
                                     external_refs=' ' . join(external_refs),
                                 )
 
@@ -395,8 +396,9 @@ class ImportApiCall(models.Model):
                             if lines_message:
                                 report += _(
                                     "### Log of \"%(state)s\" lines\n"
-                                    "\n- %(messages)s",
-                                    state=state,
+                                    "\n- %(messages)s"
+                                    "\n",
+                                    state=_(state),
                                     messages="\n- " . join([line._display() for line in lines_message])
                                 )
             return _convert_markdown(report, format)
