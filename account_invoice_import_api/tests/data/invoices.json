@@ -1,0 +1,504 @@
+[
+    {
+        "note": "FR domestique basique",
+        "external_ref": "1816782",
+        "name": "26F00020",
+        "type": "out_invoice",
+        "currency": {
+            "iso": "USD"
+        },
+        "journal": {
+            "code": "B2C"
+        },
+        "date": "2026-01-03",
+        "amount_total": 90.3,
+        "amount_untaxed": 75.25,
+        "partner": {
+            "is_company": false,
+            "ref": "1666055",
+            "external_ref": "1666055",
+            "title_name": "Monsieur",
+            "name": "Vincent",
+            "country_code": "FR",
+            "city": "NICE",
+            "zip": "06300"
+        },
+        "address_delivery": {
+            "external_ref": "1666055",
+            "title_name": "Monsieur",
+            "name": "Vincent",
+            "country_code": "FR",
+            "city": "ANNECY",
+            "zip": "74000"
+        },
+        "address_invoice": {
+            "external_ref": "1666055",
+            "title_name": "Monsieur",
+            "name": "CHARLES Vincent",
+            "country_code": "FR",
+            "city": "ANNECY",
+            "zip": "74000"
+        },
+        "lines": [
+            {
+                "name": "[CHP017] Chapelet en bois d'olivier, grande taille",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 23,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 23
+            },
+            {
+                "name": "[L1205F] Dépliant couleurs sur les 20 mystères du rosaire.",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 1,
+                "qty": 3,
+                "discount": 0,
+                "price_subtotal": 3
+            },
+            {
+                "name": "[CHP011] Chapelet indécrochable en bois",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 16.4,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 16.4
+            },
+            {
+                "name": "[PCHT001] Etui chapelet en cuir synthétique",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 13.1,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 13.1
+            },
+            {
+                "name": "[CHP100-JOS] Chapelet de saint Joseph, perles violettes transparentes",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 27.3,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 27.3
+            },
+            {
+                "name": "[PORTW_DOM] Colissimo SANS signature à domicile",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 7.5,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 7.5
+            }
+        ],
+        "payments": [
+            {
+                "external_ref": "1816782",
+                "payment_type": "inbound",
+                "partner_type": "customer",
+                "currency": {
+                    "iso": "USD"
+                },
+                "journal": {
+                    "code": "BKN"
+                },
+                "amount": 90.3,
+                "date": "2026-01-01",
+                "memo": "265643"
+            }
+        ]
+    },
+
+    {
+        "note": "[Tricky] Contact Martinique (DOM-TOM), livraison FR => position fiscale FR",
+        "external_ref": "1821838",
+        "name": "26F00891",
+        "type": "out_invoice",
+        "currency": {
+            "iso": "USD"
+        },
+        "journal": {
+            "code": "B2C"
+        },
+        "date": "2026-03-02",
+        "amount_total": 19.7,
+        "amount_untaxed": 16.41,
+        "partner": {
+            "ref": "838728",
+            "external_ref": "838728",
+            "is_company": false,
+            "title_name": "Mme",
+            "name": "Marie-Noelle",
+            "country_code": "MQ",
+            "city": "FRANCOIS",
+            "zip": "97240"
+        },
+        "address_delivery": {
+            "external_ref": "838728",
+            "title_name": "Madame",
+            "name": "Marie-Noelle",
+            "country_code": "FR",
+            "city": "PESSAC",
+            "zip": "33600"
+        },
+        "address_invoice": {
+            "external_ref": "838728",
+            "title_name": "Madame",
+            "name": "Marie-Noelle",
+            "country_code": "FR",
+            "city": "PESSAC",
+            "zip": "33600"
+        },
+        "lines": [
+            {
+                "name": "[SCP2301] Scapulaire du Mont Carmel",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 7,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 7
+            },
+            {
+                "name": "[SCP2302VERT] Scapulaire vert, insigne du Coeur",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 6,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 6
+            },
+            {
+                "name": "[PORTW_CS_1] Lettre suivie",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 5.8,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 5.8
+            },
+            {
+                "name": "[PAYPALCOM] Commission paypal",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 0.9,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 0.9
+            }
+        ],
+        "payments": [
+            {
+                "external_ref": "4752",
+                "payment_type": "inbound",
+                "partner_type": "customer",
+                "currency": {
+                    "iso": "USD"
+                },
+                "journal": {
+                    "code": "BKN"
+                },
+                "amount": 19.7,
+                "date": "2026-03-02",
+                "memo": "348383123K876983T"
+            }
+        ]
+    },
+
+    {
+        "note": "Intra-EU B2C",
+        "external_ref": "1821933",
+        "name": "26C00071",
+        "type": "out_invoice",
+        "currency": {
+            "iso": "USD"
+        },
+        "journal": {
+            "code": "B2C"
+        },
+        "date": "2026-03-03",
+        "amount_total": 39.24,
+        "amount_untaxed": 32.7,
+        "partner": {
+            "is_company": false,
+            "ref": "1799321",
+            "external_ref": "1799321",
+            "name": "Koen",
+            "country_code": "BE",
+            "city": "MAASEIK",
+            "zip": "3680"
+        },
+        "address_delivery": {
+            "external_ref": "1799321",
+            "title_name": "",
+            "name": "Koen",
+            "country_code": "BE",
+            "city": "MAASEIK",
+            "zip": "3680"
+        },
+        "address_invoice": {
+            "external_ref": "1799321",
+            "name": "Koen",
+            "country_code": "BE",
+            "city": "MAASEIK",
+            "zip": "3680"
+        },
+        "lines": [
+            {
+                "name": "[MPLAT4050] Ic\u00f4ne des Sept Douleurs et All\u00e9gresses de Saint Joseph",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 30,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 30
+            },
+            {
+                "name": "[PORTW_RET] Colissimo en point de retrait",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 9.24,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 9.24
+            }
+        ],
+        "payments": [
+            {
+                "external_ref": "136387",
+                "payment_type": "inbound",
+                "partner_type": "customer",
+                "currency": {
+                    "iso": "USD"
+                },
+                "journal": {
+                    "code": "BKN"
+                },
+                "amount": 39.24,
+                "date": "2026-03-02",
+                "memo": "265353"
+            }
+        ]
+    },
+
+
+    {
+        "note": "Intra EU B2C",
+        "external_ref": "1821769",
+        "name": "26E00064",
+        "type": "out_invoice",
+        "currency": {
+            "iso": "USD"
+        },
+        "journal": {
+            "code": "B2C"
+        },
+        "date": "2026-03-02",
+        "date_due": "2026-03-02",
+        "amount_total": 305.62,
+        "amount_untaxed": 305.62,
+        "partner": {
+            "is_company": false,
+            "ref": "911884",
+            "external_ref": "911884",
+            "title_name": "Monsieur",
+            "name": "Patrice",
+            "country_code": "RE",
+            "email": "patrice@hotmail.fr",
+            "city": "SAINT-ANDRE",
+            "zip": "97440"
+        },
+        "address_delivery": {
+            "external_ref": "911884",
+            "title_name": "",
+            "name": "Patrice-Henry",
+            "country_code": "RE",
+            "city": "SAINT-ANDRE",
+            "zip": "97440"
+        },
+        "address_invoice": {
+            "external_ref": "911884",
+            "title_name": "",
+            "name": "Patrice-Henry",
+            "country_code": "RE",
+            "city": "SAINT-ANDRE",
+            "zip": "97440"
+        },
+        "lines": [
+            {
+                "name": "[SCP2301] Scapulaire du Mont Carmel en \u00e9toffe",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 5.83,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 5.83
+            },
+            {
+                "name": "[AIDE20] Don de 20 euros",
+                "product": {
+                    "code": "TVA0"
+                },
+                "price_unit": 20,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 20
+            },
+            {
+                "name": "[CRUX10] Crucifix sur pied, 50 cm",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 200,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 200
+            },
+            {
+                "name": "[PORTW_DOM] Colissimo SANS signature \u00e0 domicile",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 70.84,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 70.84
+            },
+            {
+                "name": "[PAYPALCOM] Commission paypal",
+                "product": {
+                    "code": "TVA20"
+                },
+                "price_unit": 8.95,
+                "qty": 1,
+                "discount": 0,
+                "price_subtotal": 8.95
+            }
+        ],
+        "payments": [
+            {
+                "external_ref": "136384",
+                "payment_type": "inbound",
+                "partner_type": "customer",
+                "currency": {
+                    "iso": "USD"
+                },
+                "journal": {
+                    "code": "BKN"
+                },
+                "amount": 305.62,
+                "date": "2026-03-02",
+                "memo": "0F307118496930846"
+            }
+        ]
+    },
+
+
+	{
+        "note": "Remise + Intra EU B2C",
+		"external_ref": "1819142",
+		"name": "26C00036",
+		"type": "out_invoice",
+		"currency": {
+			"iso": "USD"
+		},
+		"journal": {
+			"code": "B2C"
+		},
+		"date": "2026-02-02",
+		"date_due": "2026-02-02",
+		"amount_total": 117.1,
+		"amount_untaxed": 102.34,
+		"partner": {
+			"is_company": false,
+			"ref": "1818833",
+			"external_ref": "1818833",
+			"title_name": "Sr.",
+			"name": "CEBALLOS Jose Angel",
+			"country_code": "ES",
+			"city": "MADRID",
+			"zip": "28015"
+		},
+		"address_delivery": {
+			"external_ref": "1818833",
+			"title_name": "Sr.",
+			"name": "CEBALLOS Jose Angel",
+			"country_code": "ES",
+			"city": "MADRID",
+			"zip": "28015"
+		},
+		"address_invoice": {
+			"external_ref": "1818833",
+			"title_name": "Sr.",
+			"name": "CEBALLOS Jose Angel",
+			"country_code": "ES",
+			"city": "MADRID",
+			"zip": "28015"
+		},
+		"lines": [
+			{
+				"name": "[INS02-BENa] Pin San Benito de plata maciza, 16 mm",
+				"product": {
+					"code": "TVA20"
+				},
+				"price_unit": 38,
+				"qty": 3,
+				"discount": 5,
+				"price_subtotal": 108.3
+			},
+			{
+				"name": "[PORTW4] Envío normal",
+				"product": {
+					"code": "TVA20"
+				},
+				"price_unit": 5.16,
+				"qty": 1,
+				"discount": 0,
+				"price_subtotal": 5.16
+			},
+			{
+				"name": "[PAYPALCOM] Commission paypal",
+				"product": {
+					"code": "TVA20"
+				},
+				"price_unit": 3.64,
+				"qty": 1,
+				"discount": 0,
+				"price_subtotal": 3.64
+			}
+		],
+		"payments": [
+			{
+				"external_ref": "1819142",
+				"payment_type": "inbound",
+				"partner_type": "customer",
+				"currency": {
+					"iso": "USD"
+				},
+				"journal": {
+					"code": "BKN"
+				},
+				"amount": 117.1,
+				"date": "2026-02-02",
+				"memo": "4N1318589D537692X"
+			}
+		]
+	}
+]

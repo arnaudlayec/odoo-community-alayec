@@ -1,13 +1,14 @@
 # -*- coding: utf-8 -*-
 
-from odoo.tests import new_test_user
 from odoo.addons.account_invoice_import.tests.test_invoice_import import (
     TestInvoiceImport,
 )
 
+import odoo
 import copy
+import json
 
-class TestInvoiceImportXmlRpc(TestInvoiceImport):
+class TestInvoiceImportApi(TestInvoiceImport):
     """ Largely inspired from tests of `account_invoice_import` module """
 
     @classmethod
@@ -136,3 +137,49 @@ class TestInvoiceImportXmlRpc(TestInvoiceImport):
         }
         invoice, _ = self._import(parsed_inv, config)
         self.assertIn(invoice.payment_state, "partial")
+
+
+    def test_real_data(self):
+        """Import different use-case that must be silent"""
+        # Test data
+        for amount in [0, 5.5, 10, 20]:
+            sale_tax_incl = self.sale_tax.copy({
+                "name": f"{amount}% VAT incl.",
+                "amount": amount,
+                "price_include_override": "tax_included",
+            })
+            self.env["product.product"].create({
+                "name": f"TVA{amount}",
+                "default_code": f"TVA{amount}",
+                "taxes_id": [odoo.Command.set(sale_tax_incl.ids)],
+                "supplier_taxes_id": [odoo.Command.set([self.purchase_tax.id])],
+                "property_account_income_id": self.income_account.id,
+                "property_account_expense_id": self.expense_account.id,
+            })
+        self.env["account.journal"].create(
+            {
+                "type": "sale",
+                "code": "B2C",
+                "name": "Test B2C Journal",
+                "sequence": 10,
+                "company_id": self.company.id,
+            }
+        )
+
+        # Json loading
+        Move = self.env['account.move']
+        file_name = odoo.tools.misc.file_path(
+            "account_invoice_import_api/tests/data/invoices.json"
+        )
+        with open(file_name) as file_res:
+            payload = {
+                "data": json.load(file_res),
+                "config": {"api_raise_exception": True}
+            }
+            
+            # Import
+            response = Move.import_api(payload)
+            logger = self.env['import.api.call'].browse(response.get("logger_id"))
+            
+            # Test
+            self.assertEqual(logger.to_verify_line_count, 0)
