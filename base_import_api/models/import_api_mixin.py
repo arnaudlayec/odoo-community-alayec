@@ -7,6 +7,7 @@ from lxml import etree
 import json
 import re
 
+import traceback
 import logging
 _logger = logging.getLogger(__name__)
 
@@ -63,7 +64,11 @@ class ImportApiMixin(models.AbstractModel):
                 raise Exception(e)
             else:
                 logger._add_line(
-                    _("Unmanaged error during import. Details:\n%s", e),
+                    _("Unmanaged error during import. Details:\n%(error)s\n%(traceback)s",
+                      error=e,
+                      traceback=traceback.format_exc()
+                    ),
+                    state="error",
                 )
 
         logger._finish()
