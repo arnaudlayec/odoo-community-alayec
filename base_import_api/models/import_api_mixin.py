@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from odoo import models, fields, api, tools, exceptions, _
+from odoo import modules, models, fields, api, tools, exceptions, _
 from odoo.tools.misc import str2bool
 
 from lxml import etree
@@ -49,14 +49,19 @@ class ImportApiMixin(models.AbstractModel):
         config = self._process_payload_config(payload)
         config["logger"] = logger
 
-        data = payload.get('data') or {}
         try:
-            self.with_company(config["company"])._run_import_api(data, config)
+            # Import with a new cursor, to keep 'logger' and previous transaction
+            with modules.registry.Registry(self.env.cr.dbname).cursor() as new_cr:
+                new_env = api.Environment(new_cr, self.env.uid, self.env.context)
+                new_self = self.with_env(new_env).with_company(config["company"])
+                new_self._run_import_api(
+                    data=payload.get('data') or {},
+                    config=config
+                )
         except Exception as e:
             if config["api_raise_exception"]:
                 raise Exception(e)
             else:
-                self.env.cr.rollback()
                 logger._add_line(
                     _("Unmanaged error during import. Details:\n%s", e),
                 )
