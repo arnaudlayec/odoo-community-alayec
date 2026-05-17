@@ -4,7 +4,7 @@ from odoo.osv import expression
 # transitory
 from odoo.tools import float_round
 from collections import defaultdict
-TRANSITION_LAST_MO_ID = 329
+TRANSITION_LAST_MO_ID = 352
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
