@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="mrp_production_form_view" model="ir.ui.view">
+        <field name="name">mrp.production.form.2_steps_materials_out_at_prep</field>
+        <field name="model">mrp.production</field>
+        <field name="inherit_id" ref="mrp.mrp_production_form_view" />
+
+        <field name="arch" type="xml">
+            <!-- Readonly "Consumed" -->
+            <xpath
+                expr="//field[@name='move_raw_ids']//field[@name='quantity_done']"
+                position="attributes"
+            >
+                <attribute name="attrs">{
+                    'column_invisible': [('parent.state', '=', 'draft')],
+                    'readonly': [(1, '=', 1)],
+                }</attribute>
+            </xpath>
+
+            <!-- "To Consume" -->
+            <xpath expr="//field[@name='move_raw_ids']//field[@name='product_uom_qty']" position="attributes">
+                <!-- No widget -->
+                <attribute name="widget" />
+                <!-- Always readonly, no matter 'is_locked' -->
+                <attribute name="attrs">{
+                    'readonly': [
+                        '&amp;',
+                            ('parent.state', '!=', 'draft'),
+                            '|',
+                                ('state', '!=', 'draft'),
+                                '&amp;', ('parent.state', 'not in', ('confirmed', 'progress', 'to_close')), ('parent.is_planned', '!=', True),
+                    ]
+                }</attribute>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <record id="view_immediate_production" model="ir.ui.view">
+        <field name="name">mrp.immediate.production.view.form.2_steps_materials_out_at_prep</field>
+        <field name="model">mrp.immediate.production</field>
+        <field name="inherit_id" ref="mrp.view_immediate_production" />
+
+        <field name="arch" type="xml">
+            <!-- Remove the text "and consume all components" from the 'Immediate Production' wizard -->
+            <p position="replace">
+                <p colspan="2">
+                    You have not recorded <i>produced</i> quantities yet, by clicking on <i>apply</i>
+                    Odoo will produce all the finished products.
+                </p>
+            </p>
+        </field>
+    </record>
+</odoo>
