@@ -11,9 +11,7 @@
     'application': False,
     'installable': True,
     'auto_install': False,
-    'depends': [
-        'mrp',
-    ],
+    'depends': ['mrp'],
     'data': [
         # views
         'views/stock_picking.xml',
