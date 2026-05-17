@@ -10,10 +10,15 @@
     'auto_install': False,
     'category': 'Manufacturing/Manufacturing',
     'version': '16.0.1.0.1',
+        # 1.0.1: transition mode (install)
+        # 1.1.1: target mode
 
-    'depends': ['mrp'],
+    'depends': ['mrp', 'stock_no_negative'], # stock_no_negative: transitory mode
     "data": [
         "views/mrp_production.xml",
         "wizard/mrp_immediate_production.xml",
-    ]
+        # transitory mode
+        "views/stock_quant.xml",
+        'wizard/stock_inventory_conflict.xml',
+    ],
 }
