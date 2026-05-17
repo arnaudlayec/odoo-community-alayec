@@ -1,3 +1,7 @@
+# Copyright 2026 Arnaud LAYEC (Akretion) <arnaud.layec@akretion.com>
+# License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
+
+import threading
 
 from odoo import models, api
 from odoo.tools import float_compare
@@ -24,10 +28,15 @@ class StockMove(models.Model):
                 not x.raw_material_production_id and
                 not x.production_id
         )
+        test_mode = (
+            getattr(threading.current_thread(), 'testing', False) or
+            self.env.registry.in_test_mode()
+        )
         mos = moves_pickings.group_id.mrp_production_ids.filtered(
             # transitory mode
-            lambda x: x.id > TRANSITION_LAST_MO_ID
+            lambda x: x.id > TRANSITION_LAST_MO_ID or test_mode
         )
+
         date_from, date_to = False, False
         for mo in mos:
             date_to = mo.date_finished
@@ -88,7 +97,7 @@ class StockMove(models.Model):
             (just do like when the `stock.move` is validated)
         """
         res = super().write(vals)
-
+        
         raw_material_ids = self.filtered(
             lambda x:
                 x.raw_material_production_id and
