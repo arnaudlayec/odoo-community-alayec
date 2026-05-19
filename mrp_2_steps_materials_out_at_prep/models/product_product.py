@@ -4,21 +4,36 @@ from odoo.osv import expression
 # transitory
 from odoo.tools import float_round
 from collections import defaultdict
-TRANSITION_LAST_MO_ID = 352
+TRANSITION_LAST_MO_ID = 343
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
 
     def _get_domain_locations_new(self, location_ids):
         """Exclude locations of type 'production' from the calcultation
-        of qty_available, thus making the validation of PREP 1-steps
-        pickings having immediate effect on stock levels."""
+        of `qty_available` and `outgoing_qty`, thus making the validation
+        of PREP 2-steps pickings having immediate effect on stock levels."""
         domain_quant_loc, domain_move_in_loc, domain_move_out_loc = (
             super()._get_domain_locations_new(location_ids)
         )
+        domain_exclude_prod = [('location_id.usage', '!=', 'production')]
+
+        # Validation of PREP picking has immediate effect on stock levels
         domain_quant_loc = expression.AND([
-            domain_quant_loc,
-            [('location_id.usage', '!=', 'production')]
+            domain_quant_loc, domain_exclude_prod
+        ])
+
+        # MO are not counted in 'outgoing_qty'
+        domain_move_out_loc = expression.AND([
+            domain_move_out_loc, domain_exclude_prod
+        ])
+        # PREP picking in 'waiting', 'confirmed', 'assigned' are counted in 'outgoing_qty'
+        domain_move_out_loc = expression.OR([
+            domain_move_out_loc,
+            [
+                ('location_id.usage', '=', 'internal'),
+                ('location_dest_id.usage', '=', 'production'),
+            ]
         ])
         return domain_quant_loc, domain_move_in_loc, domain_move_out_loc
 

@@ -1,8 +1,6 @@
 # Copyright 2026 Arnaud LAYEC (Akretion) <arnaud.layec@akretion.com>
 # License AGPL-3.0 or later (https://www.gnu.org/licenses/agpl).
 
-import threading
-
 from odoo import models, api
 from odoo.tools import float_compare
 
@@ -19,29 +17,6 @@ class StockMove(models.Model):
         for move in self:
             comp = float_compare(move.quantity_done, move.product_uom_qty, precision_digits=prec)
             move.is_done = bool(comp >= 0)
-
-    def _quantity_done_compute(self):
-        """When PREP-pickings' moves are updated, trigger update of components lines"""
-        super()._quantity_done_compute()
-        moves_pickings = self.filtered(
-            lambda x:
-                not x.raw_material_production_id and
-                not x.production_id
-        )
-        test_mode = (
-            getattr(threading.current_thread(), 'testing', False) or
-            self.env.registry.in_test_mode()
-        )
-        mos = moves_pickings.group_id.mrp_production_ids.filtered(
-            # transitory mode
-            lambda x: x.id > TRANSITION_LAST_MO_ID or test_mode
-        )
-
-        date_from, date_to = False, False
-        for mo in mos:
-            date_to = mo.date_finished
-            mo.move_raw_ids._update_qty_done_2steps(date_from, date_to)
-            date_from = mo.date_finished # for next loop
 
     def _update_qty_done_2steps(self, date_from, date_to):
         """Update the MO's components 'quantity_done'

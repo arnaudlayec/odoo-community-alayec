@@ -34,6 +34,7 @@ class TestMrp2StepsMaterialsOutAtPrep(TestMrpCommon):
 
         # Pre-production location (created automatically by Odoo for pbm warehouses)
         cls.preprod_location = cls.warehouse_2s.pbm_loc_id
+        cls.preprod_location.usage = "production" # (!) important config
 
         # --- Finished product & component ---
         # We reuse product_1 (finished) and product_2 (component) from TestMrpCommon.
