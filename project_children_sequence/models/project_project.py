@@ -4,7 +4,8 @@ from odoo import models, fields, api, exceptions, _, Command
 from odoo.osv import expression
 
 class Project(models.Model):
-    _inherit = ["project.project"]
+    _inherit = "project.project"
+    _order = "sequence_code DESC, sequence, name, id"
     _rec_names_search = ['name', 'sequence_code']
 
     #====== Fields ======#
