@@ -70,11 +70,11 @@
 
             <!-- Show arrival attachments in dedicated place -->
             <notebook position="before">
-                <label for="date_arrival_attachments" colspan="2"
-                    attrs="{'invisible': [('date_arrival_attachments', '=', [])]}"
+                <label for="date_arrival_attachment_ids" colspan="2"
+                    attrs="{'invisible': [('date_arrival_attachment_ids', '=', [])]}"
                 />
-                <field name="date_arrival_attachments" widget="many2many_binary" nolabel="1" colspan="2" readonly="1"
-                    attrs="{'invisible': [('date_arrival_attachments', '=', [])]}"
+                <field name="date_arrival_attachment_ids" widget="many2many_binary" nolabel="1" colspan="2" readonly="1"
+                    attrs="{'invisible': [('date_arrival_attachment_ids', '=', [])]}"
                 />
             </notebook>
 

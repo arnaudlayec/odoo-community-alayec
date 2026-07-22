@@ -30,8 +30,8 @@ class PurchaseOrder(models.Model):
         store=True,
         copy=False,
     )
-    date_arrival_attachments = fields.Many2many(
-        related='date_arrival_ids.attachment_ids',
+    date_arrival_attachment_ids = fields.Many2many(
+        compute="_compute_date_arrival_attachment_ids",
         string='Attachments of Expected arrivals',
         copy=False,
     )
@@ -56,6 +56,11 @@ class PurchaseOrder(models.Model):
                 state = 'ok'
             
             order.date_arrival_state = state
+    
+    @api.depends("date_arrival_ids", "date_arrival_ids.attachment_ids")
+    def _compute_date_arrival_attachment_ids(self):
+        for order in self:
+            order.date_arrival_attachment_ids = order.date_arrival_ids.attachment_ids
     
     #===== Logics =====#
     def _get_unconfirmed_date_order_line(self):
