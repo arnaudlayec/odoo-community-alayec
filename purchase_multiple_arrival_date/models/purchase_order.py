@@ -32,6 +32,7 @@ class PurchaseOrder(models.Model):
     )
     date_arrival_attachment_ids = fields.Many2many(
         compute="_compute_date_arrival_attachment_ids",
+        comodel_name="ir.attachment",
         string='Attachments of Expected arrivals',
         copy=False,
     )
