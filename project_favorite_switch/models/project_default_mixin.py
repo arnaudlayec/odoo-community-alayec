@@ -17,7 +17,7 @@ class ProjectDefaultMixin(models.AbstractModel):
         """
         Project = self.env['project.project']
 
-        projects_all = Project.search(Project._get_domain_fav_projects(fav_only=False))
+        projects_all = Project.search([])
         projects_fav = projects_all.filtered_domain([('favorite_user_ids', '=', self.env.uid)])
         projects = projects_fav if projects_fav.ids else projects_all
 
